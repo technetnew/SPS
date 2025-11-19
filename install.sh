@@ -227,6 +227,10 @@ mkdir -p ${INSTALL_DIR}/kiwix/library
 chown -R www-data:www-data ${INSTALL_DIR}
 chmod -R 755 ${INSTALL_DIR}
 
+# Ensure web files are readable
+find ${INSTALL_DIR} -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \) -exec chmod 644 {} \;
+echo -e "${GREEN}✓ File permissions set${NC}"
+
 # Configure Nginx
 echo ""
 echo "========================================"
