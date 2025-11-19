@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login - SPS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-section {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        input, button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        button {
+            background: #2c5f2d;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1a3a1b;
+        }
+        .result {
+            background: #f0f0f0;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <h1>SPS Login Test Page</h1>
+    <p>This page helps diagnose login issues.</p>
+
+    <div class="test-section">
+        <h2>1. Test API Connection</h2>
+        <button onclick="testAPI()">Test API Health</button>
+        <div id="api-result" class="result" style="display: none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test Login</h2>
+        <input type="text" id="test-username" placeholder="Username" value="john">
+        <input type="password" id="test-password" placeholder="Password" value="SecurePass123">
+        <button onclick="testLogin()">Test Login</button>
+        <div id="login-result" class="result" style="display: none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. JavaScript Console</h2>
+        <p>Open browser console (F12) to see detailed errors</p>
+        <div id="console-log" class="result"></div>
+    </div>
+
+    <script>
+        // Log to both console and page
+        function log(message, isError = false) {
+            const consoleDiv = document.getElementById('console-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}\n`;
+            consoleDiv.textContent += logEntry;
+            if (isError) {
+                console.error(message);
+            } else {
+                console.log(message);
+            }
+        }
+
+        log('Page loaded successfully');
+
+        async function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = 'Testing API...';
+            resultDiv.className = 'result';
+
+            try {
+                log('Fetching /api/health...');
+                const response = await fetch('/api/health');
+                const data = await response.json();
+
+                resultDiv.className = 'result success';
+                resultDiv.textContent = `✓ API is working!\n\n${JSON.stringify(data, null, 2)}`;
+                log('API test successful: ' + JSON.stringify(data));
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `✗ API Error:\n${error.message}`;
+                log('API test failed: ' + error.message, true);
+            }
+        }
+
+        async function testLogin() {
+            const resultDiv = document.getElementById('login-result');
+            const username = document.getElementById('test-username').value;
+            const password = document.getElementById('test-password').value;
+
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = 'Logging in...';
+            resultDiv.className = 'result';
+
+            try {
+                log(`Attempting login with username: ${username}`);
+
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                log(`Response status: ${response.status}`);
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✓ Login Successful!\n\n${JSON.stringify(data, null, 2)}`;
+                    log('Login successful!');
+
+                    // Test authenticated request
+                    setTimeout(() => testAuthenticatedRequest(data.token), 1000);
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `✗ Login Failed:\n${JSON.stringify(data, null, 2)}`;
+                    log('Login failed: ' + JSON.stringify(data), true);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `✗ Error:\n${error.message}`;
+                log('Login error: ' + error.message, true);
+            }
+        }
+
+        async function testAuthenticatedRequest(token) {
+            log('Testing authenticated request with token...');
+
+            try {
+                const response = await fetch('/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                log('Authenticated request successful: ' + JSON.stringify(data));
+            } catch (error) {
+                log('Authenticated request failed: ' + error.message, true);
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            log('Running auto-test...');
+            setTimeout(testAPI, 500);
+        });
+    </script>
+</body>
+</html>

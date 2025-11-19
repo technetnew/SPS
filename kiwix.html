@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiwix - Offline Knowledge - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/kiwix.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Offline Knowledge</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="#inventory" class="nav-link">Inventory</a></li>
+                    <li><a href="/videos.html" class="nav-link">Videos</a></li>
+                    <li><a href="/kiwix.html" class="nav-link active">Kiwix</a></li>
+                    <li><a href="#plans" class="nav-link">Plans</a></li>
+                </ul>
+                <div id="user-section" class="user-section" style="display: none;">
+                    <span id="user-name"></span>
+                    <button onclick="authManager.logout()" class="btn btn-secondary btn-sm">Logout</button>
+                </div>
+                <div id="auth-buttons" style="display: flex; gap: 10px;">
+                    <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="kiwix-header">
+                <div>
+                    <h1>📚 Offline Knowledge Library</h1>
+                    <p>Download and access Wikipedia, educational content, and reference materials offline</p>
+                </div>
+                <div class="server-status">
+                    <div id="server-status-indicator" class="status-indicator offline">
+                        <span class="status-dot"></span>
+                        <span id="status-text">Checking...</span>
+                    </div>
+                    <div class="server-actions">
+                        <button onclick="startKiwixServer()" class="btn btn-primary" id="start-btn">Start Server</button>
+                        <button onclick="stopKiwixServer()" class="btn btn-secondary" id="stop-btn" style="display: none;">Stop Server</button>
+                        <a href="/kiwix-reader.html" class="btn btn-accent" id="access-btn" style="display: none;">Access Library</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Info -->
+            <div class="info-card">
+                <h3>ℹ️ What is Kiwix?</h3>
+                <p>Kiwix allows you to have the entire Wikipedia, medical encyclopedias, educational content, and more available offline. Perfect for emergency preparedness when internet access may be unavailable.</p>
+            </div>
+
+            <!-- Server Info -->
+            <div id="server-info-card" class="stats-grid" style="display: none;">
+                <div class="stat-card">
+                    <div class="stat-icon">🌐</div>
+                    <div class="stat-info">
+                        <h3 id="server-url">-</h3>
+                        <p>Server URL</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📁</div>
+                    <div class="stat-info">
+                        <h3 id="installed-count">0</h3>
+                        <p>Installed Libraries</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💾</div>
+                    <div class="stat-info">
+                        <h3 id="total-size">0 GB</h3>
+                        <p>Total Size</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('catalog')">📦 Available Content</button>
+                <button class="tab" onclick="switchTab('library')">📚 My Library</button>
+                <button class="tab" onclick="switchTab('downloads')">⬇️ Downloads</button>
+            </div>
+
+            <!-- Catalog Tab -->
+            <div id="catalog-tab" class="tab-content active">
+                <h2>Available Knowledge Bases</h2>
+                <p class="tab-description">Download entire encyclopedias and educational content for offline access</p>
+
+                <div id="catalog-grid" class="catalog-grid">
+                    <div class="loading">Loading catalog...</div>
+                </div>
+            </div>
+
+            <!-- Library Tab -->
+            <div id="library-tab" class="tab-content">
+                <h2>Installed Libraries</h2>
+                <p class="tab-description">ZIM files you've downloaded and can access offline</p>
+
+                <div id="library-list" class="library-list">
+                    <div class="empty-state">No libraries installed yet. Download from the catalog!</div>
+                </div>
+            </div>
+
+            <!-- Downloads Tab -->
+            <div id="downloads-tab" class="tab-content">
+                <h2>Active Downloads</h2>
+                <p class="tab-description">Monitor your ongoing ZIM file downloads</p>
+
+                <div id="downloads-list" class="downloads-list">
+                    <div class="empty-state">No active downloads</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal auth-modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="authManager.hideModals()">&times;</span>
+            <h2>Login to SPS</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Username or Email</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/kiwix.js"></script>
+</body>
+</html>

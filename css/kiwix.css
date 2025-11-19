@@ -1,0 +1,317 @@
+/* Kiwix Page Styles */
+
+.kiwix-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.kiwix-header h1 {
+    color: #2c5f2d;
+    margin: 0 0 0.5rem 0;
+}
+
+.kiwix-header p {
+    color: #666;
+    margin: 0;
+}
+
+/* Server Status */
+.server-status {
+    text-align: right;
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.status-indicator.online {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-indicator.offline {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.status-indicator.online .status-dot {
+    background: #4caf50;
+}
+
+.status-indicator.offline .status-dot {
+    background: #f44336;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.server-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+/* Info Card */
+.info-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.info-card h3 {
+    margin: 0 0 0.5rem 0;
+}
+
+.info-card p {
+    margin: 0;
+    opacity: 0.95;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e0e0e0;
+    flex-wrap: wrap;
+}
+
+.tab {
+    background: transparent;
+    border: none;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.tab:hover {
+    color: #2c5f2d;
+    background: #f5f5f5;
+}
+
+.tab.active {
+    color: #2c5f2d;
+    border-bottom-color: #2c5f2d;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-description {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+/* Catalog Grid */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.catalog-item {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.catalog-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.catalog-item h3 {
+    margin: 0 0 0.5rem 0;
+    color: #2c5f2d;
+    font-size: 1.1rem;
+}
+
+.catalog-item .category {
+    display: inline-block;
+    background: #e8f5e9;
+    color: #2c5f2d;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+.catalog-item p {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.catalog-item .size {
+    color: #999;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.catalog-item button {
+    width: 100%;
+}
+
+/* Library List */
+.library-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.library-item {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.library-item-info h3 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+}
+
+.library-item-meta {
+    display: flex;
+    gap: 1.5rem;
+    color: #666;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+}
+
+.library-item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Downloads List */
+.downloads-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.download-item {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.download-item h3 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+}
+
+.download-progress {
+    margin: 1rem 0;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2c5f2d, #4caf50);
+    transition: width 0.3s;
+}
+
+.download-stats {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #999;
+    font-size: 1.1rem;
+}
+
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .kiwix-header {
+        flex-direction: column;
+    }
+
+    .server-status {
+        text-align: left;
+        width: 100%;
+    }
+
+    .server-actions {
+        justify-content: flex-start;
+    }
+
+    .catalog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .library-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .library-item-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .library-item-actions button {
+        width: 100%;
+    }
+}

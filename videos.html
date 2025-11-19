@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/videos.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Videos</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="#inventory" class="nav-link">Inventory</a></li>
+                    <li><a href="/videos.html" class="nav-link active">Videos</a></li>
+                    <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
+                    <li><a href="#plans" class="nav-link">Plans</a></li>
+                </ul>
+                <div id="user-section" class="user-section" style="display: none;">
+                    <span id="user-name"></span>
+                    <button onclick="authManager.logout()" class="btn btn-secondary btn-sm">Logout</button>
+                </div>
+                <div id="auth-buttons" style="display: flex; gap: 10px;">
+                    <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="videos-header">
+                <h1>Video Library</h1>
+                <div class="video-actions">
+                    <button onclick="showUploadModal()" class="btn btn-primary">
+                        📤 Upload Video
+                    </button>
+                    <button onclick="showDownloadModal()" class="btn btn-accent">
+                        ⬇️ Download from URL
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🎥</div>
+                    <div class="stat-info">
+                        <h3 id="total-videos">0</h3>
+                        <p>Total Videos</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💾</div>
+                    <div class="stat-info">
+                        <h3 id="total-size">0 GB</h3>
+                        <p>Total Size</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📁</div>
+                    <div class="stat-info">
+                        <h3 id="total-playlists">0</h3>
+                        <p>Playlists</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <h3 id="total-duration">0h 0m</h3>
+                        <p>Total Duration</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter/Search -->
+            <div class="videos-controls">
+                <input type="text" id="search-videos" placeholder="Search videos..." class="search-input">
+                <select id="filter-category" class="filter-select">
+                    <option value="">All Categories</option>
+                    <option value="Survival Skills">Survival Skills</option>
+                    <option value="First Aid">First Aid</option>
+                    <option value="Food Preparation">Food Preparation</option>
+                    <option value="Shelter Building">Shelter Building</option>
+                    <option value="Water Purification">Water Purification</option>
+                    <option value="Other">Other</option>
+                </select>
+                <select id="filter-playlist" class="filter-select">
+                    <option value="">All Videos</option>
+                </select>
+                <div class="view-toggle">
+                    <button id="view-list" class="active" onclick="switchView('list')" title="List View">☰</button>
+                    <button id="view-grid" onclick="switchView('grid')" title="Grid View">▦</button>
+                </div>
+            </div>
+
+            <!-- Videos Container -->
+            <div id="videos-container" class="videos-list">
+                <div class="loading">Loading videos...</div>
+            </div>
+
+            <!-- Downloads Status -->
+            <div id="downloads-section" style="display: none;">
+                <h2>Active Downloads</h2>
+                <div id="downloads-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Upload Modal -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUploadModal()">&times;</span>
+            <h2>Upload Video</h2>
+            <form id="upload-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="video-file">Video File *</label>
+                    <input type="file" id="video-file" accept="video/*" required>
+                    <small>Max size: 500MB. Supported: MP4, AVI, MOV, WMV, FLV, WebM, MKV</small>
+                </div>
+                <div class="form-group">
+                    <label for="video-title">Title</label>
+                    <input type="text" id="video-title" placeholder="Video title (optional)">
+                </div>
+                <div class="form-group">
+                    <label for="video-description">Description</label>
+                    <textarea id="video-description" rows="3" placeholder="Video description (optional)"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="video-category">Category</label>
+                    <select id="video-category">
+                        <option value="">Select category...</option>
+                        <option value="Survival Skills">Survival Skills</option>
+                        <option value="First Aid">First Aid</option>
+                        <option value="Food Preparation">Food Preparation</option>
+                        <option value="Shelter Building">Shelter Building</option>
+                        <option value="Water Purification">Water Purification</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="video-tags">Tags (comma-separated)</label>
+                    <input type="text" id="video-tags" placeholder="survival, emergency, tutorial">
+                </div>
+                <div id="upload-progress" style="display: none;">
+                    <div class="progress-bar">
+                        <div id="upload-progress-bar" class="progress-fill"></div>
+                    </div>
+                    <p id="upload-status">Uploading...</p>
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="closeUploadModal()" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Download Modal -->
+    <div id="download-modal" class="modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="closeDownloadModal()">&times;</span>
+            <h2>Download Video from URL</h2>
+            <form id="download-form">
+                <div class="form-group">
+                    <label for="download-url">Video URL *</label>
+                    <input type="url" id="download-url" placeholder="https://www.youtube.com/watch?v=..." required>
+                    <small>Supports YouTube, Vimeo, and many other sites</small>
+                </div>
+                <div class="form-group">
+                    <label for="download-quality">Quality</label>
+                    <select id="download-quality">
+                        <option value="best">Best Available</option>
+                        <option value="1080p">1080p</option>
+                        <option value="720p">720p</option>
+                        <option value="480p">480p</option>
+                        <option value="360p">360p</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="download-format">Format</label>
+                    <select id="download-format">
+                        <option value="mp4">MP4</option>
+                        <option value="webm">WebM</option>
+                        <option value="mkv">MKV</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="closeDownloadModal()" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Download</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div id="player-modal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closePlayerModal()">&times;</span>
+            <div id="video-player-container">
+                <video id="video-player" controls>
+                    Your browser does not support the video tag.
+                </video>
+                <div class="video-info">
+                    <h2 id="playing-title"></h2>
+                    <p id="playing-description"></p>
+                    <div class="video-meta">
+                        <span id="playing-duration"></span>
+                        <span id="playing-resolution"></span>
+                        <span id="playing-size"></span>
+                    </div>
+                    <div class="video-actions-inline">
+                        <button onclick="editCurrentVideo()" class="btn btn-sm btn-secondary">✏️ Edit</button>
+                        <button onclick="deleteCurrentVideo()" class="btn btn-sm btn-danger">🗑️ Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Video Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Video</h2>
+            <form id="edit-form">
+                <input type="hidden" id="edit-video-id">
+                <div class="form-group">
+                    <label for="edit-title">Title</label>
+                    <input type="text" id="edit-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-description">Description</label>
+                    <textarea id="edit-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-category">Category</label>
+                    <select id="edit-category">
+                        <option value="">Select category...</option>
+                        <option value="Survival Skills">Survival Skills</option>
+                        <option value="First Aid">First Aid</option>
+                        <option value="Food Preparation">Food Preparation</option>
+                        <option value="Shelter Building">Shelter Building</option>
+                        <option value="Water Purification">Water Purification</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-tags">Tags (comma-separated)</label>
+                    <input type="text" id="edit-tags">
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="closeEditModal()" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal auth-modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="authManager.hideModals()">&times;</span>
+            <h2>Login to SPS</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Username or Email</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/videos.js"></script>
+</body>
+</html>

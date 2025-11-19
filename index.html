@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPS - Survival Preparedness System</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
     <header>
@@ -21,6 +22,14 @@
                     <li><a href="#about" class="nav-link">About</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
+                <div id="user-section" class="user-section" style="display: none;">
+                    <a href="/dashboard.html" class="btn btn-primary btn-sm">Dashboard</a>
+                    <button onclick="authManager.logout()" class="btn btn-secondary btn-sm">Logout</button>
+                </div>
+                <div id="auth-buttons" style="display: flex; gap: 10px;">
+                    <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                    <button onclick="authManager.showRegisterModal()" class="btn btn-secondary btn-sm">Sign Up</button>
+                </div>
                 <button class="mobile-menu-toggle" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
@@ -37,8 +46,9 @@
                     <h2 class="hero-title">Be Prepared for Anything</h2>
                     <p class="hero-subtitle">Your comprehensive guide to survival preparedness and emergency readiness</p>
                     <div class="hero-buttons">
-                        <a href="#features" class="btn btn-primary">Get Started</a>
-                        <a href="#resources" class="btn btn-secondary">Learn More</a>
+                        <a href="/dashboard.html" class="btn btn-primary" id="hero-dashboard-btn" style="display: none;">Go to Dashboard</a>
+                        <button onclick="authManager.showRegisterModal()" class="btn btn-primary" id="hero-signup-btn">Get Started Free</button>
+                        <a href="#features" class="btn btn-secondary">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -168,6 +178,78 @@
         </div>
     </footer>
 
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal auth-modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="authManager.hideModals()">&times;</span>
+            <h2>Login to SPS</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Username or Email</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+            <p class="modal-footer">
+                Don't have an account? <a href="#" onclick="authManager.hideModals(); authManager.showRegisterModal();">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal auth-modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="authManager.hideModals()">&times;</span>
+            <h2>Create Your Free Account</h2>
+            <form id="register-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="register-firstname">First Name</label>
+                        <input type="text" id="register-firstname">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-lastname">Last Name</label>
+                        <input type="text" id="register-lastname">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="register-username">Username *</label>
+                    <input type="text" id="register-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email *</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password *</label>
+                    <input type="password" id="register-password" required minlength="8">
+                    <small>Minimum 8 characters</small>
+                </div>
+                <div id="register-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+            </form>
+            <p class="modal-footer">
+                Already have an account? <a href="#" onclick="authManager.hideModals(); authManager.showLoginModal();">Login</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Update hero button based on auth status
+        document.addEventListener('DOMContentLoaded', () => {
+            if (authManager.isAuthenticated()) {
+                document.getElementById('hero-dashboard-btn').style.display = 'inline-block';
+                document.getElementById('hero-signup-btn').style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>

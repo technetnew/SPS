@@ -1,0 +1,177 @@
+/* Sharing UI Styles */
+
+.share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* Sharing Modal */
+#sharing-modal .modal-content {
+    max-width: 600px;
+}
+
+.sharing-form {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.sharing-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.sharing-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.sharing-form input[type="text"],
+.sharing-form input[type="datetime-local"],
+.sharing-form select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.sharing-form input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* User Search Results */
+.search-results {
+    position: relative;
+    margin-top: 0.5rem;
+}
+
+.search-result-item {
+    background: white;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.search-result-item:hover {
+    background: #f0f0f0;
+    border-color: #2c5f2d;
+}
+
+.search-result-item strong {
+    display: block;
+    color: #2c5f2d;
+    margin-bottom: 0.2rem;
+}
+
+.search-result-item .email {
+    display: block;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Current Shares List */
+#current-shares-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.share-item {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.share-user-info {
+    flex: 1;
+}
+
+.share-user-info strong {
+    display: block;
+    color: #333;
+    margin-bottom: 0.2rem;
+}
+
+.share-user-info span {
+    display: block;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.share-user-info .email {
+    font-size: 0.85rem;
+}
+
+.share-permissions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.share-permissions select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #999;
+}
+
+/* Shared Resource Badge */
+.shared-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #e8f5e9;
+    color: #2c5f2d;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Shared with me indicator */
+.shared-with-me-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #fff3e0;
+    color: #e65100;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .share-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .share-permissions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .share-permissions select,
+    .share-permissions button {
+        width: 100%;
+    }
+}

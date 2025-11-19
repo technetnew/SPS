@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiwix Content Reader - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .reader-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .reader-hero {
+            background: linear-gradient(135deg, #2c5f2d 0%, #4caf50 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .reader-hero h1 {
+            margin: 0 0 1rem 0;
+            font-size: 2.5rem;
+        }
+
+        .reader-hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin: 0 0 2rem 0;
+        }
+
+        .reader-hero .big-button {
+            background: white;
+            color: #2c5f2d;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .reader-hero .big-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .info-box h3 {
+            color: #2c5f2d;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .info-box p {
+            color: #666;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .tips-section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .tips-section h2 {
+            color: #2c5f2d;
+            margin: 0 0 1rem 0;
+        }
+
+        .tips-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .tip-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .tip-item strong {
+            color: #2c5f2d;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .back-button {
+            display: inline-block;
+            color: #2c5f2d;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #2c5f2d;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+
+        .back-button:hover {
+            background: #2c5f2d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Content Reader</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="#inventory" class="nav-link">Inventory</a></li>
+                    <li><a href="/videos.html" class="nav-link">Videos</a></li>
+                    <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
+                    <li><a href="#plans" class="nav-link">Plans</a></li>
+                </ul>
+                <div id="user-section" class="user-section" style="display: none;">
+                    <span id="user-name"></span>
+                    <button onclick="authManager.logout()" class="btn btn-secondary btn-sm">Logout</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="reader-container">
+        <div class="reader-hero">
+            <h1>Access Offline Knowledge</h1>
+            <p>Your offline encyclopedia is ready. Search billions of articles, completely offline.</p>
+            <a href="/kiwix-content/" class="big-button" target="_blank">
+                Open Kiwix Reader
+            </a>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-box">
+                <h3>What You'll Find</h3>
+                <p>Wikipedia articles, medical encyclopedias, WikiHow guides, and more - all the content you've downloaded is accessible offline.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>How to Use</h3>
+                <p>Click the button above to open the Kiwix content reader in a new tab. Use the search bar to find any topic instantly.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Completely Offline</h3>
+                <p>No internet required! All content is stored locally on this server and accessible anytime, anywhere on your network.</p>
+            </div>
+        </div>
+
+        <div class="tips-section">
+            <h2>Quick Tips</h2>
+            <div class="tips-list">
+                <div class="tip-item">
+                    <strong>Search Anything</strong>
+                    Use the search bar at the top to find articles on any topic in your downloaded libraries.
+                </div>
+                <div class="tip-item">
+                    <strong>Browse by Library</strong>
+                    If you have multiple ZIM files, you can select which library to browse from the main page.
+                </div>
+                <div class="tip-item">
+                    <strong>Filter by Language</strong>
+                    Content is organized by language - select your preferred language from the filters.
+                </div>
+                <div class="tip-item">
+                    <strong>Random Articles</strong>
+                    Click the random button to discover interesting articles you might not have searched for.
+                </div>
+                <div class="tip-item">
+                    <strong>No Tracking</strong>
+                    Everything is completely private - no tracking, no external connections, just knowledge.
+                </div>
+                <div class="tip-item">
+                    <strong>Bookmark Pages</strong>
+                    You can bookmark articles in your browser for quick access to frequently referenced information.
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="/kiwix.html" class="back-button">
+                ← Back to Kiwix Management
+            </a>
+        </div>
+    </main>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
