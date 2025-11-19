@@ -6,6 +6,27 @@ A comprehensive web-based platform for managing emergency preparedness, survival
 ![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)
 ![PostgreSQL](https://img.shields.io/badge/postgresql-14%2B-blue.svg)
 
+## ⚡ One-Command Installation
+
+```bash
+# For Ubuntu 20.04+ / Debian 11+
+git clone https://github.com/technetnew/SPS.git
+cd SPS
+sudo bash install.sh
+```
+
+That's it! The script installs everything automatically:
+- ✅ PostgreSQL database
+- ✅ Node.js & dependencies
+- ✅ Nginx web server
+- ✅ PM2 process manager
+- ✅ FFmpeg & yt-dlp
+- ✅ Kiwix server
+- ✅ Auto-generates secure passwords
+- ✅ Starts the application
+
+After installation, access at: `http://your-server-ip/`
+
 ## 📋 Table of Contents
 
 - [Features](#features)
@@ -92,23 +113,34 @@ A comprehensive web-based platform for managing emergency preparedness, survival
 
 ## 🚀 Quick Start
 
+### Automated Installation (Recommended)
+
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/sps.git
-cd sps
+git clone https://github.com/technetnew/SPS.git
+cd SPS
 
-# Run the installation script
-sudo bash scripts/complete-setup.sh
-
-# Configure your environment
-cp backend/.env.example backend/.env
-nano backend/.env  # Edit with your settings
-
-# Deploy to production
-sudo bash scripts/deploy-production.sh
+# Run one-command installer (does everything automatically)
+sudo bash install.sh
 
 # Access the application
-# Open your browser to http://your-server-ip
+# Open browser to: http://your-server-ip/
+```
+
+### Manual Installation
+
+If you prefer step-by-step control:
+
+```bash
+# 1. Install system dependencies
+sudo bash scripts/complete-setup.sh
+
+# 2. Configure environment
+cp backend/.env.example backend/.env
+nano backend/.env  # Edit settings
+
+# 3. Deploy to production
+sudo bash scripts/deploy-production.sh
 ```
 
 ## 📦 Installation
