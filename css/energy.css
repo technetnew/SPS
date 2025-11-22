@@ -1,0 +1,903 @@
+/* SPS Energy Calculator Styles */
+
+/* Light/Dark Theme Variables */
+:root {
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --card-bg: #2a2f3e;
+    --header-bg: #1a1f2e;
+    --input-bg: #1a1f2e;
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+    --border-color: #374151;
+    --hover-bg: #374151;
+    --accent-color: #3b82f6;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+body[data-theme="light"] {
+    --bg-primary: #f3f4f6;
+    --bg-secondary: #ffffff;
+    --card-bg: #ffffff;
+    --header-bg: #ffffff;
+    --input-bg: #f9fafb;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --hover-bg: #f3f4f6;
+    --accent-color: #3b82f6;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body[data-theme="light"] .energy-card,
+body[data-theme="light"] .stat-card,
+body[data-theme="light"] .tab-nav {
+    border-color: var(--border-color);
+    box-shadow: 0 1px 3px var(--shadow-color);
+}
+
+body[data-theme="light"] .energy-table th {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+body[data-theme="light"] .energy-table td {
+    border-color: var(--border-color);
+}
+
+body[data-theme="light"] .preset-btn {
+    border-color: var(--border-color);
+}
+
+body[data-theme="light"] .modal-content {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.theme-toggle:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    border-color: var(--accent-color);
+}
+
+.theme-toggle .moon-icon {
+    display: none;
+}
+
+body[data-theme="light"] .theme-toggle .sun-icon {
+    display: none;
+}
+
+body[data-theme="light"] .theme-toggle .moon-icon {
+    display: block;
+}
+
+/* Nav Right */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Energy Main */
+.energy-main {
+    background: var(--bg-primary);
+    min-height: calc(100vh - 70px);
+    padding: 2rem 0;
+}
+
+.energy-main .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Page Header */
+.page-header {
+    margin-bottom: 1.5rem;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.page-subtitle {
+    margin: 0.25rem 0 0 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* Tab Navigation */
+.tab-nav {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+    background: var(--card-bg, #2a2f3e);
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: var(--text-secondary, #9ca3af);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary, #fff);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn.active {
+    background: var(--accent-color, #3b82f6);
+    color: white;
+}
+
+.tab-icon {
+    font-size: 1.1rem;
+}
+
+/* Tab Panels */
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background: var(--card-bg, #2a2f3e);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.stat-icon.yellow { background: rgba(234, 179, 8, 0.2); }
+.stat-icon.blue { background: rgba(59, 130, 246, 0.2); }
+.stat-icon.green { background: rgba(34, 197, 94, 0.2); }
+.stat-icon.orange { background: rgba(249, 115, 22, 0.2); }
+.stat-icon.red { background: rgba(239, 68, 68, 0.2); }
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary, #fff);
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #9ca3af);
+    margin-top: 0.25rem;
+}
+
+/* Energy Cards */
+.energy-card {
+    background: var(--card-bg, #2a2f3e);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--header-bg, #1a1f2e);
+    border-bottom: 1px solid var(--border-color, #374151);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-primary, #fff);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Energy Table */
+.energy-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.energy-table th {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary, #9ca3af);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.energy-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.95rem;
+    color: var(--text-primary, #fff);
+}
+
+.energy-table tbody tr:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.energy-table .total-row {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.energy-table .total-row td {
+    border-top: 2px solid var(--accent-color, #3b82f6);
+}
+
+.energy-table input {
+    width: 80px;
+    padding: 0.5rem;
+    background: var(--input-bg, #1a1f2e);
+    border: 1px solid var(--border-color, #374151);
+    border-radius: 6px;
+    color: var(--text-primary, #fff);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.energy-table input:focus {
+    outline: none;
+    border-color: var(--accent-color, #3b82f6);
+}
+
+.empty-row {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary, #9ca3af);
+}
+
+/* Sizing Grid */
+.sizing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.sizing-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sizing-item label {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #9ca3af);
+}
+
+.sizing-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary, #fff);
+}
+
+.sizing-value.highlight {
+    color: var(--accent-color, #3b82f6);
+}
+
+.sizing-item small {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #9ca3af);
+}
+
+/* Input Field */
+.input-field {
+    padding: 0.75rem 1rem;
+    background: var(--input-bg, #1a1f2e);
+    border: 1px solid var(--border-color, #374151);
+    border-radius: 8px;
+    color: var(--text-primary, #fff);
+    font-size: 0.95rem;
+    width: 100%;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--accent-color, #3b82f6);
+}
+
+/* Runtime Results */
+.runtime-result {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+.runtime-box {
+    text-align: center;
+    padding: 1rem;
+}
+
+.runtime-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #9ca3af);
+    margin-bottom: 0.5rem;
+}
+
+.runtime-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary, #fff);
+}
+
+.runtime-value.highlight {
+    color: #22c55e;
+}
+
+.runtime-box small {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary, #9ca3af);
+    margin-top: 0.5rem;
+}
+
+/* Presets Grid */
+.presets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+}
+
+.preset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--input-bg, #1a1f2e);
+    border: 1px solid var(--border-color, #374151);
+    border-radius: 12px;
+    color: var(--text-primary, #fff);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.preset-btn:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--accent-color, #3b82f6);
+    transform: translateY(-2px);
+}
+
+.preset-icon {
+    font-size: 1.5rem;
+}
+
+.preset-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.preset-watts {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #9ca3af);
+}
+
+/* Equipment Grid */
+.equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.equipment-card {
+    background: var(--input-bg, #1a1f2e);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color, #374151);
+}
+
+.equipment-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.equipment-type {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-color, #3b82f6);
+    font-weight: 600;
+}
+
+.equipment-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary, #fff);
+    margin-top: 0.25rem;
+}
+
+.equipment-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.spec-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.spec-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #9ca3af);
+}
+
+.spec-value {
+    font-weight: 600;
+    color: var(--text-primary, #fff);
+}
+
+.equipment-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary, #9ca3af);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+    opacity: 0.5;
+}
+
+/* Solar Calculator */
+.solar-calculator {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.solar-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.solar-input-group label {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #9ca3af);
+}
+
+.solar-input-group small {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #9ca3af);
+}
+
+/* Solar Results */
+.solar-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+.solar-result-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+}
+
+.solar-result-item.highlight {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid var(--accent-color, #3b82f6);
+}
+
+.result-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #9ca3af);
+}
+
+.result-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary, #fff);
+}
+
+/* Tips List */
+.tips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tip-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.tip-item.warning {
+    background: rgba(234, 179, 8, 0.1);
+    border-left: 3px solid #eab308;
+}
+
+.tip-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.tip-content strong {
+    display: block;
+    color: var(--text-primary, #fff);
+    margin-bottom: 0.25rem;
+}
+
+.tip-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary, #9ca3af);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-secondary {
+    background: var(--card-bg, #2a2f3e);
+    color: var(--text-primary, #fff);
+    border: 1px solid var(--border-color, #374151);
+}
+
+.btn-secondary:hover {
+    background: var(--hover-bg, #374151);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-primary, #fff);
+    border: 1px solid var(--border-color, #374151);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent-color, #3b82f6);
+}
+
+.btn-danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+}
+
+.modal-content {
+    position: relative;
+    background: var(--card-bg, #2a2f3e);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: var(--header-bg, #1a1f2e);
+    border-bottom: 1px solid var(--border-color, #374151);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text-primary, #fff);
+}
+
+.modal-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary, #9ca3af);
+    font-size: 1.75rem;
+    cursor: pointer;
+    border-radius: 8px;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: calc(90vh - 140px);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: var(--header-bg, #1a1f2e);
+    border-top: 1px solid var(--border-color, #374151);
+}
+
+/* Form Styles */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary, #9ca3af);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.75rem 1rem;
+    background: var(--input-bg, #1a1f2e);
+    border: 1px solid var(--border-color, #374151);
+    border-radius: 8px;
+    color: var(--text-primary, #fff);
+    font-size: 0.95rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color, #3b82f6);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding-top: 1.5rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent-color, #3b82f6);
+}
+
+/* Header Title */
+.header-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary, #fff);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tab-nav {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tab-btn {
+        flex-shrink: 0;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sizing-grid,
+    .solar-calculator {
+        grid-template-columns: 1fr;
+    }
+
+    .runtime-result {
+        grid-template-columns: 1fr;
+    }
+
+    .presets-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .energy-table {
+        font-size: 0.85rem;
+    }
+
+    .energy-table th,
+    .energy-table td {
+        padding: 0.5rem;
+    }
+}
+
+/* Fuel Breakdown */
+.fuel-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.fuel-type-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-color, #3b82f6);
+}
+
+.fuel-type-name {
+    font-weight: 600;
+    color: var(--text-primary, #fff);
+    text-transform: capitalize;
+}
+
+.fuel-type-amount {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-color, #3b82f6);
+}
+
+.empty-text {
+    color: var(--text-secondary, #9ca3af);
+    font-style: italic;
+    text-align: center;
+    padding: 1rem;
+}
+
+body[data-theme="light"] .fuel-type-row {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .presets-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

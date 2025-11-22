@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculations & Formulas - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/calculations.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+        <!-- Header managed by sidebar.js -->
+
+    <main class="calculations-main">
+        <div class="container">
+            <div class="page-header">
+                <h1>Calculations & Formulas</h1>
+                <p class="page-description">Comprehensive computational tools for survival planning, engineering, and logistics. All calculations run offline.</p>
+
+                <!-- Search and Filter -->
+                <div class="calc-search-bar">
+                    <input type="text" id="calc-search" placeholder="Search calculators..." oninput="filterCalculators(this.value)">
+                    <div class="calc-filter-buttons">
+                        <button class="filter-btn active" data-category="all" onclick="filterByCategory('all')">All</button>
+                        <button class="filter-btn" data-category="food" onclick="filterByCategory('food')">Food & Nutrition</button>
+                        <button class="filter-btn" data-category="water" onclick="filterByCategory('water')">Water</button>
+                        <button class="filter-btn" data-category="energy" onclick="filterByCategory('energy')">Power & Energy</button>
+                        <button class="filter-btn" data-category="math" onclick="filterByCategory('math')">Math & Finance</button>
+                        <button class="filter-btn" data-category="trade" onclick="filterByCategory('trade')">Barter & Trade</button>
+                        <button class="filter-btn" data-category="vehicle" onclick="filterByCategory('vehicle')">Vehicle & Mechanical</button>
+                        <button class="filter-btn" data-category="preservation" onclick="filterByCategory('preservation')">Food Preservation</button>
+                        <button class="filter-btn" data-category="construction" onclick="filterByCategory('construction')">Construction</button>
+                        <button class="filter-btn" data-category="weather" onclick="filterByCategory('weather')">Weather</button>
+                        <button class="filter-btn" data-category="chemistry" onclick="filterByCategory('chemistry')">Chemistry</button>
+                        <button class="filter-btn" data-category="security" onclick="filterByCategory('security')">Security</button>
+                        <button class="filter-btn" data-category="conversion" onclick="filterByCategory('conversion')">Conversion</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculator Modules Grid -->
+            <div class="calc-modules-grid" id="calc-modules">
+
+                <!-- ================================ -->
+                <!-- FOOD AND NUTRITION CALCULATORS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="food" data-keywords="calorie nutrition food ration diet macros protein carbs fat">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🍽️</span>
+                            <h2>Food & Nutrition</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Daily Caloric Needs Calculator -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Daily Caloric Needs</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('daily-calories')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Age</label>
+                                    <input type="number" id="cal-age" value="30" min="1" max="120">
+                                </div>
+                                <div class="input-group">
+                                    <label>Sex</label>
+                                    <select id="cal-sex">
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Weight (kg)</label>
+                                    <input type="number" id="cal-weight" value="70" min="20" max="300">
+                                </div>
+                                <div class="input-group">
+                                    <label>Height (cm)</label>
+                                    <input type="number" id="cal-height" value="170" min="100" max="250">
+                                </div>
+                                <div class="input-group">
+                                    <label>Activity Level</label>
+                                    <select id="cal-activity">
+                                        <option value="1.2">Sedentary (little/no exercise)</option>
+                                        <option value="1.375">Light (1-3 days/week)</option>
+                                        <option value="1.55" selected>Moderate (3-5 days/week)</option>
+                                        <option value="1.725">Active (6-7 days/week)</option>
+                                        <option value="1.9">Very Active (hard labor)</option>
+                                        <option value="2.2">Survival Mode (extreme)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateDailyCalories()">Calculate</button>
+                            <div class="calc-results" id="cal-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula (Mifflin-St Jeor):</strong><br>
+                                Male: BMR = 10×weight + 6.25×height - 5×age + 5<br>
+                                Female: BMR = 10×weight + 6.25×height - 5×age - 161<br>
+                                TDEE = BMR × Activity Multiplier
+                            </div>
+                        </div>
+
+                        <!-- Ration Planning Calculator -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Ration Planning</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('ration-planning')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Number of People</label>
+                                    <input type="number" id="ration-people" value="4" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Days to Plan</label>
+                                    <input type="number" id="ration-days" value="30" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Calories per Person/Day</label>
+                                    <input type="number" id="ration-calories" value="2000" min="800">
+                                </div>
+                                <div class="input-group">
+                                    <label>Mode</label>
+                                    <select id="ration-mode">
+                                        <option value="normal">Normal Nutrition</option>
+                                        <option value="survival">Survival Rations (75%)</option>
+                                        <option value="minimal">Minimal (50%)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateRations()">Calculate</button>
+                            <div class="calc-results" id="ration-results"></div>
+                        </div>
+
+                        <!-- Food Supply Duration -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Food Supply Duration</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('supply-duration')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Total Calories in Storage</label>
+                                    <input type="number" id="supply-calories" value="500000" min="0">
+                                </div>
+                                <div class="input-group">
+                                    <label>Number of People</label>
+                                    <input type="number" id="supply-people" value="4" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Calories per Person/Day</label>
+                                    <input type="number" id="supply-daily" value="2000" min="800">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateSupplyDuration()">Calculate</button>
+                            <div class="calc-results" id="supply-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- WATER CALCULATORS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="water" data-keywords="water purification storage chlorine boiling filter rain">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">💧</span>
+                            <h2>Water Purification & Storage</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Daily Water Needs -->
+                        <div class="calc-card">
+                            <h3>Daily Water Needs</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Number of People</label>
+                                    <input type="number" id="water-people" value="4" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Climate</label>
+                                    <select id="water-climate">
+                                        <option value="1">Temperate</option>
+                                        <option value="1.5">Hot/Arid</option>
+                                        <option value="0.8">Cold</option>
+                                        <option value="1.3">Humid Tropical</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Activity Level</label>
+                                    <select id="water-activity">
+                                        <option value="1">Sedentary</option>
+                                        <option value="1.5" selected>Moderate Work</option>
+                                        <option value="2">Heavy Labor</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateWaterNeeds()">Calculate</button>
+                            <div class="calc-results" id="water-results"></div>
+                            <div class="calc-formula">
+                                <strong>Standard Minimums:</strong><br>
+                                Drinking: 2-3L/person/day<br>
+                                Cooking: 1-2L/person/day<br>
+                                Sanitation: 2-6L/person/day
+                            </div>
+                        </div>
+
+                        <!-- Chlorine Purification -->
+                        <div class="calc-card">
+                            <h3>Chlorine Purification</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Water Volume (Liters)</label>
+                                    <input type="number" id="chlorine-liters" value="100" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Bleach Concentration (%)</label>
+                                    <select id="chlorine-concentration">
+                                        <option value="5.25">5.25% (Standard)</option>
+                                        <option value="6">6%</option>
+                                        <option value="8.25">8.25% (Concentrated)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Water Clarity</label>
+                                    <select id="chlorine-clarity">
+                                        <option value="1">Clear</option>
+                                        <option value="2">Cloudy (double dose)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateChlorine()">Calculate</button>
+                            <div class="calc-results" id="chlorine-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula:</strong> 2 drops per liter for 5.25% bleach (clear water)<br>
+                                Wait 30 minutes before drinking. Should have slight chlorine smell.
+                            </div>
+                        </div>
+
+                        <!-- Rainwater Collection -->
+                        <div class="calc-card">
+                            <h3>Rainwater Collection</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Roof Area (m²)</label>
+                                    <input type="number" id="rain-area" value="100" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Rainfall (mm/month)</label>
+                                    <input type="number" id="rain-amount" value="50" min="0">
+                                </div>
+                                <div class="input-group">
+                                    <label>Collection Efficiency (%)</label>
+                                    <input type="number" id="rain-efficiency" value="80" min="50" max="95">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateRainwater()">Calculate</button>
+                            <div class="calc-results" id="rain-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula:</strong> Collection = Area × Rainfall × Efficiency<br>
+                                1mm rain on 1m² = 1 liter
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- ENERGY AND POWER CALCULATORS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="energy" data-keywords="solar panel battery inverter generator power electricity kwh watt">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">⚡</span>
+                            <h2>Energy & Power</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Solar Panel Output -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Solar Panel Output</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('solar-panel')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Panel Wattage (W)</label>
+                                    <input type="number" id="solar-watts" value="400" min="10">
+                                </div>
+                                <div class="input-group">
+                                    <label>Number of Panels</label>
+                                    <input type="number" id="solar-panels" value="4" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Peak Sun Hours/Day</label>
+                                    <input type="number" id="solar-hours" value="5" min="1" max="12" step="0.5">
+                                </div>
+                                <div class="input-group">
+                                    <label>System Efficiency (%)</label>
+                                    <input type="number" id="solar-efficiency" value="80" min="50" max="95">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateSolar()">Calculate</button>
+                            <div class="calc-results" id="solar-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula:</strong> Daily kWh = Panels × Watts × Sun Hours × Efficiency / 1000
+                            </div>
+                        </div>
+
+                        <!-- Battery Bank Sizing -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Battery Bank Sizing</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('battery-bank')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Daily Energy Need (kWh)</label>
+                                    <input type="number" id="battery-kwh" value="5" min="0.1" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Days of Autonomy</label>
+                                    <input type="number" id="battery-days" value="2" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Depth of Discharge (%)</label>
+                                    <input type="number" id="battery-dod" value="50" min="20" max="80">
+                                </div>
+                                <div class="input-group">
+                                    <label>Battery Voltage</label>
+                                    <select id="battery-voltage">
+                                        <option value="12">12V</option>
+                                        <option value="24">24V</option>
+                                        <option value="48" selected>48V</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateBattery()">Calculate</button>
+                            <div class="calc-results" id="battery-results"></div>
+                        </div>
+
+                        <!-- Load Calculator -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Power Load Calculator</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('power-load')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <table class="load-table" id="load-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Device</th>
+                                            <th>Watts</th>
+                                            <th>Hours/Day</th>
+                                            <th>Qty</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="text" value="LED Lights" class="load-device"></td>
+                                            <td><input type="number" value="10" class="load-watts" min="1"></td>
+                                            <td><input type="number" value="6" class="load-hours" min="0.5" step="0.5"></td>
+                                            <td><input type="number" value="5" class="load-qty" min="1"></td>
+                                            <td><button class="btn btn-sm btn-danger" onclick="removeLoadRow(this)">×</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" value="Refrigerator" class="load-device"></td>
+                                            <td><input type="number" value="150" class="load-watts" min="1"></td>
+                                            <td><input type="number" value="8" class="load-hours" min="0.5" step="0.5"></td>
+                                            <td><input type="number" value="1" class="load-qty" min="1"></td>
+                                            <td><button class="btn btn-sm btn-danger" onclick="removeLoadRow(this)">×</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" value="Radio" class="load-device"></td>
+                                            <td><input type="number" value="20" class="load-watts" min="1"></td>
+                                            <td><input type="number" value="4" class="load-hours" min="0.5" step="0.5"></td>
+                                            <td><input type="number" value="1" class="load-qty" min="1"></td>
+                                            <td><button class="btn btn-sm btn-danger" onclick="removeLoadRow(this)">×</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-secondary btn-sm" onclick="addLoadRow()">+ Add Device</button>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateLoad()">Calculate Total Load</button>
+                            <div class="calc-results" id="load-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- POPULATION PLANNING -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="population" data-keywords="population growth workforce housing birth mortality">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">👥</span>
+                            <h2>Population Planning</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Population Growth -->
+                        <div class="calc-card">
+                            <h3>Population Growth Model</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Initial Population</label>
+                                    <input type="number" id="pop-initial" value="100" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Growth Rate (%/year)</label>
+                                    <input type="number" id="pop-rate" value="2" min="-10" max="20" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Years to Project</label>
+                                    <input type="number" id="pop-years" value="20" min="1" max="100">
+                                </div>
+                                <div class="input-group">
+                                    <label>Carrying Capacity (0=unlimited)</label>
+                                    <input type="number" id="pop-capacity" value="0" min="0">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculatePopGrowth()">Calculate</button>
+                            <div class="calc-results" id="pop-results"></div>
+                            <div class="chart-container">
+                                <canvas id="pop-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Workforce Allocation -->
+                        <div class="calc-card">
+                            <h3>Workforce Allocation</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Total Population</label>
+                                    <input type="number" id="workforce-total" value="100" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Working Age % (15-65)</label>
+                                    <input type="number" id="workforce-percent" value="65" min="30" max="80">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateWorkforce()">Calculate</button>
+                            <div class="calc-results" id="workforce-results"></div>
+                        </div>
+
+                        <!-- Housing Requirements -->
+                        <div class="calc-card">
+                            <h3>Housing Requirements</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Population</label>
+                                    <input type="number" id="housing-pop" value="100" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Average Household Size</label>
+                                    <input type="number" id="housing-size" value="4" min="1" max="10">
+                                </div>
+                                <div class="input-group">
+                                    <label>Floor Space per Person (m²)</label>
+                                    <input type="number" id="housing-space" value="15" min="5" max="50">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateHousing()">Calculate</button>
+                            <div class="calc-results" id="housing-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- AGRICULTURE CALCULATORS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="agriculture" data-keywords="crop yield farm land harvest seed plant grow">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🌾</span>
+                            <h2>Agriculture & Crop Yield</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Land Requirements -->
+                        <div class="calc-card">
+                            <h3>Land Requirements Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>People to Feed</label>
+                                    <input type="number" id="land-people" value="10" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Calories per Person/Day</label>
+                                    <input type="number" id="land-calories" value="2000" min="1000">
+                                </div>
+                                <div class="input-group">
+                                    <label>Primary Crop</label>
+                                    <select id="land-crop">
+                                        <option value="3000">Potatoes (3000 cal/m²/year)</option>
+                                        <option value="1200">Wheat (1200 cal/m²/year)</option>
+                                        <option value="1500">Corn (1500 cal/m²/year)</option>
+                                        <option value="1000">Rice (1000 cal/m²/year)</option>
+                                        <option value="800">Beans (800 cal/m²/year)</option>
+                                        <option value="2500">Sweet Potato (2500 cal/m²/year)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Growing Method</label>
+                                    <select id="land-method">
+                                        <option value="1">Open Field</option>
+                                        <option value="1.5">Raised Beds</option>
+                                        <option value="2">Greenhouse</option>
+                                        <option value="3">Intensive/Hydroponic</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateLand()">Calculate</button>
+                            <div class="calc-results" id="land-results"></div>
+                        </div>
+
+                        <!-- Crop Yield Estimator -->
+                        <div class="calc-card">
+                            <h3>Crop Yield Estimator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Land Area (m²)</label>
+                                    <input type="number" id="yield-area" value="1000" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Crop Type</label>
+                                    <select id="yield-crop">
+                                        <option value="potatoes" data-yield="4" data-cal="770">Potatoes (4 kg/m²)</option>
+                                        <option value="wheat" data-yield="0.4" data-cal="3400">Wheat (0.4 kg/m²)</option>
+                                        <option value="corn" data-yield="0.8" data-cal="1530">Corn (0.8 kg/m²)</option>
+                                        <option value="tomatoes" data-yield="8" data-cal="180">Tomatoes (8 kg/m²)</option>
+                                        <option value="beans" data-yield="0.25" data-cal="3370">Dry Beans (0.25 kg/m²)</option>
+                                        <option value="carrots" data-yield="3" data-cal="410">Carrots (3 kg/m²)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Seasons per Year</label>
+                                    <input type="number" id="yield-seasons" value="1" min="1" max="4">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateYield()">Calculate</button>
+                            <div class="calc-results" id="yield-results"></div>
+                        </div>
+
+                        <!-- Livestock Feed -->
+                        <div class="calc-card">
+                            <h3>Livestock Feed Requirements</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Animal Type</label>
+                                    <select id="livestock-type">
+                                        <option value="chicken" data-feed="0.12" data-water="0.5">Chickens</option>
+                                        <option value="goat" data-feed="2" data-water="8">Goats</option>
+                                        <option value="pig" data-feed="3" data-water="15">Pigs</option>
+                                        <option value="cow" data-feed="12" data-water="50">Cattle</option>
+                                        <option value="sheep" data-feed="2" data-water="8">Sheep</option>
+                                        <option value="rabbit" data-feed="0.15" data-water="0.3">Rabbits</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Number of Animals</label>
+                                    <input type="number" id="livestock-count" value="10" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Days</label>
+                                    <input type="number" id="livestock-days" value="30" min="1">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateLivestock()">Calculate</button>
+                            <div class="calc-results" id="livestock-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- CONSTRUCTION CALCULATORS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="construction" data-keywords="concrete lumber wood brick foundation building shelter">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🏗️</span>
+                            <h2>Construction & Materials</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Concrete Calculator -->
+                        <div class="calc-card">
+                            <h3>Concrete Mix Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Volume Needed (m³)</label>
+                                    <input type="number" id="concrete-volume" value="1" min="0.1" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Mix Ratio</label>
+                                    <select id="concrete-ratio">
+                                        <option value="1:2:3">1:2:3 (Standard)</option>
+                                        <option value="1:2:4">1:2:4 (Foundation)</option>
+                                        <option value="1:3:6">1:3:6 (Mass Concrete)</option>
+                                        <option value="1:1.5:3">1:1.5:3 (High Strength)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateConcrete()">Calculate</button>
+                            <div class="calc-results" id="concrete-results"></div>
+                            <div class="calc-formula">
+                                <strong>Standard 1:2:3 mix:</strong><br>
+                                1 part cement : 2 parts sand : 3 parts gravel<br>
+                                Water: ~0.5 × cement weight
+                            </div>
+                        </div>
+
+                        <!-- Lumber Calculator -->
+                        <div class="calc-card">
+                            <h3>Lumber Requirements</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Structure Type</label>
+                                    <select id="lumber-type">
+                                        <option value="shed" data-board="50">Small Shed (3×3m)</option>
+                                        <option value="cabin" data-board="200">Cabin (5×5m)</option>
+                                        <option value="house" data-board="500">Small House (8×10m)</option>
+                                        <option value="barn" data-board="400">Barn (6×8m)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Custom Floor Area (m²) - 0 for preset</label>
+                                    <input type="number" id="lumber-area" value="0" min="0">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateLumber()">Calculate</button>
+                            <div class="calc-results" id="lumber-results"></div>
+                        </div>
+
+                        <!-- Foundation Volume -->
+                        <div class="calc-card">
+                            <h3>Foundation Volume</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Perimeter Length (m)</label>
+                                    <input type="number" id="foundation-perimeter" value="20" min="1" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Width (cm)</label>
+                                    <input type="number" id="foundation-width" value="40" min="20">
+                                </div>
+                                <div class="input-group">
+                                    <label>Depth (cm)</label>
+                                    <input type="number" id="foundation-depth" value="60" min="30">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateFoundation()">Calculate</button>
+                            <div class="calc-results" id="foundation-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- LOGISTICS CALCULATORS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="logistics" data-keywords="fuel transport vehicle convoy carry load distance">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🚛</span>
+                            <h2>Logistics & Transportation</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Fuel Consumption -->
+                        <div class="calc-card">
+                            <h3>Fuel Consumption Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Vehicle Type</label>
+                                    <select id="fuel-vehicle">
+                                        <option value="8">Car (8 L/100km)</option>
+                                        <option value="12">SUV/Truck (12 L/100km)</option>
+                                        <option value="25">Heavy Truck (25 L/100km)</option>
+                                        <option value="5">Motorcycle (5 L/100km)</option>
+                                        <option value="35">Generator (35 L/day)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Distance (km) or Days for Generator</label>
+                                    <input type="number" id="fuel-distance" value="100" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Load Factor (1-2)</label>
+                                    <input type="number" id="fuel-load" value="1" min="1" max="2" step="0.1">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateFuel()">Calculate</button>
+                            <div class="calc-results" id="fuel-results"></div>
+                        </div>
+
+                        <!-- Carrying Capacity -->
+                        <div class="calc-card">
+                            <h3>Carrying Capacity</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Transport Method</label>
+                                    <select id="carry-method">
+                                        <option value="25">Human (backpack) - 25kg</option>
+                                        <option value="80">Human (porter) - 80kg</option>
+                                        <option value="150">Bicycle - 150kg</option>
+                                        <option value="400">Handcart - 400kg</option>
+                                        <option value="1000">Pickup Truck - 1000kg</option>
+                                        <option value="5000">Medium Truck - 5000kg</option>
+                                        <option value="20000">Heavy Truck - 20000kg</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Total Load to Move (kg)</label>
+                                    <input type="number" id="carry-load" value="500" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Number of Transport Units</label>
+                                    <input type="number" id="carry-units" value="1" min="1">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateCarry()">Calculate</button>
+                            <div class="calc-results" id="carry-results"></div>
+                        </div>
+
+                        <!-- Travel Time -->
+                        <div class="calc-card">
+                            <h3>Travel Time Estimator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Distance (km)</label>
+                                    <input type="number" id="travel-distance" value="50" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Mode of Travel</label>
+                                    <select id="travel-mode">
+                                        <option value="5">Walking (5 km/h)</option>
+                                        <option value="15">Bicycle (15 km/h)</option>
+                                        <option value="25">Horse (25 km/h)</option>
+                                        <option value="60">Vehicle - Road (60 km/h)</option>
+                                        <option value="30">Vehicle - Off-road (30 km/h)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Terrain Difficulty</label>
+                                    <select id="travel-terrain">
+                                        <option value="1">Easy (paved/flat)</option>
+                                        <option value="0.7">Moderate (gravel/hills)</option>
+                                        <option value="0.5">Difficult (rough terrain)</option>
+                                        <option value="0.3">Extreme (mountain/jungle)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateTravel()">Calculate</button>
+                            <div class="calc-results" id="travel-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- MEDICAL CALCULATORS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="medical" data-keywords="dosage triage hydration medicine first aid">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">⚕️</span>
+                            <h2>Medical & Dosage Tools</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Weight-Based Dosage -->
+                        <div class="calc-card">
+                            <h3>Weight-Based Dosage Calculator</h3>
+                            <p class="warning-text">⚠️ For reference only. Always consult medical professionals when possible.</p>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Patient Weight (kg)</label>
+                                    <input type="number" id="dose-weight" value="70" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Medication</label>
+                                    <select id="dose-med">
+                                        <option value="ibuprofen" data-dose="10" data-max="800" data-unit="mg">Ibuprofen (10mg/kg, max 800mg)</option>
+                                        <option value="acetaminophen" data-dose="15" data-max="1000" data-unit="mg">Acetaminophen (15mg/kg, max 1000mg)</option>
+                                        <option value="amoxicillin" data-dose="25" data-max="500" data-unit="mg">Amoxicillin (25mg/kg, max 500mg)</option>
+                                        <option value="benadryl" data-dose="1.25" data-max="50" data-unit="mg">Diphenhydramine (1.25mg/kg, max 50mg)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateDosage()">Calculate</button>
+                            <div class="calc-results" id="dose-results"></div>
+                        </div>
+
+                        <!-- Hydration Calculator -->
+                        <div class="calc-card">
+                            <h3>Oral Rehydration Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Patient Weight (kg)</label>
+                                    <input type="number" id="hydrate-weight" value="70" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Dehydration Level</label>
+                                    <select id="hydrate-level">
+                                        <option value="mild">Mild (thirsty, dry mouth)</option>
+                                        <option value="moderate">Moderate (dizzy, reduced urine)</option>
+                                        <option value="severe">Severe (confusion, weak pulse)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateHydration()">Calculate</button>
+                            <div class="calc-results" id="hydrate-results"></div>
+                            <div class="calc-formula">
+                                <strong>ORS Recipe (per liter):</strong><br>
+                                6 level tsp sugar + ½ level tsp salt + 1 liter clean water
+                            </div>
+                        </div>
+
+                        <!-- Supply Estimator -->
+                        <div class="calc-card">
+                            <h3>First Aid Supply Estimator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Group Size</label>
+                                    <input type="number" id="supply-group" value="10" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Duration (days)</label>
+                                    <input type="number" id="supply-duration" value="30" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Risk Level</label>
+                                    <select id="supply-risk">
+                                        <option value="1">Low (settled area)</option>
+                                        <option value="2">Medium (wilderness)</option>
+                                        <option value="3">High (conflict/disaster)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateMedSupplies()">Estimate Supplies</button>
+                            <div class="calc-results" id="supply-med-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- COMMUNICATIONS CALCULATORS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="communications" data-keywords="radio antenna signal range frequency line sight">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">📡</span>
+                            <h2>Communications & Signal</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Radio Range -->
+                        <div class="calc-card">
+                            <h3>Radio Range Estimator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Radio Type</label>
+                                    <select id="radio-type">
+                                        <option value="handheld">Handheld (0.5-5W)</option>
+                                        <option value="mobile">Mobile (10-50W)</option>
+                                        <option value="base">Base Station (50-100W)</option>
+                                        <option value="hf">HF Radio (100W+)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Power (Watts)</label>
+                                    <input type="number" id="radio-power" value="5" min="0.5" step="0.5">
+                                </div>
+                                <div class="input-group">
+                                    <label>Frequency Band</label>
+                                    <select id="radio-freq">
+                                        <option value="vhf">VHF (30-300 MHz)</option>
+                                        <option value="uhf">UHF (300-3000 MHz)</option>
+                                        <option value="hf">HF (3-30 MHz)</option>
+                                        <option value="cb">CB (27 MHz)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Terrain</label>
+                                    <select id="radio-terrain">
+                                        <option value="flat">Flat/Open</option>
+                                        <option value="rolling">Rolling Hills</option>
+                                        <option value="urban">Urban</option>
+                                        <option value="mountain">Mountainous</option>
+                                        <option value="forest">Dense Forest</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateRadioRange()">Calculate</button>
+                            <div class="calc-results" id="radio-results"></div>
+                        </div>
+
+                        <!-- Antenna Length -->
+                        <div class="calc-card">
+                            <h3>Antenna Length Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Frequency (MHz)</label>
+                                    <input type="number" id="antenna-freq" value="146" min="1" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Antenna Type</label>
+                                    <select id="antenna-type">
+                                        <option value="0.5">Half-wave Dipole</option>
+                                        <option value="0.25">Quarter-wave Vertical</option>
+                                        <option value="1">Full-wave Loop</option>
+                                        <option value="0.625">5/8 Wave</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateAntenna()">Calculate</button>
+                            <div class="calc-results" id="antenna-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula:</strong> Length = (300 / Frequency) × Wavelength Fraction<br>
+                                Speed of light ≈ 300,000 km/s
+                            </div>
+                        </div>
+
+                        <!-- Line of Sight -->
+                        <div class="calc-card">
+                            <h3>Line of Sight Distance</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Antenna Height 1 (meters)</label>
+                                    <input type="number" id="los-height1" value="10" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Antenna Height 2 (meters)</label>
+                                    <input type="number" id="los-height2" value="10" min="1">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateLOS()">Calculate</button>
+                            <div class="calc-results" id="los-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula:</strong> Distance = 3.57 × (√h1 + √h2) km<br>
+                                Based on Earth's curvature
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- PHYSICS FORMULAS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="physics" data-keywords="force mass acceleration pressure ohm energy physics science">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">⚛️</span>
+                            <h2>Physics & Science Formulas</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Force Calculator -->
+                        <div class="calc-card">
+                            <h3>Force Calculator (F = ma)</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Mass (kg)</label>
+                                    <input type="number" id="force-mass" value="10" min="0.1" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Acceleration (m/s²)</label>
+                                    <input type="number" id="force-accel" value="9.81" min="0" step="0.01">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateForce()">Calculate</button>
+                            <div class="calc-results" id="force-results"></div>
+                        </div>
+
+                        <!-- Ohm's Law -->
+                        <div class="calc-card">
+                            <h3>Ohm's Law Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Solve For</label>
+                                    <select id="ohm-solve" onchange="updateOhmInputs()">
+                                        <option value="current">Current (I)</option>
+                                        <option value="voltage">Voltage (V)</option>
+                                        <option value="resistance">Resistance (R)</option>
+                                        <option value="power">Power (P)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group" id="ohm-v-group">
+                                    <label>Voltage (V)</label>
+                                    <input type="number" id="ohm-voltage" value="12" min="0" step="0.1">
+                                </div>
+                                <div class="input-group" id="ohm-r-group">
+                                    <label>Resistance (Ω)</label>
+                                    <input type="number" id="ohm-resistance" value="10" min="0.1" step="0.1">
+                                </div>
+                                <div class="input-group" id="ohm-i-group" style="display:none;">
+                                    <label>Current (A)</label>
+                                    <input type="number" id="ohm-current" value="1" min="0" step="0.01">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateOhm()">Calculate</button>
+                            <div class="calc-results" id="ohm-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formulas:</strong><br>
+                                V = I × R | I = V / R | R = V / I | P = V × I
+                            </div>
+                        </div>
+
+                        <!-- Kinetic Energy -->
+                        <div class="calc-card">
+                            <h3>Energy Calculators</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Energy Type</label>
+                                    <select id="energy-type" onchange="updateEnergyInputs()">
+                                        <option value="kinetic">Kinetic Energy</option>
+                                        <option value="potential">Potential Energy</option>
+                                        <option value="heat">Heat Energy</option>
+                                    </select>
+                                </div>
+                                <div id="kinetic-inputs">
+                                    <div class="input-group">
+                                        <label>Mass (kg)</label>
+                                        <input type="number" id="ke-mass" value="1" min="0.1" step="0.1">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Velocity (m/s)</label>
+                                        <input type="number" id="ke-velocity" value="10" min="0" step="0.1">
+                                    </div>
+                                </div>
+                                <div id="potential-inputs" style="display:none;">
+                                    <div class="input-group">
+                                        <label>Mass (kg)</label>
+                                        <input type="number" id="pe-mass" value="1" min="0.1" step="0.1">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Height (m)</label>
+                                        <input type="number" id="pe-height" value="10" min="0" step="0.1">
+                                    </div>
+                                </div>
+                                <div id="heat-inputs" style="display:none;">
+                                    <div class="input-group">
+                                        <label>Mass (kg)</label>
+                                        <input type="number" id="heat-mass" value="1" min="0.1" step="0.1">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Specific Heat (J/kg·K)</label>
+                                        <input type="number" id="heat-specific" value="4186" min="1">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Temperature Change (°C)</label>
+                                        <input type="number" id="heat-delta" value="10" step="0.1">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateEnergy()">Calculate</button>
+                            <div class="calc-results" id="energy-results"></div>
+                        </div>
+
+                        <!-- Pressure -->
+                        <div class="calc-card">
+                            <h3>Pressure Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Force (N)</label>
+                                    <input type="number" id="pressure-force" value="100" min="0" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Area (m²)</label>
+                                    <input type="number" id="pressure-area" value="0.01" min="0.0001" step="0.0001">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculatePressure()">Calculate</button>
+                            <div class="calc-results" id="pressure-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula:</strong> P = F / A (Pascals)
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- UNIT CONVERTER -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="conversion" data-keywords="convert unit length weight volume temperature area">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🔄</span>
+                            <h2>Unit Converter</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Universal Converter -->
+                        <div class="calc-card">
+                            <h3>Universal Unit Converter</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Category</label>
+                                    <select id="convert-category" onchange="updateConvertUnits()">
+                                        <option value="length">Length</option>
+                                        <option value="weight">Weight/Mass</option>
+                                        <option value="volume">Volume</option>
+                                        <option value="temperature">Temperature</option>
+                                        <option value="area">Area</option>
+                                        <option value="energy">Energy</option>
+                                        <option value="pressure">Pressure</option>
+                                        <option value="speed">Speed</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Value</label>
+                                    <input type="number" id="convert-value" value="1" step="any">
+                                </div>
+                                <div class="input-group">
+                                    <label>From</label>
+                                    <select id="convert-from"></select>
+                                </div>
+                                <div class="input-group">
+                                    <label>To</label>
+                                    <select id="convert-to"></select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="convertUnits()">Convert</button>
+                            <div class="calc-results" id="convert-results"></div>
+                        </div>
+
+                        <!-- Quick Conversions -->
+                        <div class="calc-card">
+                            <h3>Quick Reference</h3>
+                            <div class="quick-conversions">
+                                <div class="conversion-group">
+                                    <h4>Length</h4>
+                                    <ul>
+                                        <li>1 mile = 1.609 km</li>
+                                        <li>1 foot = 0.3048 m</li>
+                                        <li>1 inch = 2.54 cm</li>
+                                        <li>1 yard = 0.9144 m</li>
+                                    </ul>
+                                </div>
+                                <div class="conversion-group">
+                                    <h4>Weight</h4>
+                                    <ul>
+                                        <li>1 pound = 0.4536 kg</li>
+                                        <li>1 ounce = 28.35 g</li>
+                                        <li>1 ton = 907.2 kg</li>
+                                        <li>1 stone = 6.35 kg</li>
+                                    </ul>
+                                </div>
+                                <div class="conversion-group">
+                                    <h4>Volume</h4>
+                                    <ul>
+                                        <li>1 gallon = 3.785 L</li>
+                                        <li>1 quart = 0.946 L</li>
+                                        <li>1 cup = 236.6 mL</li>
+                                        <li>1 tbsp = 14.79 mL</li>
+                                    </ul>
+                                </div>
+                                <div class="conversion-group">
+                                    <h4>Temperature</h4>
+                                    <ul>
+                                        <li>°F = (°C × 9/5) + 32</li>
+                                        <li>°C = (°F - 32) × 5/9</li>
+                                        <li>K = °C + 273.15</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- ARITHMETIC & FINANCIAL TOOLS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="math" data-keywords="math basic arithmetic percentage ratio fraction decimal compound interest budget">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🧮</span>
+                            <h2>Arithmetic & Financial</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Percentage Calculator -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Percentage Calculator</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('percentage')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Calculate Type</label>
+                                    <select id="pct-type" onchange="updatePctInputs()">
+                                        <option value="percent-of">X% of Y</option>
+                                        <option value="what-percent">X is what % of Y</option>
+                                        <option value="percent-change">% change from X to Y</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Value X</label>
+                                    <input type="number" id="pct-x" value="25" step="any">
+                                </div>
+                                <div class="input-group">
+                                    <label>Value Y</label>
+                                    <input type="number" id="pct-y" value="200" step="any">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculatePercentage()">Calculate</button>
+                            <div class="calc-results" id="pct-results"></div>
+                        </div>
+
+                        <!-- Ratio Calculator -->
+                        <div class="calc-card">
+                            <h3>Ratio & Proportion</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Ratio A : B</label>
+                                    <div style="display:flex;gap:0.5rem;">
+                                        <input type="number" id="ratio-a" value="3" style="flex:1">
+                                        <span style="align-self:center">:</span>
+                                        <input type="number" id="ratio-b" value="4" style="flex:1">
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label>Total Amount to Divide</label>
+                                    <input type="number" id="ratio-total" value="350">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateRatio()">Calculate</button>
+                            <div class="calc-results" id="ratio-results"></div>
+                        </div>
+
+                        <!-- Compound Interest -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Compound Interest</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('compound-interest')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Principal Amount</label>
+                                    <input type="number" id="ci-principal" value="1000">
+                                </div>
+                                <div class="input-group">
+                                    <label>Annual Interest Rate (%)</label>
+                                    <input type="number" id="ci-rate" value="5" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Time (years)</label>
+                                    <input type="number" id="ci-years" value="10">
+                                </div>
+                                <div class="input-group">
+                                    <label>Compounds per Year</label>
+                                    <select id="ci-compound">
+                                        <option value="1">Annually</option>
+                                        <option value="2">Semi-annually</option>
+                                        <option value="4">Quarterly</option>
+                                        <option value="12" selected>Monthly</option>
+                                        <option value="365">Daily</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateCompoundInterest()">Calculate</button>
+                            <div class="calc-results" id="ci-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula:</strong> A = P(1 + r/n)^(nt)
+                            </div>
+                        </div>
+
+                        <!-- Inflation Adjustment -->
+                        <div class="calc-card">
+                            <h3>Inflation Adjustment</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Original Amount</label>
+                                    <input type="number" id="infl-amount" value="100">
+                                </div>
+                                <div class="input-group">
+                                    <label>Annual Inflation Rate (%)</label>
+                                    <input type="number" id="infl-rate" value="3" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Years</label>
+                                    <input type="number" id="infl-years" value="10">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateInflation()">Calculate</button>
+                            <div class="calc-results" id="infl-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- BARTER & TRADE CALCULATORS -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="trade" data-keywords="barter trade currency exchange value commodity">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">⚖️</span>
+                            <h2>Barter & Trade</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Barter Value Calculator -->
+                        <div class="calc-card">
+                            <h3>Barter Value Estimator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Item You Have</label>
+                                    <select id="barter-have">
+                                        <option value="1000" data-name="Rice (1kg)">Rice (1kg) - 1000 cal</option>
+                                        <option value="750" data-name="Beans (1kg)">Beans (1kg) - 750 cal</option>
+                                        <option value="2000" data-name="Ammo box (50)">Ammo box (50 rds)</option>
+                                        <option value="500" data-name="Water filter">Water filter</option>
+                                        <option value="3000" data-name="First aid kit">First aid kit</option>
+                                        <option value="150" data-name="Matches (box)">Matches (box)</option>
+                                        <option value="1500" data-name="Flashlight">Flashlight + batteries</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Quantity You Have</label>
+                                    <input type="number" id="barter-qty-have" value="5">
+                                </div>
+                                <div class="input-group">
+                                    <label>Item You Want</label>
+                                    <select id="barter-want">
+                                        <option value="500" data-name="Water filter">Water filter</option>
+                                        <option value="1000" data-name="Rice (1kg)">Rice (1kg) - 1000 cal</option>
+                                        <option value="750" data-name="Beans (1kg)">Beans (1kg) - 750 cal</option>
+                                        <option value="2000" data-name="Ammo box (50)">Ammo box (50 rds)</option>
+                                        <option value="3000" data-name="First aid kit">First aid kit</option>
+                                        <option value="150" data-name="Matches (box)">Matches (box)</option>
+                                        <option value="1500" data-name="Flashlight">Flashlight + batteries</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateBarter()">Calculate Fair Trade</button>
+                            <div class="calc-results" id="barter-results"></div>
+                        </div>
+
+                        <!-- Labor Hours Trade -->
+                        <div class="calc-card">
+                            <h3>Labor Hours Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Task Type</label>
+                                    <select id="labor-type">
+                                        <option value="1">Unskilled labor</option>
+                                        <option value="1.5">Skilled trade work</option>
+                                        <option value="2">Technical/specialized</option>
+                                        <option value="3">Medical/critical skills</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Hours Worked</label>
+                                    <input type="number" id="labor-hours" value="8">
+                                </div>
+                                <div class="input-group">
+                                    <label>Base Value per Hour (in rice kg equiv)</label>
+                                    <input type="number" id="labor-base" value="0.5" step="0.1">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateLaborValue()">Calculate</button>
+                            <div class="calc-results" id="labor-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- VEHICLE & MECHANICAL -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="vehicle" data-keywords="vehicle gear rpm tire fuel mix engine mechanical">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🔧</span>
+                            <h2>Vehicle & Mechanical</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- 2-Stroke Fuel Mix -->
+                        <div class="calc-card">
+                            <h3>2-Stroke Fuel Mix</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Fuel Amount (liters)</label>
+                                    <input type="number" id="mix-fuel" value="5" step="0.5">
+                                </div>
+                                <div class="input-group">
+                                    <label>Mix Ratio</label>
+                                    <select id="mix-ratio">
+                                        <option value="25">25:1 (older equipment)</option>
+                                        <option value="32">32:1 (general purpose)</option>
+                                        <option value="40">40:1 (most chainsaws)</option>
+                                        <option value="50" selected>50:1 (modern equipment)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculate2StrokeMix()">Calculate</button>
+                            <div class="calc-results" id="mix-results"></div>
+                        </div>
+
+                        <!-- Gear Ratio -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Gear Ratio Calculator</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('gear-ratio')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Drive Gear Teeth</label>
+                                    <input type="number" id="gear-drive" value="20">
+                                </div>
+                                <div class="input-group">
+                                    <label>Driven Gear Teeth</label>
+                                    <input type="number" id="gear-driven" value="60">
+                                </div>
+                                <div class="input-group">
+                                    <label>Input RPM</label>
+                                    <input type="number" id="gear-rpm" value="3000">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateGearRatio()">Calculate</button>
+                            <div class="calc-results" id="gear-results"></div>
+                        </div>
+
+                        <!-- Tire/Speed Calculator -->
+                        <div class="calc-card">
+                            <h3>Tire Size & Speed</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Tire Width (mm)</label>
+                                    <input type="number" id="tire-width" value="225">
+                                </div>
+                                <div class="input-group">
+                                    <label>Aspect Ratio (%)</label>
+                                    <input type="number" id="tire-aspect" value="45">
+                                </div>
+                                <div class="input-group">
+                                    <label>Wheel Diameter (inches)</label>
+                                    <input type="number" id="tire-wheel" value="17">
+                                </div>
+                                <div class="input-group">
+                                    <label>RPM (wheel)</label>
+                                    <input type="number" id="tire-rpm" value="1000">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateTireSpeed()">Calculate</button>
+                            <div class="calc-results" id="tire-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- FOOD PRESERVATION -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="preservation" data-keywords="preservation canning smoking salt curing fermentation dough bread">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🥫</span>
+                            <h2>Food Preservation</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Salt Curing -->
+                        <div class="calc-card">
+                            <h3>Salt Curing Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Meat Weight (kg)</label>
+                                    <input type="number" id="cure-meat" value="5" step="0.5">
+                                </div>
+                                <div class="input-group">
+                                    <label>Curing Method</label>
+                                    <select id="cure-method">
+                                        <option value="0.02">Light cure (2% salt)</option>
+                                        <option value="0.035" selected>Standard cure (3.5%)</option>
+                                        <option value="0.05">Heavy cure (5%)</option>
+                                        <option value="0.1">Preservation cure (10%)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateSaltCure()">Calculate</button>
+                            <div class="calc-results" id="cure-results"></div>
+                        </div>
+
+                        <!-- Canning Pressure/Time -->
+                        <div class="calc-card">
+                            <h3>Canning Pressure & Time</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Food Type</label>
+                                    <select id="can-food">
+                                        <option value="10,25,35">Vegetables (low acid)</option>
+                                        <option value="11,75,90">Meat chunks</option>
+                                        <option value="10,20,25">Fish</option>
+                                        <option value="6,15,20">Fruit (high acid)</option>
+                                        <option value="11,60,75">Stews/soups</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Altitude (feet)</label>
+                                    <input type="number" id="can-altitude" value="0">
+                                </div>
+                                <div class="input-group">
+                                    <label>Jar Size</label>
+                                    <select id="can-size">
+                                        <option value="pint">Pint</option>
+                                        <option value="quart">Quart</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateCanning()">Calculate</button>
+                            <div class="calc-results" id="can-results"></div>
+                        </div>
+
+                        <!-- Bread Dough Hydration -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Bread Dough Calculator</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('bread-dough')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Flour Weight (g)</label>
+                                    <input type="number" id="bread-flour" value="500">
+                                </div>
+                                <div class="input-group">
+                                    <label>Target Hydration (%)</label>
+                                    <select id="bread-hydration">
+                                        <option value="55">55% (stiff dough)</option>
+                                        <option value="60">60% (standard bread)</option>
+                                        <option value="65" selected>65% (soft bread)</option>
+                                        <option value="70">70% (artisan)</option>
+                                        <option value="80">80% (ciabatta)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Salt (% of flour)</label>
+                                    <input type="number" id="bread-salt" value="2" step="0.1">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateBread()">Calculate</button>
+                            <div class="calc-results" id="bread-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- WATER SYSTEMS (EXPANDED) -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="water" data-keywords="well pump pipe flow cistern aquifer septic greywater">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🚰</span>
+                            <h2>Water Systems (Advanced)</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Well Output -->
+                        <div class="calc-card">
+                            <h3>Well Output Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Static Water Level (ft)</label>
+                                    <input type="number" id="well-static" value="50">
+                                </div>
+                                <div class="input-group">
+                                    <label>Drawdown Level (ft)</label>
+                                    <input type="number" id="well-drawdown" value="75">
+                                </div>
+                                <div class="input-group">
+                                    <label>Pump Rate (GPM)</label>
+                                    <input type="number" id="well-rate" value="5">
+                                </div>
+                                <div class="input-group">
+                                    <label>Recovery Time (hours)</label>
+                                    <input type="number" id="well-recovery" value="4" step="0.5">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateWellOutput()">Calculate</button>
+                            <div class="calc-results" id="well-results"></div>
+                        </div>
+
+                        <!-- Pipe Flow -->
+                        <div class="calc-card">
+                            <h3>Pipe Flow Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Pipe Diameter (inches)</label>
+                                    <select id="pipe-diameter">
+                                        <option value="0.5">1/2"</option>
+                                        <option value="0.75">3/4"</option>
+                                        <option value="1" selected>1"</option>
+                                        <option value="1.5">1-1/2"</option>
+                                        <option value="2">2"</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Pipe Length (ft)</label>
+                                    <input type="number" id="pipe-length" value="100">
+                                </div>
+                                <div class="input-group">
+                                    <label>Head Pressure (psi)</label>
+                                    <input type="number" id="pipe-pressure" value="40">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculatePipeFlow()">Calculate</button>
+                            <div class="calc-results" id="pipe-results"></div>
+                        </div>
+
+                        <!-- Septic Tank Size -->
+                        <div class="calc-card">
+                            <h3>Septic Tank Sizing</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Number of Bedrooms</label>
+                                    <input type="number" id="septic-beds" value="3" min="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Daily Water Use per Person (gal)</label>
+                                    <input type="number" id="septic-usage" value="75">
+                                </div>
+                                <div class="input-group">
+                                    <label>People per Bedroom</label>
+                                    <input type="number" id="septic-people" value="2" step="0.5">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateSeptic()">Calculate</button>
+                            <div class="calc-results" id="septic-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- STRUCTURAL & BUILDING -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="construction" data-keywords="structural load beam roof snow bearing rope pulley insulation">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🏠</span>
+                            <h2>Structural Engineering</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Roof Snow Load -->
+                        <div class="calc-card">
+                            <h3>Roof Load Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Roof Area (sq ft)</label>
+                                    <input type="number" id="roof-area" value="1500">
+                                </div>
+                                <div class="input-group">
+                                    <label>Snow Depth (inches)</label>
+                                    <input type="number" id="roof-snow" value="12">
+                                </div>
+                                <div class="input-group">
+                                    <label>Snow Type</label>
+                                    <select id="roof-type">
+                                        <option value="1">Fresh/Light (1 lb/in/sqft)</option>
+                                        <option value="2" selected>Packed (2 lb/in/sqft)</option>
+                                        <option value="3">Wet/Heavy (3 lb/in/sqft)</option>
+                                        <option value="5">Ice (5 lb/in/sqft)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateRoofLoad()">Calculate</button>
+                            <div class="calc-results" id="roof-results"></div>
+                        </div>
+
+                        <!-- Beam Strength -->
+                        <div class="calc-card">
+                            <h3>Simple Beam Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Wood Species</label>
+                                    <select id="beam-wood">
+                                        <option value="1000">Pine/Spruce (1000 psi)</option>
+                                        <option value="1200" selected>Douglas Fir (1200 psi)</option>
+                                        <option value="1500">Oak (1500 psi)</option>
+                                        <option value="2000">Engineered (2000 psi)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Beam Width (inches)</label>
+                                    <input type="number" id="beam-width" value="4">
+                                </div>
+                                <div class="input-group">
+                                    <label>Beam Height (inches)</label>
+                                    <input type="number" id="beam-height" value="8">
+                                </div>
+                                <div class="input-group">
+                                    <label>Span Length (feet)</label>
+                                    <input type="number" id="beam-span" value="10">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateBeam()">Calculate</button>
+                            <div class="calc-results" id="beam-results"></div>
+                        </div>
+
+                        <!-- Rope Safe Load -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Rope & Cable Safe Load</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('rope-strength')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Rope Type</label>
+                                    <select id="rope-type">
+                                        <option value="600">Manila (600 lb/in²)</option>
+                                        <option value="900">Nylon (900 lb/in²)</option>
+                                        <option value="1200" selected>Polyester (1200 lb/in²)</option>
+                                        <option value="5000">Steel cable (5000 lb/in²)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Rope Diameter (inches)</label>
+                                    <select id="rope-diameter">
+                                        <option value="0.25">1/4"</option>
+                                        <option value="0.375">3/8"</option>
+                                        <option value="0.5" selected>1/2"</option>
+                                        <option value="0.625">5/8"</option>
+                                        <option value="0.75">3/4"</option>
+                                        <option value="1">1"</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Safety Factor</label>
+                                    <select id="rope-safety">
+                                        <option value="4">4:1 (minimum)</option>
+                                        <option value="5" selected>5:1 (standard)</option>
+                                        <option value="7">7:1 (lifting people)</option>
+                                        <option value="10">10:1 (critical)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateRope()">Calculate</button>
+                            <div class="calc-results" id="rope-results"></div>
+                        </div>
+
+                        <!-- Insulation R-Value -->
+                        <div class="calc-card">
+                            <h3>Insulation Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Wall Area (sq ft)</label>
+                                    <input type="number" id="insul-area" value="500">
+                                </div>
+                                <div class="input-group">
+                                    <label>Insulation Type</label>
+                                    <select id="insul-type">
+                                        <option value="3.2">Fiberglass batt (R-3.2/in)</option>
+                                        <option value="3.7">Cellulose (R-3.7/in)</option>
+                                        <option value="6.0" selected>Spray foam (R-6/in)</option>
+                                        <option value="1.0">Straw bale (R-1/in)</option>
+                                        <option value="2.5">Sawdust (R-2.5/in)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Thickness (inches)</label>
+                                    <input type="number" id="insul-thick" value="6">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateInsulation()">Calculate</button>
+                            <div class="calc-results" id="insul-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- WEATHER & ASTRONOMY -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="weather" data-keywords="weather dew point wind chill heat index sun moon star navigation">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🌡️</span>
+                            <h2>Weather & Astronomy</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Wind Chill -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Wind Chill Calculator</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('wind-chill')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Temperature (°F)</label>
+                                    <input type="number" id="wc-temp" value="20">
+                                </div>
+                                <div class="input-group">
+                                    <label>Wind Speed (mph)</label>
+                                    <input type="number" id="wc-wind" value="15">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateWindChill()">Calculate</button>
+                            <div class="calc-results" id="wc-results"></div>
+                        </div>
+
+                        <!-- Heat Index -->
+                        <div class="calc-card">
+                            <h3>Heat Index Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Temperature (°F)</label>
+                                    <input type="number" id="hi-temp" value="90">
+                                </div>
+                                <div class="input-group">
+                                    <label>Relative Humidity (%)</label>
+                                    <input type="number" id="hi-humidity" value="65">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateHeatIndex()">Calculate</button>
+                            <div class="calc-results" id="hi-results"></div>
+                        </div>
+
+                        <!-- Dew Point -->
+                        <div class="calc-card">
+                            <h3>Dew Point Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Temperature (°F)</label>
+                                    <input type="number" id="dp-temp" value="70">
+                                </div>
+                                <div class="input-group">
+                                    <label>Relative Humidity (%)</label>
+                                    <input type="number" id="dp-humidity" value="50">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateDewPoint()">Calculate</button>
+                            <div class="calc-results" id="dp-results"></div>
+                        </div>
+
+                        <!-- Sun Angle -->
+                        <div class="calc-card">
+                            <h3>Sun Position Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Latitude (degrees)</label>
+                                    <input type="number" id="sun-lat" value="40" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Day of Year (1-365)</label>
+                                    <input type="number" id="sun-day" value="172" min="1" max="365">
+                                </div>
+                                <div class="input-group">
+                                    <label>Hour (solar time)</label>
+                                    <input type="number" id="sun-hour" value="12" min="0" max="24" step="0.5">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateSunPosition()">Calculate</button>
+                            <div class="calc-results" id="sun-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- CHEMISTRY -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="chemistry" data-keywords="chemistry molar mass solution concentration ph dilution stoichiometry">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🧪</span>
+                            <h2>Chemistry</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Solution Dilution -->
+                        <div class="calc-card">
+                            <h3>Solution Dilution (C1V1=C2V2)</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Initial Concentration (%)</label>
+                                    <input type="number" id="dil-c1" value="70" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Initial Volume (mL)</label>
+                                    <input type="number" id="dil-v1" value="100">
+                                </div>
+                                <div class="input-group">
+                                    <label>Target Concentration (%)</label>
+                                    <input type="number" id="dil-c2" value="10" step="0.1">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateDilution()">Calculate</button>
+                            <div class="calc-results" id="dil-results"></div>
+                        </div>
+
+                        <!-- pH Calculator -->
+                        <div class="calc-card">
+                            <h3>pH & Concentration</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Calculate From</label>
+                                    <select id="ph-type">
+                                        <option value="ph">pH value</option>
+                                        <option value="h">H+ concentration</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Value</label>
+                                    <input type="number" id="ph-value" value="7" step="0.1">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculatePH()">Calculate</button>
+                            <div class="calc-results" id="ph-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula:</strong> pH = -log[H+]
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- BALLISTICS & SECURITY -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="security" data-keywords="ballistics bullet drop range fortification patrol security defense">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🎯</span>
+                            <h2>Security & Defense</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Bullet Drop -->
+                        <div class="calc-card">
+                            <h3>Basic Ballistics</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Muzzle Velocity (fps)</label>
+                                    <input type="number" id="ball-velocity" value="2800">
+                                </div>
+                                <div class="input-group">
+                                    <label>Distance (yards)</label>
+                                    <input type="number" id="ball-distance" value="300">
+                                </div>
+                                <div class="input-group">
+                                    <label>Sight Height (inches)</label>
+                                    <input type="number" id="ball-sight" value="1.5" step="0.1">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateBallistics()">Calculate</button>
+                            <div class="calc-results" id="ball-results"></div>
+                        </div>
+
+                        <!-- Sandbag Wall -->
+                        <div class="calc-card">
+                            <div class="calc-card-header">
+                                <h3>Sandbag Wall Calculator</h3>
+                                <button class="calc-help-btn" onclick="showCalcHelp('sandbags')" title="How to calculate this manually">?</button>
+                            </div>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Wall Length (ft)</label>
+                                    <input type="number" id="sand-length" value="20">
+                                </div>
+                                <div class="input-group">
+                                    <label>Wall Height (ft)</label>
+                                    <input type="number" id="sand-height" value="4">
+                                </div>
+                                <div class="input-group">
+                                    <label>Wall Thickness (bags deep)</label>
+                                    <input type="number" id="sand-thick" value="2" min="1" max="4">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateSandbags()">Calculate</button>
+                            <div class="calc-results" id="sand-results"></div>
+                        </div>
+
+                        <!-- Patrol Coverage -->
+                        <div class="calc-card">
+                            <h3>Patrol Coverage</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Perimeter (feet)</label>
+                                    <input type="number" id="patrol-perimeter" value="2000">
+                                </div>
+                                <div class="input-group">
+                                    <label>Guards per Shift</label>
+                                    <input type="number" id="patrol-guards" value="4">
+                                </div>
+                                <div class="input-group">
+                                    <label>Walking Speed (ft/min)</label>
+                                    <input type="number" id="patrol-speed" value="200">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculatePatrol()">Calculate</button>
+                            <div class="calc-results" id="patrol-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================================ -->
+                <!-- POWER SYSTEMS (EXPANDED) -->
+                <!-- ================================ -->
+                <section class="calc-module" data-category="energy" data-keywords="microgrid wind turbine water wheel hydraulic blackstart generator">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div class="module-title">
+                            <span class="module-icon">🔌</span>
+                            <h2>Power Systems (Advanced)</h2>
+                        </div>
+                        <span class="module-toggle">▼</span>
+                    </div>
+                    <div class="module-content">
+                        <!-- Wind Turbine Power -->
+                        <div class="calc-card">
+                            <h3>Wind Turbine Power</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Rotor Diameter (m)</label>
+                                    <input type="number" id="wind-diameter" value="3" step="0.1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Wind Speed (m/s)</label>
+                                    <input type="number" id="wind-speed" value="8" step="0.5">
+                                </div>
+                                <div class="input-group">
+                                    <label>Efficiency (%)</label>
+                                    <input type="number" id="wind-eff" value="35">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateWindPower()">Calculate</button>
+                            <div class="calc-results" id="wind-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula:</strong> P = 0.5 × ρ × A × v³ × η<br>
+                                (air density ~1.225 kg/m³)
+                            </div>
+                        </div>
+
+                        <!-- Water Wheel Power -->
+                        <div class="calc-card">
+                            <h3>Water Wheel/Turbine Power</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Flow Rate (L/s)</label>
+                                    <input type="number" id="hydro-flow" value="50">
+                                </div>
+                                <div class="input-group">
+                                    <label>Head Height (m)</label>
+                                    <input type="number" id="hydro-head" value="5" step="0.5">
+                                </div>
+                                <div class="input-group">
+                                    <label>Efficiency (%)</label>
+                                    <input type="number" id="hydro-eff" value="60">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateHydroPower()">Calculate</button>
+                            <div class="calc-results" id="hydro-results"></div>
+                            <div class="calc-formula">
+                                <strong>Formula:</strong> P = Q × H × ρ × g × η<br>
+                                (Q=flow, H=head, g=9.81)
+                            </div>
+                        </div>
+
+                        <!-- Wire Gauge Calculator -->
+                        <div class="calc-card">
+                            <h3>Wire Gauge Calculator</h3>
+                            <div class="calc-inputs">
+                                <div class="input-group">
+                                    <label>Current (Amps)</label>
+                                    <input type="number" id="wire-amps" value="20">
+                                </div>
+                                <div class="input-group">
+                                    <label>Distance (one way, feet)</label>
+                                    <input type="number" id="wire-distance" value="50">
+                                </div>
+                                <div class="input-group">
+                                    <label>Voltage</label>
+                                    <select id="wire-voltage">
+                                        <option value="12">12V DC</option>
+                                        <option value="24">24V DC</option>
+                                        <option value="48">48V DC</option>
+                                        <option value="120" selected>120V AC</option>
+                                        <option value="240">240V AC</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Max Voltage Drop (%)</label>
+                                    <input type="number" id="wire-drop" value="3" step="0.5">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateWireGauge()">Calculate</button>
+                            <div class="calc-results" id="wire-results"></div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- History Section -->
+            <section class="calc-history-section">
+                <div class="section-header">
+                    <h2>Calculation History</h2>
+                    <div class="history-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="exportHistory('csv')">Export CSV</button>
+                        <button class="btn btn-secondary btn-sm" onclick="exportHistory('pdf')">Export PDF</button>
+                        <button class="btn btn-danger btn-sm" onclick="clearHistory()">Clear</button>
+                    </div>
+                </div>
+                <div id="calc-history-list" class="history-list">
+                    <p class="empty-text">No calculations saved yet. Results will appear here when you save them.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal auth-modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="authManager.hideModals()">&times;</span>
+            <h2>Login to SPS</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Username or Email</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/calculations.js"></script>
+</body>
+</html>

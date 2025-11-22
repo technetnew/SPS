@@ -6,6 +6,217 @@
     <title>SPS - Survival Preparedness System</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        /* Fix for section overlap on scroll */
+        section {
+            position: relative;
+            z-index: 1;
+            background-color: inherit;
+        }
+
+        .hero {
+            z-index: 2;
+        }
+
+        .features {
+            z-index: 3;
+            background-color: var(--light-color);
+        }
+
+        .resources {
+            z-index: 4;
+            background-color: var(--bg-primary);
+        }
+
+        .about {
+            z-index: 5;
+            background-color: var(--light-color);
+        }
+
+        .contact {
+            z-index: 6;
+            background-color: var(--bg-primary);
+        }
+
+        /* Enhanced Resources Section */
+        .resource-item {
+            transition: all 0.3s ease;
+        }
+
+        .resource-item ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0;
+        }
+
+        .resource-item ul li {
+            padding: 0.3rem 0;
+            padding-left: 1.2rem;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .resource-item ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Open Source Credits */
+        .open-source-credits {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(44, 95, 45, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(44, 95, 45, 0.1);
+        }
+
+        .open-source-credits h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .credit-item {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .credit-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .credit-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Contact Form Enhancements */
+        .contact-form {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .captcha-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--light-color);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .captcha-question {
+            flex: 1;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .captcha-input {
+            width: 80px;
+            text-align: center;
+            padding: 0.5rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .captcha-refresh {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            padding: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .captcha-refresh:hover {
+            transform: rotate(180deg);
+        }
+
+        .form-status {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .form-status.success {
+            display: block;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            color: #16a34a;
+        }
+
+        .form-status.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #dc2626;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(44, 95, 45, 0.1);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Feature cards grid fix */
+        .features-grid {
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -28,7 +239,8 @@
                 </div>
                 <div id="auth-buttons" style="display: flex; gap: 10px;">
                     <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
-                    <button onclick="authManager.showRegisterModal()" class="btn btn-secondary btn-sm">Sign Up</button>
+                    <!-- Sign Up button hidden but logic preserved -->
+                    <button onclick="authManager.showRegisterModal()" class="btn btn-secondary btn-sm" style="display: none;">Sign Up</button>
                 </div>
                 <button class="mobile-menu-toggle" aria-label="Toggle menu">
                     <span></span>
@@ -44,10 +256,11 @@
             <div class="container">
                 <div class="hero-content">
                     <h2 class="hero-title">Be Prepared for Anything</h2>
-                    <p class="hero-subtitle">Your comprehensive guide to survival preparedness and emergency readiness</p>
+                    <p class="hero-subtitle">Your comprehensive offline-first platform for survival preparedness, emergency planning, and family safety</p>
                     <div class="hero-buttons">
                         <a href="/dashboard.html" class="btn btn-primary" id="hero-dashboard-btn" style="display: none;">Go to Dashboard</a>
-                        <button onclick="authManager.showRegisterModal()" class="btn btn-primary" id="hero-signup-btn">Get Started Free</button>
+                        <!-- Get Started button hidden but logic preserved -->
+                        <button onclick="authManager.showRegisterModal()" class="btn btn-primary" id="hero-signup-btn" style="display: none;">Get Started Free</button>
                         <a href="#features" class="btn btn-secondary">Learn More</a>
                     </div>
                 </div>
@@ -60,33 +273,48 @@
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">📦</div>
-                        <h3>Supply Management</h3>
-                        <p>Track and manage your emergency supplies, food storage, and equipment inventory</p>
+                        <h3>Inventory Management</h3>
+                        <p>Track emergency supplies, equipment, and gear with expiration alerts. Barcode scanning support for quick additions. Export data for offline backup.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">📋</div>
-                        <h3>Emergency Plans</h3>
-                        <p>Create customized emergency response plans for various disaster scenarios</p>
+                        <div class="feature-icon">🍎</div>
+                        <h3>Food Pantry Tracker</h3>
+                        <p>Monitor food storage with nutritional tracking, expiration warnings, and automated shopping lists. Calculate family caloric needs for emergency planning.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">🎓</div>
-                        <h3>Skills Training</h3>
-                        <p>Access training resources and guides for essential survival skills</p>
+                        <div class="feature-icon">🧮</div>
+                        <h3>Survival Calculators</h3>
+                        <p>60+ offline calculators for water needs, solar sizing, battery capacity, food rations, medical dosages, and more. Learn manual calculation methods.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">📍</div>
-                        <h3>Location Planning</h3>
-                        <p>Identify safe zones, evacuation routes, and shelter locations</p>
+                        <div class="feature-icon">🗺️</div>
+                        <h3>Offline Maps</h3>
+                        <p>Download and store OpenStreetMap tiles for your region. Navigate without internet using GPS. Mark waypoints and evacuation routes.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">👥</div>
-                        <h3>Family Coordination</h3>
-                        <p>Coordinate preparedness efforts with family members and groups</p>
+                        <div class="feature-icon">📚</div>
+                        <h3>Knowledge Library</h3>
+                        <p>Access offline Wikipedia, WikiHow, medical guides, and survival manuals through Kiwix integration. Download what you need before emergencies.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">⚠️</div>
-                        <h3>Alert System</h3>
-                        <p>Stay informed with real-time alerts and emergency notifications</p>
+                        <div class="feature-icon">👨‍👩‍👧‍👦</div>
+                        <h3>Family Profiles</h3>
+                        <p>Store medical information, allergies, medications, and emergency contacts for each family member. Calculate personalized nutrition requirements.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎬</div>
+                        <h3>Video Library</h3>
+                        <p>Store and organize instructional videos for offline viewing. Learn skills from first aid to food preservation when internet is unavailable.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏥</div>
+                        <h3>Medical Reference</h3>
+                        <p>Quick-access medical guides for common emergencies. Dosage calculators, symptom checkers, and first aid instructions available offline.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Energy Planning</h3>
+                        <p>Calculate power requirements for your household. Plan solar, battery, and generator systems. Track energy consumption and backup capacity.</p>
                     </div>
                 </div>
             </div>
@@ -98,23 +326,60 @@
                 <div class="resources-content">
                     <div class="resource-item">
                         <h3>72-Hour Emergency Kit</h3>
-                        <p>Build a comprehensive emergency kit with essentials to last your family for at least 72 hours</p>
-                        <a href="#" class="resource-link">View Checklist →</a>
+                        <p>Build a comprehensive kit to sustain your family for at least 72 hours:</p>
+                        <ul>
+                            <li>Water: 1 gallon per person per day (3-day minimum)</li>
+                            <li>Non-perishable food: 2,000 calories per person per day</li>
+                            <li>First aid kit with essential medications</li>
+                            <li>Flashlight, batteries, and emergency radio</li>
+                            <li>Multi-tool, duct tape, and basic repair supplies</li>
+                            <li>Important documents in waterproof container</li>
+                            <li>Cash in small denominations</li>
+                            <li>Change of clothes and sturdy footwear</li>
+                        </ul>
+                        <a href="/calculations.html" class="resource-link">Use Our Calculators →</a>
                     </div>
                     <div class="resource-item">
-                        <h3>Water Storage Guide</h3>
-                        <p>Learn proper water storage techniques and calculate your family's water needs</p>
-                        <a href="#" class="resource-link">Read Guide →</a>
+                        <h3>Water Storage & Purification</h3>
+                        <p>Essential water preparation guidelines:</p>
+                        <ul>
+                            <li>Store 1 gallon per person per day minimum</li>
+                            <li>Use food-grade containers, avoid milk jugs</li>
+                            <li>Rotate stored water every 6-12 months</li>
+                            <li>Boiling: 1 minute at rolling boil (3 min above 6,500 ft)</li>
+                            <li>Bleach: 8 drops per gallon, wait 30 minutes</li>
+                            <li>Consider gravity filters for long-term use</li>
+                            <li>Know local water sources and collection methods</li>
+                        </ul>
+                        <a href="/calculations.html" class="resource-link">Calculate Water Needs →</a>
                     </div>
                     <div class="resource-item">
-                        <h3>Food Preservation</h3>
-                        <p>Master long-term food storage methods including canning, dehydrating, and freeze-drying</p>
-                        <a href="#" class="resource-link">Explore Methods →</a>
+                        <h3>Food Storage Basics</h3>
+                        <p>Long-term food storage essentials:</p>
+                        <ul>
+                            <li>Store in cool, dark, dry location (50-70°F ideal)</li>
+                            <li>Rotate stock using FIFO (First In, First Out)</li>
+                            <li>Wheat, rice, beans: 25-30 year shelf life properly stored</li>
+                            <li>Use oxygen absorbers and mylar bags</li>
+                            <li>Include comfort foods for morale</li>
+                            <li>Account for dietary restrictions and allergies</li>
+                            <li>Store seeds for long-term food production</li>
+                        </ul>
+                        <a href="/pantry.html" class="resource-link">Manage Food Pantry →</a>
                     </div>
                     <div class="resource-item">
-                        <h3>First Aid Training</h3>
-                        <p>Essential medical skills and first aid techniques for emergency situations</p>
-                        <a href="#" class="resource-link">Start Learning →</a>
+                        <h3>First Aid Essentials</h3>
+                        <p>Critical medical preparedness items:</p>
+                        <ul>
+                            <li>Bandages, gauze, and adhesive tape</li>
+                            <li>Antiseptic wipes and antibiotic ointment</li>
+                            <li>Pain relievers, antihistamines, anti-diarrhea meds</li>
+                            <li>Prescription medications (90-day supply)</li>
+                            <li>Tourniquet and Israeli bandage for trauma</li>
+                            <li>CPR mask and medical gloves</li>
+                            <li>First aid manual and emergency contacts</li>
+                        </ul>
+                        <a href="/medical.html" class="resource-link">Medical Reference Guide →</a>
                     </div>
                 </div>
             </div>
@@ -124,8 +389,41 @@
             <div class="container">
                 <div class="about-content">
                     <h2 class="section-title">About SPS</h2>
-                    <p>The Survival Preparedness System (SPS) is your comprehensive platform for emergency preparedness and survival planning. Whether you're preparing for natural disasters, economic uncertainty, or other emergencies, SPS provides the tools, resources, and knowledge you need to keep your family safe and prepared.</p>
-                    <p>Our mission is to empower individuals and families with the knowledge and resources necessary to handle any emergency situation with confidence and competence.</p>
+                    <p>The Survival Preparedness System (SPS) is a self-hosted, offline-first platform designed to help individuals and families prepare for emergencies. Whether facing natural disasters, infrastructure failures, or other crisis situations, SPS provides the tools and knowledge needed to keep your family safe.</p>
+                    <p>SPS is designed to run on a local server or Raspberry Pi, ensuring your critical preparedness data remains accessible even when internet connectivity is unavailable. All calculations run client-side, and offline knowledge libraries can be downloaded in advance.</p>
+                    <p>This is a personal project built for family preparedness and shared with the community. SPS integrates with various open-source tools to provide comprehensive functionality.</p>
+
+                    <div class="open-source-credits">
+                        <h4>Built With Open Source</h4>
+                        <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-light);">SPS integrates with and is grateful for these open-source projects:</p>
+                        <div class="credits-grid">
+                            <div class="credit-item">
+                                <strong><a href="https://www.kiwix.org/" target="_blank" rel="noopener">Kiwix</a></strong><br>
+                                Offline Wikipedia & knowledge access (GPL-3.0)
+                            </div>
+                            <div class="credit-item">
+                                <strong><a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a></strong><br>
+                                Map data (ODbL License)
+                            </div>
+                            <div class="credit-item">
+                                <strong><a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a></strong><br>
+                                Interactive maps (BSD-2-Clause)
+                            </div>
+                            <div class="credit-item">
+                                <strong><a href="https://nodejs.org/" target="_blank" rel="noopener">Node.js</a></strong><br>
+                                Server runtime (MIT License)
+                            </div>
+                            <div class="credit-item">
+                                <strong><a href="https://www.postgresql.org/" target="_blank" rel="noopener">PostgreSQL</a></strong><br>
+                                Database (PostgreSQL License)
+                            </div>
+                            <div class="credit-item">
+                                <strong><a href="https://expressjs.com/" target="_blank" rel="noopener">Express.js</a></strong><br>
+                                Web framework (MIT License)
+                            </div>
+                        </div>
+                        <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-light);">SPS is not affiliated with these projects. All trademarks belong to their respective owners.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -133,17 +431,38 @@
         <section id="contact" class="contact">
             <div class="container">
                 <h2 class="section-title">Get in Touch</h2>
-                <form class="contact-form">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+                <form class="contact-form" id="contact-form" onsubmit="submitContactForm(event)">
+                    <div id="form-status" class="form-status"></div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contact-name">Your Name *</label>
+                            <input type="text" id="contact-name" name="name" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Your Email *</label>
+                            <input type="email" id="contact-email" name="email" placeholder="john@example.com" required>
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        <label for="contact-subject">Subject</label>
+                        <input type="text" id="contact-subject" name="subject" placeholder="How can we help?">
                     </div>
+
                     <div class="form-group">
-                        <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+                        <label for="contact-message">Message *</label>
+                        <textarea id="contact-message" name="message" rows="5" placeholder="Your message..." required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
+
+                    <div class="captcha-group">
+                        <span class="captcha-question" id="captcha-question">Loading...</span>
+                        <input type="number" class="captcha-input" id="captcha-answer" placeholder="?" required>
+                        <button type="button" class="captcha-refresh" onclick="loadCaptcha()" title="Get new question">↻</button>
+                    </div>
+                    <input type="hidden" id="captcha-id" name="captchaId">
+
+                    <button type="submit" class="btn btn-primary" id="submit-btn">Send Message</button>
                 </form>
             </div>
         </section>
@@ -155,6 +474,7 @@
                 <div class="footer-section">
                     <h4>SPS</h4>
                     <p>Your partner in preparedness</p>
+                    <p style="font-size: 0.8rem; margin-top: 0.5rem; color: #888;">Self-hosted & offline-first</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
@@ -173,7 +493,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Survival Preparedness System. All rights reserved.</p>
+                <p>&copy; 2025 Survival Preparedness System. Personal project for family preparedness.</p>
             </div>
         </div>
     </footer>
@@ -195,7 +515,8 @@
                 <div id="login-error" class="error-message" style="display: none;"></div>
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
-            <p class="modal-footer">
+            <!-- Sign up link hidden but logic preserved -->
+            <p class="modal-footer" style="display: none;">
                 Don't have an account? <a href="#" onclick="authManager.hideModals(); authManager.showRegisterModal();">Sign Up</a>
             </p>
         </div>
@@ -249,7 +570,80 @@
                 document.getElementById('hero-dashboard-btn').style.display = 'inline-block';
                 document.getElementById('hero-signup-btn').style.display = 'none';
             }
+            // Load captcha on page load
+            loadCaptcha();
         });
+
+        // Captcha management
+        async function loadCaptcha() {
+            try {
+                const response = await fetch('/api/contact/captcha');
+                const data = await response.json();
+                document.getElementById('captcha-question').textContent = data.question;
+                document.getElementById('captcha-id').value = data.captchaId;
+                document.getElementById('captcha-answer').value = '';
+            } catch (error) {
+                console.error('Failed to load captcha:', error);
+                document.getElementById('captcha-question').textContent = 'Captcha unavailable';
+            }
+        }
+
+        // Contact form submission
+        async function submitContactForm(event) {
+            event.preventDefault();
+
+            const submitBtn = document.getElementById('submit-btn');
+            const statusDiv = document.getElementById('form-status');
+
+            // Disable button during submission
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            statusDiv.className = 'form-status';
+            statusDiv.style.display = 'none';
+
+            try {
+                const formData = {
+                    name: document.getElementById('contact-name').value,
+                    email: document.getElementById('contact-email').value,
+                    subject: document.getElementById('contact-subject').value,
+                    message: document.getElementById('contact-message').value,
+                    captchaId: document.getElementById('captcha-id').value,
+                    captchaAnswer: document.getElementById('captcha-answer').value
+                };
+
+                const response = await fetch('/api/contact/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    statusDiv.textContent = result.message || 'Message sent successfully!';
+                    statusDiv.className = 'form-status success';
+                    statusDiv.style.display = 'block';
+
+                    // Reset form
+                    document.getElementById('contact-form').reset();
+                    loadCaptcha();
+                } else {
+                    throw new Error(result.error || 'Failed to send message');
+                }
+            } catch (error) {
+                statusDiv.textContent = error.message || 'Failed to send message. Please try again.';
+                statusDiv.className = 'form-status error';
+                statusDiv.style.display = 'block';
+
+                // Refresh captcha on error
+                loadCaptcha();
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+            }
+        }
     </script>
 </body>
 </html>

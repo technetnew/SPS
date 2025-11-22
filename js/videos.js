@@ -2,8 +2,10 @@
 
 let videos = [];
 let playlists = [];
+let visibleVideos = [];
 let currentVideo = null;
 let currentView = 'list'; // default to list view
+const thumbnailCache = new Map();
 
 // Initialize videos page
 document.addEventListener('DOMContentLoaded', async () => {
@@ -70,24 +72,29 @@ async function loadPlaylists() {
 
 function renderVideos(videoList) {
     const container = document.getElementById('videos-container');
+    visibleVideos = videoList.slice();
 
     if (videoList.length === 0) {
         container.innerHTML = '<div class="empty-state">No videos yet. Upload or download videos to get started!</div>';
         return;
     }
 
-    container.innerHTML = videoList.map(video => `
+    container.innerHTML = videoList.map(video => {
+        const thumbPath = video.thumbnail_path ? `/videos/${video.thumbnail_path}` : '';
+        const safeTitle = escapeHtml(video.title);
+        const fileAttr = video.filename ? ` data-video-file="${escapeHtml(video.filename)}"` : '';
+        return `
         <div class="video-card" onclick="playVideo(${video.id})">
-            <div class="video-thumbnail">
-                ${video.thumbnail_path
-                    ? `<img src="/videos/${video.thumbnail_path}" alt="${escapeHtml(video.title)}">`
-                    : '<div class="no-thumbnail">🎥</div>'
+            <div class="video-thumbnail" data-video-id="${video.id}" data-video-title="${safeTitle}"${fileAttr} data-thumb-loaded="${thumbPath ? 'true' : 'false'}">
+                ${thumbPath
+                    ? `<img src="${thumbPath}" alt="${safeTitle}" loading="lazy">`
+                    : '<div class="thumbnail-placeholder">Generating preview…</div>'
                 }
                 ${video.duration ? `<span class="video-duration">${formatDuration(video.duration)}</span>` : ''}
             </div>
             <div class="video-card-content">
-                <h3>${escapeHtml(video.title)}</h3>
-                ${video.description ? `<p class="video-description">${escapeHtml(video.description).substring(0, 100)}...</p>` : ''}
+                <h3>${safeTitle}</h3>
+                ${video.description ? `<p class="video-description">${escapeHtml(video.description).substring(0, 120)}...</p>` : ''}
                 <div class="video-meta">
                     ${video.category ? `<span class="badge">${escapeHtml(video.category)}</span>` : ''}
                     ${video.resolution ? `<span>${video.resolution}</span>` : ''}
@@ -95,7 +102,7 @@ function renderVideos(videoList) {
                 </div>
                 <div class="video-stats">
                     <span>👁️ ${video.view_count || 0} views</span>
-                    ${video.upload_date ? `<span>📅 ${formatDate(video.upload_date)}</span>` : ''}
+                    ${video.upload_date ? `<span>📅 ${formatDateTime(video.upload_date)}</span>` : ''}
                 </div>
                 <div class="video-card-actions" onclick="event.stopPropagation()">
                     <button onclick="editVideo(${video.id})" class="btn-icon" title="Edit">✏️</button>
@@ -103,7 +110,10 @@ function renderVideos(videoList) {
                 </div>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
+
+    requestAnimationFrame(() => initializeGeneratedThumbnails(videoList));
 }
 
 // Switch between list and grid view
@@ -398,11 +408,48 @@ async function playVideo(videoId) {
     }
 }
 
+function showNextVideo() {
+    navigateVideos(1);
+}
+
+function showPreviousVideo() {
+    navigateVideos(-1);
+}
+
+function navigateVideos(direction) {
+    if (!currentVideo || visibleVideos.length === 0) return;
+
+    const currentIndex = visibleVideos.findIndex(v => v.id === currentVideo.id);
+    if (currentIndex === -1) return;
+
+    const nextIndex = currentIndex + direction;
+    if (nextIndex < 0 || nextIndex >= visibleVideos.length) {
+        showNotification(direction > 0 ? 'No more videos ahead' : 'Already at first video', 'info');
+        return;
+    }
+
+    const nextVideo = visibleVideos[nextIndex];
+    playVideo(nextVideo.id);
+}
+
 function closePlayerModal() {
     const player = document.getElementById('video-player');
     player.pause();
     player.src = '';
     document.getElementById('player-modal').style.display = 'none';
+}
+
+function toggleVideoFullscreen() {
+    const frame = document.getElementById('player-frame');
+    if (!frame) return;
+
+    if (!document.fullscreenElement) {
+        if (frame.requestFullscreen) {
+            frame.requestFullscreen().catch(() => {});
+        }
+    } else {
+        document.exitFullscreen().catch(() => {});
+    }
 }
 
 // Edit video
@@ -509,6 +556,126 @@ function formatFileSize(bytes) {
 function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString();
+}
+
+function formatDateTime(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+function initializeGeneratedThumbnails(videoList) {
+    videoList.forEach(video => {
+        if (!video || typeof video.id === 'undefined' || video.thumbnail_path || !video.filename) {
+            return;
+        }
+        generateThumbnailForVideo(video);
+    });
+}
+
+async function generateThumbnailForVideo(video) {
+    const container = document.querySelector(`.video-thumbnail[data-video-id="${video.id}"]`);
+    if (!container || container.dataset.thumbLoaded === 'true' || container.dataset.loading === 'true') {
+        return;
+    }
+
+    if (thumbnailCache.has(video.id)) {
+        applyThumbnailToDom(video, thumbnailCache.get(video.id));
+        return;
+    }
+
+    container.dataset.loading = 'true';
+
+    try {
+        const encodedFile = encodeURIComponent(video.filename);
+        const source = `/videos/${encodedFile}`;
+        const dataUrl = await captureVideoFrame(source);
+        if (dataUrl) {
+            thumbnailCache.set(video.id, dataUrl);
+            applyThumbnailToDom(video, dataUrl);
+        }
+    } catch (error) {
+        console.error('Failed to generate thumbnail:', error);
+    } finally {
+        container.dataset.loading = 'false';
+    }
+}
+
+function applyThumbnailToDom(video, src) {
+    const container = document.querySelector(`.video-thumbnail[data-video-id="${video.id}"]`);
+    if (!container) return;
+
+    let img = container.querySelector('img');
+    if (!img) {
+        img = document.createElement('img');
+        img.loading = 'lazy';
+        container.insertBefore(img, container.firstChild);
+    }
+
+    img.src = src;
+    img.alt = video.title || 'Video thumbnail';
+
+    const placeholder = container.querySelector('.thumbnail-placeholder');
+    if (placeholder) placeholder.remove();
+
+    container.dataset.thumbLoaded = 'true';
+}
+
+function captureVideoFrame(source) {
+    return new Promise((resolve) => {
+        const videoElement = document.createElement('video');
+        let resolved = false;
+
+        const cleanUp = () => {
+            videoElement.pause();
+            videoElement.removeAttribute('src');
+            videoElement.load();
+        };
+
+        const finish = (result) => {
+            if (resolved) return;
+            resolved = true;
+            cleanUp();
+            resolve(result);
+        };
+
+        videoElement.preload = 'metadata';
+        videoElement.muted = true;
+        videoElement.playsInline = true;
+        videoElement.crossOrigin = 'anonymous';
+        videoElement.src = source;
+
+        videoElement.addEventListener('error', () => finish(null), { once: true });
+
+        videoElement.addEventListener('loadeddata', () => {
+            const seekTo = Math.min(1, Math.max(0.1, (videoElement.duration || 1) * 0.1));
+            const handleSeeked = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    const width = videoElement.videoWidth || 320;
+                    const height = videoElement.videoHeight || 180;
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(videoElement, 0, 0, width, height);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                    finish(dataUrl);
+                } catch {
+                    finish(null);
+                }
+            };
+
+            if (videoElement.readyState >= 2) {
+                videoElement.currentTime = seekTo;
+            } else {
+                videoElement.addEventListener('loadedmetadata', () => {
+                    videoElement.currentTime = seekTo;
+                }, { once: true });
+            }
+
+            videoElement.addEventListener('seeked', handleSeeked, { once: true });
+        }, { once: true });
+    });
 }
 
 function escapeHtml(text) {

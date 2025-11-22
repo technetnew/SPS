@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/inventory.css?v=20251122d">
+    <link rel="stylesheet" href="css/scanner.css">
+    <link rel="stylesheet" href="css/qr-codes.css?v=20251122">
+    <!-- html5-qrcode for barcode/QR scanning (local copy to avoid tracking prevention) -->
+    <script src="/lib/scanner/html5-qrcode.min.js"></script>
+    <!-- Tesseract.js for OCR - optional -->
+    <script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js" onerror="console.log('OCR not available')"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Inventory</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li id="nav-logout-item" style="display: none;"><a href="#" class="nav-link" onclick="authManager.logout(); return false;">Logout</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/inventory.html" class="nav-link active">Inventory</a></li>
+                    <li><a href="/pantry.html" class="nav-link">Pantry</a></li>
+                    <li><a href="/garden.html" class="nav-link">Garden</a></li>
+                    <li class="nav-dropdown">
+                        <a href="/videos.html" class="nav-link" data-active-paths="/videos.html,/pictures.html">Media ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/videos.html">Videos</a></li>
+                            <li><a href="/pictures.html">Pictures</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
+                    <li class="nav-dropdown"><a href="/gps.html" class="nav-link" data-active-paths="/gps.html,/osm-sync.html">Map ▾</a><ul class="dropdown-menu"><li><a href="/gps.html">Map View</a></li><li><a href="/osm-sync.html">Sync Maps</a></li></ul></li>
+                    <li class="nav-dropdown"><a href="#" class="nav-link" data-active-paths="/familyprofile.html,/energy.html,/medical.html,/locations.html,/simulation.html">Tools ▾</a><ul class="dropdown-menu"><li><a href="/familyprofile.html">Family Profile</a></li><li><a href="/simulation.html">Simulation & Planning</a></li><li><a href="/energy.html">Energy Calculator</a></li><li><a href="/medical.html">Medical Guide</a></li><li><a href="/locations.html">Locations</a></li></ul></li>
+                </ul>
+                <div class="nav-right">
+                    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <span id="user-name"></span>
+                        <button onclick="authManager.logout()" class="btn btn-danger btn-sm">Logout</button>
+                    </div>
+                    <div id="auth-buttons" style="display: flex; gap: 10px;">
+                        <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="inventory-main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1 class="page-title">Inventory Management</h1>
+                    <p class="page-subtitle">Track your supplies, gear, and equipment (Edibles are managed in the Pantry)</p>
+                </div>
+                <div class="page-header-right">
+                    <button class="btn btn-outline" onclick="openBarcodeScanner()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+                            <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+                            <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+                            <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+                            <line x1="7" y1="8" x2="7" y2="16"></line>
+                            <line x1="11" y1="8" x2="11" y2="16"></line>
+                            <line x1="15" y1="8" x2="15" y2="16"></line>
+                        </svg>
+                        Scan Barcode
+                    </button>
+                    <button class="btn btn-outline" onclick="openImportModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Import CSV
+                    </button>
+                    <button class="btn btn-outline" onclick="exportInventory()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Export
+                    </button>
+                    <button class="btn btn-primary" onclick="openAddItemModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Item
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-blue">📦</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="total-items">0</div>
+                        <div class="stat-label">Total Items</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-green">📊</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="total-quantity">0</div>
+                        <div class="stat-label">Total Units</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-yellow">⏰</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="expiring-soon">0</div>
+                        <div class="stat-label">Expiring (30 days)</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-red">⚠️</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="low-stock">0</div>
+                        <div class="stat-label">Low Stock</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="sps-card">
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>Category</label>
+                        <select id="filter-category">
+                            <option value="">All Categories</option>
+                            <option value="1">Food & Water</option>
+                            <option value="2">Medical Supplies</option>
+                            <option value="3">Tools & Equipment</option>
+                            <option value="4">Shelter & Warmth</option>
+                            <option value="5">Communication</option>
+                            <option value="6">Lighting & Power</option>
+                            <option value="7">Clothing</option>
+                            <option value="8">Documents</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Location</label>
+                        <select id="filter-location">
+                            <option value="">All Locations</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Status</label>
+                        <select id="filter-status">
+                            <option value="">All Status</option>
+                            <option value="expiring">Expiring Soon</option>
+                            <option value="low">Low Stock</option>
+                            <option value="expired">Expired</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Search</label>
+                        <input type="text" id="global-search" placeholder="Search inventory...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Table -->
+            <div class="sps-card">
+                <div class="table-container">
+                    <table class="inventory-table" id="inventory-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all"></th>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Quantity</th>
+                                <th>Location</th>
+                                <th>Expiration</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-body">
+                            <tr class="loading-row">
+                                <td colspan="8">Loading inventory...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-pagination">
+                    <div class="pagination-info">
+                        Showing <span id="showing-start">0</span> - <span id="showing-end">0</span> of <span id="total-count">0</span>
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="btn-page" id="prev-page" disabled>Previous</button>
+                        <button class="btn-page" id="next-page">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Item Modal -->
+    <div class="modal" id="item-modal">
+        <div class="modal-overlay" onclick="closeItemModal()"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2 id="modal-title">Add New Item</h2>
+                <button class="modal-close" onclick="closeItemModal()">&times;</button>
+            </div>
+            <form id="item-form" onsubmit="saveItem(event)">
+                <div class="modal-body">
+                    <!-- Existing item selector (shown only in add mode) -->
+                    <div id="existing-item-section" class="form-group existing-item-section" style="display: none;">
+                        <label for="existing-item-select">Quick Add: Select Existing Item</label>
+                        <select id="existing-item-select" onchange="selectExistingItem(this)">
+                            <option value="">-- Select existing item or enter new --</option>
+                        </select>
+                        <p class="form-hint">Select an existing item to pre-fill details, or leave empty to create a new one.</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="item-name">Item Name *</label>
+                            <input type="text" id="item-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-barcode">Barcode</label>
+                            <div class="input-with-btn">
+                                <input type="text" id="item-barcode" name="barcode">
+                                <button type="button" onclick="scanToInput('item-barcode')">Scan</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="item-category">Category *</label>
+                            <select id="item-category" name="category_id" required>
+                                <option value="">Select Category</option>
+                                <option value="1">Food & Water</option>
+                                <option value="2">Medical Supplies</option>
+                                <option value="3">Tools & Equipment</option>
+                                <option value="4">Shelter & Warmth</option>
+                                <option value="5">Communication</option>
+                                <option value="6">Lighting & Power</option>
+                                <option value="7">Clothing</option>
+                                <option value="8">Documents</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-location">Storage Location</label>
+                            <select id="item-location" name="location_id">
+                                <option value="">Select Location</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="item-quantity">Quantity *</label>
+                            <input type="number" id="item-quantity" name="quantity" step="1" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-unit">Unit</label>
+                            <select id="item-unit" name="unit">
+                                <option value="units">Units</option>
+                                <option value="lbs">Pounds (lbs)</option>
+                                <option value="kg">Kilograms (kg)</option>
+                                <option value="oz">Ounces (oz)</option>
+                                <option value="gallons">Gallons</option>
+                                <option value="liters">Liters</option>
+                                <option value="boxes">Boxes</option>
+                                <option value="cans">Cans</option>
+                                <option value="rounds">Rounds</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-min-qty">Min Quantity</label>
+                            <input type="number" id="item-min-qty" name="min_quantity" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="item-purchase-date">Purchase Date</label>
+                            <input type="date" id="item-purchase-date" name="purchase_date">
+                        </div>
+                        <div class="form-group">
+                            <label for="item-expiration">Expiration Date</label>
+                            <input type="date" id="item-expiration" name="expiration_date">
+                        </div>
+                        <div class="form-group">
+                            <label for="item-cost">Cost ($)</label>
+                            <input type="number" id="item-cost" name="cost" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item-calories">Calories (total)</label>
+                        <input type="number" id="item-calories" name="calories_total">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item-notes">Notes</label>
+                        <textarea id="item-notes" name="notes" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeItemModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Item</button>
+                </div>
+                <input type="hidden" id="item-id" name="id">
+            </form>
+        </div>
+    </div>
+
+    <!-- Smart Scanner Modal -->
+    <div class="modal" id="smart-scanner-modal">
+        <div class="modal-overlay" onclick="spsScanner.closeModal()"></div>
+        <div class="modal-content modal-lg scanner-modal">
+            <div class="modal-header">
+                <h2>Smart Scanner</h2>
+                <button class="modal-close" onclick="spsScanner.closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Mode Toggle -->
+                <div class="scanner-mode-toggle">
+                    <button id="scanner-mode-barcode" class="mode-btn active" onclick="spsScanner.setMode('barcode')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+                            <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+                            <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+                            <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+                            <line x1="7" y1="8" x2="7" y2="16"></line>
+                            <line x1="11" y1="8" x2="11" y2="16"></line>
+                            <line x1="15" y1="8" x2="15" y2="16"></line>
+                        </svg>
+                        Barcode
+                    </button>
+                    <button id="scanner-mode-ocr" class="mode-btn" onclick="spsScanner.setMode('ocr')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        Read Label (OCR)
+                    </button>
+                </div>
+
+                <!-- Camera View -->
+                <div class="scanner-camera-container">
+                    <div id="scanner-video-container" class="scanner-video"></div>
+                    <div class="scanner-overlay">
+                        <div class="scanner-frame"></div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="scanner-controls">
+                    <button id="scanner-switch-camera" class="btn btn-outline btn-sm" onclick="spsScanner.switchCamera()" style="display: none;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        Switch Camera
+                    </button>
+                    <button id="scanner-capture-ocr" class="btn btn-primary btn-sm" onclick="spsScanner.captureForOCR()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        Capture & Read Text
+                    </button>
+                </div>
+
+                <!-- Status -->
+                <p id="scanner-status-text" class="scanner-status scanner-status-info">Initializing camera...</p>
+
+                <!-- Manual Entry -->
+                <div class="scanner-manual">
+                    <label>Manual Barcode Entry:</label>
+                    <div class="input-with-btn">
+                        <input type="text" id="scanner-detected-code" placeholder="Enter barcode number">
+                        <button type="button" onclick="spsScanner.useManualCode()">Look Up</button>
+                    </div>
+                </div>
+
+                <!-- Results Areas -->
+                <div id="scanner-product-results" class="scanner-results" style="display: none;"></div>
+                <div id="scanner-ocr-results" class="scanner-results" style="display: none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="spsScanner.closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CSV Import Modal -->
+    <div class="modal" id="import-modal">
+        <div class="modal-overlay" onclick="closeImportModal()"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2>Import Inventory from CSV</h2>
+                <button class="modal-close" onclick="closeImportModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="import-instructions">
+                    <h3>CSV Format Instructions</h3>
+                    <p>Your CSV file should have the following headers:</p>
+                    <code class="csv-sample" style="display: block; background: var(--bg-secondary); padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; margin: 1rem 0;">
+name,category,quantity,unit,location,purchase_date,expiration_date,cost,barcode,min_quantity,notes
+                    </code>
+                    <details style="margin: 1rem 0;">
+                        <summary style="cursor: pointer; color: var(--primary-color);">View sample row</summary>
+                        <code style="display: block; background: var(--bg-secondary); padding: 1rem; border-radius: 8px; margin-top: 0.5rem; font-size: 0.875rem;">
+First Aid Kit,Medical Supplies,2,units,Garage,2024-01-15,2027-01-15,45.99,123456789012,1,Standard emergency kit
+                        </code>
+                    </details>
+                    <p style="font-size: 0.875rem; color: var(--text-secondary);">
+                        <strong>Categories:</strong> Food & Water, Medical Supplies, Tools & Equipment, Shelter & Warmth, Communication, Lighting & Power, Clothing, Documents
+                    </p>
+                </div>
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label for="csv-file">Select CSV File</label>
+                    <input type="file" id="csv-file" accept=".csv" onchange="previewCSV(this)">
+                </div>
+                <div id="csv-preview" style="display: none; margin-top: 1rem;">
+                    <h4>Preview (first 5 rows)</h4>
+                    <div class="table-container" style="max-height: 200px; overflow: auto;">
+                        <table class="inventory-table" id="csv-preview-table">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <p id="csv-row-count" style="margin-top: 0.5rem; color: var(--text-secondary);"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeImportModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" id="import-btn" onclick="importCSV()" disabled>Import Items</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/scanner.js"></script>
+    <!-- QR Code Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="js/qr-data.js?v=20251122"></script>
+    <script src="js/qr-scanner.js?v=20251122"></script>
+    <script src="js/inventory-module.js?v=20251122c"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/sidebar.js"></script>
+</body>
+</html>

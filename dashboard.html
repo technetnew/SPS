@@ -6,6 +6,8 @@
     <title>Dashboard - SPS</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>
@@ -17,19 +19,57 @@
                 </div>
                 <ul class="nav-menu">
                     <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li id="nav-logout-item" style="display: none;"><a href="#" class="nav-link" onclick="authManager.logout(); return false;">Logout</a></li>
                     <li><a href="/dashboard.html" class="nav-link active">Dashboard</a></li>
-                    <li><a href="#inventory" class="nav-link">Inventory</a></li>
-                    <li><a href="/videos.html" class="nav-link">Videos</a></li>
+                    <li><a href="/inventory.html" class="nav-link">Inventory</a></li>
+                    <li><a href="/pantry.html" class="nav-link">Pantry</a></li>
+                    <li><a href="/garden.html" class="nav-link">Garden</a></li>
+                    <li class="nav-dropdown">
+                        <a href="/videos.html" class="nav-link" data-active-paths="/videos.html,/pictures.html">Media ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/videos.html">Videos</a></li>
+                            <li><a href="/pictures.html">Pictures</a></li>
+                        </ul>
+                    </li>
                     <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
-                    <li><a href="#plans" class="nav-link">Plans</a></li>
+                    <li class="nav-dropdown"><a href="/gps.html" class="nav-link" data-active-paths="/gps.html,/osm-sync.html">Map ▾</a><ul class="dropdown-menu"><li><a href="/gps.html">Map View</a></li><li><a href="/osm-sync.html">Sync Maps</a></li></ul></li>
+                    <li class="nav-dropdown">
+                        <a href="#" class="nav-link" data-active-paths="/familyprofile.html,/energy.html,/medical.html,/settings.html,/calculations.html,/simulation.html">Tools ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/familyprofile.html">Family Profile</a></li>
+                            <li><a href="/calculations.html">Calculations</a></li>
+                            <li><a href="/simulation.html">Simulation & Planning</a></li>
+                            <li><a href="/energy.html">Energy Calculator</a></li>
+                            <li><a href="/medical.html">Medical Guide</a></li>
+                            <li><a href="/settings.html">Settings</a></li>
+                        </ul>
+                    </li>
                 </ul>
-                <div id="user-section" class="user-section" style="display: none;">
-                    <span id="user-name"></span>
-                    <button onclick="authManager.logout()" class="btn btn-secondary btn-sm">Logout</button>
-                </div>
-                <div id="auth-buttons" style="display: flex; gap: 10px;">
-                    <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
-                    <button onclick="authManager.showRegisterModal()" class="btn btn-secondary btn-sm">Register</button>
+                <div class="nav-right">
+                    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <span id="user-name"></span>
+                        <button onclick="authManager.logout()" class="btn btn-secondary btn-sm">Logout</button>
+                    </div>
+                    <div id="auth-buttons" style="display: flex; gap: 10px;">
+                        <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                        <button onclick="authManager.showRegisterModal()" class="btn btn-secondary btn-sm">Register</button>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -71,85 +111,190 @@
                 </div>
             </div>
 
-            <!-- Inventory Section -->
+            <!-- Inventory Overview Section -->
             <section id="inventory" class="dashboard-section">
                 <div class="section-header">
-                    <h2>Inventory Management</h2>
-                    <button onclick="showAddItemModal()" class="btn btn-primary">+ Add Item</button>
+                    <h2>Inventory Overview</h2>
+                    <a href="/inventory.html" class="btn btn-outline">Manage Inventory</a>
                 </div>
 
-                <div class="inventory-controls">
-                    <input type="text" id="search-inventory" placeholder="Search items..." class="search-input">
-                    <select id="filter-category" class="filter-select">
-                        <option value="">All Categories</option>
-                    </select>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="filter-expiring"> Expiring Soon
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="filter-low-stock"> Low Stock
-                    </label>
+                <!-- Inventory Charts Grid -->
+                <div class="inventory-charts-grid">
+                    <div class="chart-card">
+                        <h3>Items by Category</h3>
+                        <div class="chart-container">
+                            <canvas id="inventory-category-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Items Needing Attention</h3>
+                        <div id="inventory-attention-list" class="attention-list">
+                            <p class="empty-text">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pantry Overview Section -->
+            <section id="pantry-overview" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Food Pantry Overview</h2>
+                    <a href="/pantry.html" class="btn btn-outline">View Full Pantry</a>
                 </div>
 
-                <div id="inventory-list" class="inventory-grid">
-                    <div class="loading">Loading inventory...</div>
+                <!-- Pantry Stats -->
+                <div class="pantry-stats-grid">
+                    <div class="stat-card pantry-stat">
+                        <div class="stat-icon">🍽️</div>
+                        <div class="stat-info">
+                            <h3 id="pantry-total-items">0</h3>
+                            <p>Food Items</p>
+                        </div>
+                    </div>
+                    <div class="stat-card pantry-stat">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-info">
+                            <h3 id="pantry-total-calories">0</h3>
+                            <p>Total Calories</p>
+                        </div>
+                    </div>
+                    <div class="stat-card pantry-stat">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-info">
+                            <h3 id="pantry-days-supply">0</h3>
+                            <p>Days of Supply</p>
+                        </div>
+                    </div>
+                    <a href="/pantry.html?tab=expiring&days=7" class="stat-card pantry-stat expiring-7 clickable">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-info">
+                            <h3 id="pantry-expiring-7">0</h3>
+                            <p>Expiring 7 Days</p>
+                        </div>
+                    </a>
+                    <a href="/pantry.html?tab=expiring&days=30" class="stat-card pantry-stat expiring-30 clickable">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-info">
+                            <h3 id="pantry-expiring-30">0</h3>
+                            <p>Expiring 30 Days</p>
+                        </div>
+                    </a>
+                    <a href="/pantry.html?tab=expiring&days=90" class="stat-card pantry-stat expiring-90 clickable">
+                        <div class="stat-icon">📆</div>
+                        <div class="stat-info">
+                            <h3 id="pantry-expiring-90">0</h3>
+                            <p>Expiring 90 Days</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Pantry Charts -->
+                <div class="pantry-charts-grid">
+                    <div class="chart-card">
+                        <h3>Calories by Category</h3>
+                        <div class="chart-container">
+                            <canvas id="pantry-category-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Macronutrient Balance</h3>
+                        <div class="chart-container">
+                            <canvas id="pantry-macros-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expiring Items Preview -->
+                <div class="expiring-preview">
+                    <h3>Items Expiring Soon</h3>
+                    <div id="dashboard-expiring-list" class="expiring-items-list">
+                        <p class="empty-text">No items expiring soon</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Monitoring Section -->
+            <section id="system-monitor" class="dashboard-section">
+                <div class="section-header">
+                    <h2>System Status</h2>
+                    <button class="btn btn-outline btn-sm" onclick="loadSystemInfo()">Refresh</button>
+                </div>
+
+                <div class="system-stats-grid">
+                    <div class="system-card">
+                        <div class="system-card-header">
+                            <span class="system-icon">🖥️</span>
+                            <h4>CPU</h4>
+                        </div>
+                        <div class="system-card-body">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="cpu-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="system-stats">
+                                <span id="cpu-percent">0%</span>
+                                <span id="cpu-cores" class="stat-secondary">0 cores</span>
+                            </div>
+                            <div class="stat-detail" id="cpu-model">Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="system-card">
+                        <div class="system-card-header">
+                            <span class="system-icon">💾</span>
+                            <h4>Memory</h4>
+                        </div>
+                        <div class="system-card-body">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="memory-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="system-stats">
+                                <span id="memory-percent">0%</span>
+                                <span id="memory-used" class="stat-secondary">0 / 0 GB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="system-card">
+                        <div class="system-card-header">
+                            <span class="system-icon">💿</span>
+                            <h4>Disk</h4>
+                        </div>
+                        <div class="system-card-body">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="disk-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="system-stats">
+                                <span id="disk-percent">0%</span>
+                            </div>
+                            <div class="disk-details">
+                                <span class="disk-stat"><span class="disk-label">Used:</span> <span id="disk-used">0 GB</span></span>
+                                <span class="disk-stat"><span class="disk-label">Free:</span> <span id="disk-free">0 GB</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="system-card">
+                        <div class="system-card-header">
+                            <span class="system-icon">⏱️</span>
+                            <h4>Uptime</h4>
+                        </div>
+                        <div class="system-card-body">
+                            <div class="uptime-display" id="system-uptime">--</div>
+                            <div class="stat-detail" id="system-hostname">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PM2 Processes -->
+                <div class="pm2-processes">
+                    <h4>Services</h4>
+                    <div class="process-grid" id="pm2-process-list">
+                        <p class="empty-text">Loading services...</p>
+                    </div>
                 </div>
             </section>
         </div>
     </main>
-
-    <!-- Add/Edit Item Modal -->
-    <div id="item-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeItemModal()">&times;</span>
-            <h2 id="item-modal-title">Add Inventory Item</h2>
-            <form id="item-form">
-                <input type="hidden" id="item-id">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="item-name">Item Name *</label>
-                        <input type="text" id="item-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="item-category">Category</label>
-                        <select id="item-category"></select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="item-quantity">Quantity *</label>
-                        <input type="number" id="item-quantity" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="item-unit">Unit</label>
-                        <input type="text" id="item-unit" placeholder="e.g., cans, bottles, units">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="item-location">Storage Location</label>
-                    <input type="text" id="item-location" placeholder="e.g., Basement Shelf A">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="item-expiration">Expiration Date</label>
-                        <input type="date" id="item-expiration">
-                    </div>
-                    <div class="form-group">
-                        <label for="item-min-quantity">Min Quantity (Alert)</label>
-                        <input type="number" id="item-min-quantity" step="0.01">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="item-description">Description</label>
-                    <textarea id="item-description" rows="3"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" onclick="closeItemModal()" class="btn btn-secondary">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Item</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Login Modal -->
     <div id="login-modal" class="modal auth-modal">
@@ -211,6 +356,9 @@
         </div>
     </div>
 
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/sidebar.js"></script>
     <script src="js/api-client.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/dashboard.js"></script>

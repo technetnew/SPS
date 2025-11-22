@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Videos - SPS</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/videos.css">
 </head>
@@ -19,17 +20,42 @@
                 <ul class="nav-menu">
                     <li><a href="/index.html" class="nav-link">Home</a></li>
                     <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
-                    <li><a href="#inventory" class="nav-link">Inventory</a></li>
-                    <li><a href="/videos.html" class="nav-link active">Videos</a></li>
+                    <li><a href="/inventory.html" class="nav-link">Inventory</a></li>
+                    <li class="nav-dropdown">
+                        <a href="/videos.html" class="nav-link" data-active-paths="/videos.html,/pictures.html">Media ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/videos.html">Videos</a></li>
+                            <li><a href="/pictures.html">Pictures</a></li>
+                        </ul>
+                    </li>
                     <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
-                    <li><a href="#plans" class="nav-link">Plans</a></li>
+                    <li class="nav-dropdown"><a href="/gps.html" class="nav-link" data-active-paths="/gps.html,/osm-sync.html">Map ▾</a><ul class="dropdown-menu"><li><a href="/gps.html">Map View</a></li><li><a href="/osm-sync.html">Sync Maps</a></li></ul></li>
+                    <li class="nav-dropdown"><a href="#" class="nav-link" data-active-paths="/familyprofile.html,/energy.html,/medical.html,/simulation.html">Tools ▾</a><ul class="dropdown-menu"><li><a href="/familyprofile.html">Family Profile</a></li><li><a href="/simulation.html">Simulation & Planning</a></li><li><a href="/energy.html">Energy Calculator</a></li><li><a href="/medical.html">Medical Guide</a></li></ul></li>
                 </ul>
-                <div id="user-section" class="user-section" style="display: none;">
-                    <span id="user-name"></span>
-                    <button onclick="authManager.logout()" class="btn btn-secondary btn-sm">Logout</button>
-                </div>
-                <div id="auth-buttons" style="display: flex; gap: 10px;">
-                    <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                <div class="nav-right">
+                    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <span id="user-name"></span>
+                        <button onclick="authManager.logout()" class="btn btn-secondary btn-sm">Logout</button>
+                    </div>
+                    <div id="auth-buttons" style="display: flex; gap: 10px;">
+                        <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -206,9 +232,14 @@
         <div class="modal-content modal-large">
             <span class="close" onclick="closePlayerModal()">&times;</span>
             <div id="video-player-container">
-                <video id="video-player" controls>
-                    Your browser does not support the video tag.
-                </video>
+                <div class="player-stage">
+                    <div class="player-frame" id="player-frame">
+                        <video id="video-player" controls playsinline>
+                            Your browser does not support the video tag.
+                        </video>
+                        <button type="button" class="fullscreen-btn" onclick="toggleVideoFullscreen()" title="Toggle fullscreen">⛶</button>
+                    </div>
+                </div>
                 <div class="video-info">
                     <h2 id="playing-title"></h2>
                     <p id="playing-description"></p>
@@ -216,6 +247,10 @@
                         <span id="playing-duration"></span>
                         <span id="playing-resolution"></span>
                         <span id="playing-size"></span>
+                    </div>
+                    <div class="player-navigation">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="showPreviousVideo()">⬅️ Previous</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="showNextVideo()">Next ➡️</button>
                     </div>
                     <div class="video-actions-inline">
                         <button onclick="editCurrentVideo()" class="btn btn-sm btn-secondary">✏️ Edit</button>
@@ -285,6 +320,9 @@
         </div>
     </div>
 
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/sidebar.js"></script>
     <script src="js/api-client.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/videos.js"></script>

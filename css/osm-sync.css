@@ -1,0 +1,438 @@
+.osm-sync-main {
+    padding: 2rem 0;
+    min-height: calc(100vh - 80px);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: white;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Status Section */
+.status-section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.status-section h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.status-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #6c757d;
+    transition: all 0.3s ease;
+}
+
+.status-card.status-ok {
+    border-left-color: #28a745;
+    background: #d4edda;
+}
+
+.status-card.status-error {
+    border-left-color: #dc3545;
+    background: #f8d7da;
+}
+
+.status-card.status-warning {
+    border-left-color: #ffc107;
+    background: #fff3cd;
+}
+
+.status-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.status-content h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.status-text {
+    margin: 0 0 0.25rem 0;
+    font-weight: 600;
+    color: #495057;
+}
+
+.status-detail {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Sync Section */
+.sync-section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sync-section h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.sync-job-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.job-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.job-progress {
+    margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+    height: 30px;
+    background: #e9ecef;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    color: white;
+    font-weight: 600;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.job-stage {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 6px;
+}
+
+.job-stage p {
+    margin: 0.5rem 0;
+    color: #495057;
+}
+
+.job-log {
+    margin-top: 1.5rem;
+}
+
+.job-log h4 {
+    margin-bottom: 0.75rem;
+    color: #333;
+}
+
+.log-content {
+    background: #2d2d2d;
+    color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.log-entry {
+    margin-bottom: 0.25rem;
+    word-wrap: break-word;
+}
+
+.log-entry.log-error {
+    color: #ff6b6b;
+}
+
+.log-entry.log-success {
+    color: #51cf66;
+}
+
+.log-entry.log-info {
+    color: #74c0fc;
+}
+
+/* Presets Section */
+.presets-section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.presets-section h2 {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.section-description {
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+
+.presets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.preset-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.preset-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-color: #667eea;
+}
+
+.preset-card h3 {
+    margin: 0 0 1rem 0;
+    color: #333;
+    font-size: 1.25rem;
+}
+
+.preset-info {
+    margin-bottom: 1rem;
+}
+
+.preset-info-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.preset-info-label {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.preset-info-value {
+    color: #333;
+    font-weight: 600;
+}
+
+.preset-description {
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.preset-card .btn {
+    width: 100%;
+}
+
+/* Custom URL Section */
+.custom-url-section {
+    padding-top: 2rem;
+    border-top: 2px solid #e9ecef;
+}
+
+.custom-url-section h3 {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.custom-url-section p {
+    color: #6c757d;
+    margin-bottom: 1rem;
+}
+
+.custom-url-section a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.custom-url-section a:hover {
+    text-decoration: underline;
+}
+
+.custom-url-form {
+    display: flex;
+    gap: 1rem;
+}
+
+.custom-url-form input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 2px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.custom-url-form input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Instructions Section */
+.instructions-section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.instructions-section h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.instruction-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.instruction-card:last-child {
+    margin-bottom: 0;
+}
+
+.instruction-card h3 {
+    margin: 0 0 1rem 0;
+    color: #333;
+}
+
+.instruction-card ol,
+.instruction-card ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.instruction-card li {
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+
+.instruction-card code {
+    background: #e9ecef;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    color: #d63384;
+}
+
+.instruction-card a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.instruction-card a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .status-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .presets-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .custom-url-form {
+        flex-direction: column;
+    }
+
+    .job-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Profiles - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/familyprofile.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Family</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li id="nav-logout-item" style="display: none;"><a href="#" class="nav-link" onclick="authManager.logout(); return false;">Logout</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/inventory.html" class="nav-link">Inventory</a></li>
+                    <li><a href="/pantry.html" class="nav-link">Pantry</a></li>
+                    <li><a href="/garden.html" class="nav-link">Garden</a></li>
+                    <li class="nav-dropdown">
+                        <a href="/videos.html" class="nav-link" data-active-paths="/videos.html,/pictures.html">Media ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/videos.html">Videos</a></li>
+                            <li><a href="/pictures.html">Pictures</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
+                    <li class="nav-dropdown"><a href="/gps.html" class="nav-link" data-active-paths="/gps.html,/osm-sync.html">Map ▾</a><ul class="dropdown-menu"><li><a href="/gps.html">Map View</a></li><li><a href="/osm-sync.html">Sync Maps</a></li></ul></li>
+                    <li class="nav-dropdown"><a href="#" class="nav-link active" data-active-paths="/familyprofile.html,/energy.html,/medical.html,/settings.html,/calculations.html,/simulation.html">Tools ▾</a><ul class="dropdown-menu"><li><a href="/familyprofile.html">Family Profile</a></li><li><a href="/calculations.html">Calculations</a></li><li><a href="/simulation.html">Simulation & Planning</a></li><li><a href="/energy.html">Energy Calculator</a></li><li><a href="/medical.html">Medical Guide</a></li><li><a href="/settings.html">Settings</a></li></ul></li>
+                </ul>
+                <div class="nav-right">
+                    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <span id="user-name"></span>
+                        <button onclick="authManager.logout()" class="btn btn-danger btn-sm">Logout</button>
+                    </div>
+                    <div id="auth-buttons" style="display: flex; gap: 10px;">
+                        <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="family-main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1 class="page-title">Family Profiles</h1>
+                    <p class="page-subtitle">Manage family members, documents, and emergency contacts</p>
+                </div>
+                <div class="page-header-right">
+                    <button class="btn btn-primary" onclick="openMemberModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
+                        Add Family Member
+                    </button>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-blue">&#128106;</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="total-members">0</div>
+                        <div class="stat-label">Family Members</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-green">&#128293;</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="daily-calories">0</div>
+                        <div class="stat-label">Daily Cal Need</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-purple">&#128196;</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="total-documents">0</div>
+                        <div class="stat-label">Documents</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-yellow">&#128222;</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="emergency-contacts">0</div>
+                        <div class="stat-label">Emergency Contacts</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="members">Family Members</button>
+                <button class="tab-btn" data-tab="documents">Documents</button>
+                <button class="tab-btn" data-tab="contacts">Emergency Contacts</button>
+            </div>
+
+            <!-- Family Members Tab -->
+            <div class="tab-panel active" id="tab-members">
+                <div class="family-grid" id="family-grid">
+                    <div class="loading">Loading family members...</div>
+                </div>
+            </div>
+
+            <!-- Documents Tab -->
+            <div class="tab-panel" id="tab-documents">
+                <div class="sps-card">
+                    <div class="card-header">
+                        <h3>All Documents</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openDocumentModal()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="12" y1="18" x2="12" y2="12"></line>
+                                <line x1="9" y1="15" x2="15" y2="15"></line>
+                            </svg>
+                            Add Document
+                        </button>
+                    </div>
+                    <div class="documents-toolbar">
+                        <div class="search-box">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input type="text" id="doc-search" placeholder="Search documents..." oninput="filterDocuments()">
+                        </div>
+                        <div class="filter-group">
+                            <select id="doc-filter-category" onchange="filterDocuments()">
+                                <option value="">All Categories</option>
+                            </select>
+                            <select id="doc-filter-member" onchange="filterDocuments()">
+                                <option value="">All Members</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="documents-list" id="documents-list">
+                        <div class="empty-state">No documents yet. Add your first document.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Contacts Tab -->
+            <div class="tab-panel" id="tab-contacts">
+                <div class="sps-card">
+                    <div class="card-header">
+                        <h3>Emergency Contacts</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openContactModal()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                <line x1="12" y1="2" x2="12" y2="6"></line>
+                                <line x1="14" y1="4" x2="10" y2="4"></line>
+                            </svg>
+                            Add Contact
+                        </button>
+                    </div>
+                    <div class="contacts-list" id="contacts-list">
+                        <div class="empty-state">No emergency contacts yet. Add important contacts for emergencies.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Member Modal -->
+    <div class="modal" id="member-modal">
+        <div class="modal-overlay" onclick="closeMemberModal()"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2 id="member-modal-title">Add Family Member</h2>
+                <button class="modal-close" onclick="closeMemberModal()">&times;</button>
+            </div>
+            <form id="member-form" onsubmit="saveMember(event)">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="member-name">Full Name *</label>
+                            <input type="text" id="member-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-relationship">Relationship *</label>
+                            <select id="member-relationship" name="relationship" required>
+                                <option value="self">Self</option>
+                                <option value="spouse">Spouse/Partner</option>
+                                <option value="child">Child</option>
+                                <option value="parent">Parent</option>
+                                <option value="sibling">Sibling</option>
+                                <option value="grandparent">Grandparent</option>
+                                <option value="grandchild">Grandchild</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="member-birthdate">Birth Date *</label>
+                            <input type="date" id="member-birthdate" name="birth_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-gender">Gender</label>
+                            <select id="member-gender" name="gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <fieldset class="form-fieldset">
+                        <legend>Physical Information (for calorie calculations)</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="member-height">Height (inches)</label>
+                                <input type="number" id="member-height" name="height_inches" step="0.1" placeholder="e.g., 68">
+                            </div>
+                            <div class="form-group">
+                                <label for="member-weight">Weight (lbs)</label>
+                                <input type="number" id="member-weight" name="weight_lbs" step="0.1" placeholder="e.g., 150">
+                            </div>
+                            <div class="form-group">
+                                <label for="member-activity">Activity Level</label>
+                                <select id="member-activity" name="activity_level">
+                                    <option value="sedentary">Sedentary</option>
+                                    <option value="light">Light Activity</option>
+                                    <option value="moderate" selected>Moderate</option>
+                                    <option value="active">Active</option>
+                                    <option value="very_active">Very Active</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-fieldset">
+                        <legend>Medical Information</legend>
+                        <div class="form-group">
+                            <label for="member-blood-type">Blood Type</label>
+                            <select id="member-blood-type" name="blood_type">
+                                <option value="">Unknown</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-allergies">Allergies</label>
+                            <textarea id="member-allergies" name="allergies" rows="2" placeholder="List any allergies..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-medications">Current Medications</label>
+                            <textarea id="member-medications" name="medications" rows="2" placeholder="List current medications..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-conditions">Medical Conditions</label>
+                            <textarea id="member-conditions" name="medical_conditions" rows="2" placeholder="List any medical conditions..."></textarea>
+                        </div>
+                    </fieldset>
+
+                    <div class="form-row">
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="member-pregnant" name="is_pregnant">
+                                Pregnant
+                            </label>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="member-lactating" name="is_lactating">
+                                Lactating
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="member-notes">Additional Notes</label>
+                        <textarea id="member-notes" name="notes" rows="2" placeholder="Any additional information..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeMemberModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Member</button>
+                </div>
+                <input type="hidden" id="member-id" name="id">
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Document Modal -->
+    <div class="modal" id="document-modal">
+        <div class="modal-overlay" onclick="closeDocumentModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="document-modal-title">Add Document</h2>
+                <button class="modal-close" onclick="closeDocumentModal()">&times;</button>
+            </div>
+            <form id="document-form" onsubmit="saveDocument(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="doc-name">Document Name *</label>
+                        <input type="text" id="doc-name" name="name" required placeholder="e.g., John's Passport">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="doc-category">Category *</label>
+                            <select id="doc-category" name="category" required>
+                                <option value="identification">Identification</option>
+                                <option value="medical">Medical Records</option>
+                                <option value="financial">Financial</option>
+                                <option value="legal">Legal</option>
+                                <option value="emergency">Emergency Plans</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="doc-member">Family Member</label>
+                            <select id="doc-member" name="family_profile_id">
+                                <option value="">Shared / Family</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="doc-number">Document Number</label>
+                            <input type="text" id="doc-number" name="document_number" placeholder="e.g., Passport number">
+                        </div>
+                        <div class="form-group">
+                            <label for="doc-expiry">Expiration Date</label>
+                            <input type="date" id="doc-expiry" name="expiration_date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="doc-file">Upload File (optional)</label>
+                        <input type="file" id="doc-file" name="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                        <p class="form-hint">Supported: PDF, images, Word documents (max 10MB)</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="doc-notes">Notes</label>
+                        <textarea id="doc-notes" name="notes" rows="2" placeholder="Additional information..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeDocumentModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Document</button>
+                </div>
+                <input type="hidden" id="doc-id" name="id">
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Contact Modal -->
+    <div class="modal" id="contact-modal">
+        <div class="modal-overlay" onclick="closeContactModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="contact-modal-title">Add Emergency Contact</h2>
+                <button class="modal-close" onclick="closeContactModal()">&times;</button>
+            </div>
+            <form id="contact-form" onsubmit="saveContact(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="contact-name">Contact Name *</label>
+                        <input type="text" id="contact-name" name="name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contact-relationship">Relationship</label>
+                            <input type="text" id="contact-relationship" name="relationship" placeholder="e.g., Doctor, Neighbor">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-priority">Priority</label>
+                            <select id="contact-priority" name="priority">
+                                <option value="1">Primary</option>
+                                <option value="2">Secondary</option>
+                                <option value="3">Tertiary</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contact-phone">Phone Number *</label>
+                            <input type="tel" id="contact-phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-phone2">Alternate Phone</label>
+                            <input type="tel" id="contact-phone2" name="phone_alt">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Email</label>
+                        <input type="email" id="contact-email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-address">Address</label>
+                        <textarea id="contact-address" name="address" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-notes">Notes</label>
+                        <textarea id="contact-notes" name="notes" rows="2" placeholder="e.g., Best to call after 6pm"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeContactModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Contact</button>
+                </div>
+                <input type="hidden" id="contact-id" name="id">
+            </form>
+        </div>
+    </div>
+
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/familyprofile.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/sidebar.js"></script>
+</body>
+</html>

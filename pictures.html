@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictures - Photo Library - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/pictures.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Photo Library</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/inventory.html" class="nav-link">Inventory</a></li>
+                    <li class="nav-dropdown">
+                        <a href="/videos.html" class="nav-link" data-active-paths="/videos.html,/pictures.html">Media ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/videos.html">Videos</a></li>
+                            <li><a href="/pictures.html">Pictures</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
+                    <li class="nav-dropdown"><a href="/gps.html" class="nav-link" data-active-paths="/gps.html,/osm-sync.html">Map ▾</a><ul class="dropdown-menu"><li><a href="/gps.html">Map View</a></li><li><a href="/osm-sync.html">Sync Maps</a></li></ul></li>
+                    <li class="nav-dropdown"><a href="#" class="nav-link" data-active-paths="/familyprofile.html,/energy.html,/medical.html,/simulation.html">Tools ▾</a><ul class="dropdown-menu"><li><a href="/familyprofile.html">Family Profile</a></li><li><a href="/simulation.html">Simulation & Planning</a></li><li><a href="/energy.html">Energy Calculator</a></li><li><a href="/medical.html">Medical Guide</a></li></ul></li>
+                </ul>
+                <div class="nav-right">
+                    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <span id="user-name"></span>
+                        <button onclick="authManager.logout()" class="btn btn-danger btn-sm">Logout</button>
+                    </div>
+                    <div id="auth-buttons" style="display: flex; gap: 10px;">
+                        <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="pictures-header">
+                <div>
+                    <h1>📸 Photo Library</h1>
+                    <p>Organize and manage your photo collection with metadata, tags, and albums</p>
+                </div>
+                <div class="header-actions">
+                    <button type="button" onclick="showUploadModal()" class="btn btn-primary">
+                        ⬆️ Upload Pictures
+                    </button>
+                    <button type="button" onclick="showCreateAlbumModal()" class="btn btn-accent">
+                        ➕ Create Album
+                    </button>
+                    <button type="button" id="rescan-library-btn" onclick="rescanLibrary()" class="btn btn-rescan">
+                        🔄 Rescan Library
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div id="pictures-stats" class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🖼️</div>
+                    <div class="stat-info">
+                        <h3 id="total-pictures">0</h3>
+                        <p>Total Pictures</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📁</div>
+                    <div class="stat-info">
+                        <h3 id="total-albums">0</h3>
+                        <p>Albums</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏷️</div>
+                    <div class="stat-info">
+                        <h3 id="total-tags">0</h3>
+                        <p>Tags</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💾</div>
+                    <div class="stat-info">
+                        <h3 id="total-size">0 MB</h3>
+                        <p>Total Size</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('gallery', event)">🖼️ Gallery</button>
+                <button class="tab" onclick="switchTab('albums', event)">📁 Albums</button>
+                <button class="tab" onclick="switchTab('tags', event)">🏷️ Tags</button>
+            </div>
+
+            <!-- Gallery Tab -->
+            <div id="gallery-tab" class="tab-content active">
+                <div class="search-filter-bar">
+                    <input type="text" id="picture-search" placeholder="🔍 Search pictures..." onkeyup="searchPictures(this.value)">
+                    <select id="tag-filter" onchange="filterByTag(this.value)">
+                        <option value="">All Tags</option>
+                    </select>
+                    <select id="sort-by" onchange="sortPictures(this.value)">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="name">Name (A-Z)</option>
+                        <option value="size">Size</option>
+                    </select>
+                    <select id="thumbnail-size" onchange="changeThumbnailSize(this.value)">
+                        <option value="small">🔹 Small</option>
+                        <option value="medium">🔸 Medium</option>
+                        <option value="large">🔷 Large</option>
+                    </select>
+                    <span id="picture-count"></span>
+                </div>
+
+                <div id="pictures-grid" class="pictures-grid">
+                    <div class="loading">Loading pictures...</div>
+                </div>
+            </div>
+
+            <!-- Albums Tab -->
+            <div id="albums-tab" class="tab-content">
+                <h2>Photo Albums</h2>
+                <p class="tab-description">Organize your pictures into collections</p>
+
+                <div id="albums-grid" class="albums-grid">
+                    <div class="empty-state">No albums created yet. Create your first album!</div>
+                </div>
+            </div>
+
+            <!-- Tags Tab -->
+            <div id="tags-tab" class="tab-content">
+                <h2>Picture Tags</h2>
+                <p class="tab-description">Browse pictures by tags and categories</p>
+
+                <div id="tags-cloud" class="tags-cloud">
+                    <div class="empty-state">No tags available yet. Upload pictures and add tags!</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Upload Modal -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideUploadModal()">&times;</span>
+            <h2>Upload Pictures</h2>
+            <form id="upload-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="picture-files">Select Pictures</label>
+                    <input type="file" id="picture-files" name="pictures" accept="image/*" multiple required>
+                    <p class="help-text">Maximum 50MB per file. Supports JPEG, PNG, GIF, WebP, TIFF</p>
+                </div>
+                <div class="form-group">
+                    <label for="picture-title">Title (optional)</label>
+                    <input type="text" id="picture-title" placeholder="Leave empty to use filename">
+                </div>
+                <div class="form-group">
+                    <label for="picture-description">Description (optional)</label>
+                    <textarea id="picture-description" rows="3" placeholder="Add a description..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="picture-tags">Tags (optional)</label>
+                    <input type="text" id="picture-tags" placeholder="family, nature, emergency (comma-separated)">
+                </div>
+                <div class="form-group">
+                    <label for="picture-location">Location (optional)</label>
+                    <input type="text" id="picture-location" placeholder="e.g., Backyard, Shelter, Camp Site">
+                </div>
+                <div id="upload-error" class="error-message" style="display: none;"></div>
+                <div id="upload-progress" class="upload-progress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="upload-progress-fill"></div>
+                    </div>
+                    <p id="upload-status">Uploading...</p>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Album Modal -->
+    <div id="create-album-modal" class="modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="hideCreateAlbumModal()">&times;</span>
+            <h2>Create New Album</h2>
+            <form id="create-album-form">
+                <div class="form-group">
+                    <label for="album-name">Album Name</label>
+                    <input type="text" id="album-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="album-description">Description (optional)</label>
+                    <textarea id="album-description" rows="3"></textarea>
+                </div>
+                <div id="create-album-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">Create Album</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Picture Detail Modal -->
+    <div id="picture-detail-modal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="hidePictureDetail()">&times;</span>
+            <div class="picture-detail-container">
+                <div class="picture-preview">
+                    <img id="detail-image" src="" alt="">
+                </div>
+                    <div class="picture-info">
+                        <h2 id="detail-title"></h2>
+                        <p id="detail-description"></p>
+
+                        <div class="detail-section">
+                            <h3>Details</h3>
+                            <div class="detail-grid">
+                                <div><strong>Size:</strong> <span id="detail-size"></span></div>
+                                <div><strong>Dimensions:</strong> <span id="detail-dimensions"></span></div>
+                                <div><strong>Format:</strong> <span id="detail-format"></span></div>
+                                <div><strong>Uploaded:</strong> <span id="detail-uploaded"></span></div>
+                            <div><strong>Location:</strong> <span id="detail-location"></span></div>
+                        </div>
+                        </div>
+
+                    <div class="picture-action-bar">
+                        <button type="button" class="picture-action previous" onclick="showPreviousPicture()" aria-label="Previous picture">
+                            <span class="icon">‹</span>
+                            <span>Previous</span>
+                        </button>
+                        <button type="button" class="picture-action next" onclick="showNextPicture()" aria-label="Next picture">
+                            <span class="icon">›</span>
+                            <span>Next</span>
+                        </button>
+                        <button type="button" class="picture-action fullscreen" onclick="togglePictureFullscreen()" aria-label="Fullscreen">
+                            <span class="icon">⛶</span>
+                            <span>Fullscreen</span>
+                        </button>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Tags</h3>
+                        <div id="detail-tags" class="tag-list"></div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Albums</h3>
+                        <div id="detail-albums" class="album-list"></div>
+                    </div>
+
+                    <div class="detail-actions">
+                        <button onclick="editPicture()" class="btn btn-primary">Edit</button>
+                        <button onclick="deletePicture()" class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Picture Metadata Modal -->
+    <div id="edit-picture-modal" class="modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="hideEditPictureModal()">&times;</span>
+            <h2>Edit Picture Details</h2>
+            <form id="edit-picture-form">
+                <div class="form-group">
+                    <label for="edit-picture-title">Title</label>
+                    <input type="text" id="edit-picture-title" maxlength="255">
+                </div>
+                <div class="form-group">
+                    <label for="edit-picture-description">Description</label>
+                    <textarea id="edit-picture-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-picture-tags">Tags (comma separated)</label>
+                    <input type="text" id="edit-picture-tags" placeholder="family, nature, emergency">
+                </div>
+                <div class="form-group">
+                    <label for="edit-picture-location">Location</label>
+                    <input type="text" id="edit-picture-location">
+                </div>
+                <div class="form-group">
+                    <label>Albums</label>
+                    <div id="edit-picture-albums" class="album-checkbox-list"></div>
+                </div>
+                <div id="edit-picture-error" class="error-message" style="display: none;"></div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideEditPictureModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal auth-modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="authManager.hideModals()">&times;</span>
+            <h2>Login to SPS</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Username or Email</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/pictures.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Maps Sync - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/osm-sync.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Offline Maps</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/inventory.html" class="nav-link">Inventory</a></li>
+                    <li class="nav-dropdown">
+                        <a href="/videos.html" class="nav-link" data-active-paths="/videos.html,/pictures.html">Media ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/videos.html">Videos</a></li>
+                            <li><a href="/pictures.html">Pictures</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
+                    <li class="nav-dropdown"><a href="/gps.html" class="nav-link" data-active-paths="/gps.html,/osm-sync.html">Map ▾</a><ul class="dropdown-menu"><li><a href="/gps.html">Map View</a></li><li><a href="/osm-sync.html">Sync Maps</a></li></ul></li>
+                    <li class="nav-dropdown"><a href="#" class="nav-link" data-active-paths="/familyprofile.html,/energy.html,/medical.html,/simulation.html">Tools ▾</a><ul class="dropdown-menu"><li><a href="/familyprofile.html">Family Profile</a></li><li><a href="/simulation.html">Simulation & Planning</a></li><li><a href="/energy.html">Energy Calculator</a></li><li><a href="/medical.html">Medical Guide</a></li></ul></li>
+                </ul>
+                <div class="nav-right">
+                    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <span id="user-name"></span>
+                        <button onclick="authManager.logout()" class="btn btn-danger btn-sm">Logout</button>
+                    </div>
+                    <div id="auth-buttons" style="display: flex; gap: 10px;">
+                        <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="osm-sync-main">
+        <div class="container">
+            <div class="page-header">
+                <h1>Offline Map Synchronization</h1>
+                <p>Download and manage OpenStreetMap data for offline navigation</p>
+            </div>
+
+            <!-- System Status -->
+            <div class="status-section">
+                <h2>System Status</h2>
+                <div class="status-grid">
+                    <div class="status-card" id="database-status">
+                        <div class="status-icon">🗄️</div>
+                        <div class="status-content">
+                            <h3>Database</h3>
+                            <p class="status-text">Checking...</p>
+                            <p class="status-detail"></p>
+                        </div>
+                    </div>
+                    <div class="status-card" id="tileserver-status">
+                        <div class="status-icon">🗺️</div>
+                        <div class="status-content">
+                            <h3>Tile Server</h3>
+                            <p class="status-text">Checking...</p>
+                            <p class="status-detail"></p>
+                        </div>
+                    </div>
+                    <div class="status-card" id="geocoder-status">
+                        <div class="status-icon">📍</div>
+                        <div class="status-content">
+                            <h3>Geocoder</h3>
+                            <p class="status-text">Checking...</p>
+                            <p class="status-detail"></p>
+                        </div>
+                    </div>
+                    <div class="status-card" id="datafiles-status">
+                        <div class="status-icon">💾</div>
+                        <div class="status-content">
+                            <h3>Data Files</h3>
+                            <p class="status-text">Checking...</p>
+                            <p class="status-detail"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Sync Job -->
+            <div class="sync-section" id="active-sync-section" style="display: none;">
+                <h2>Active Sync Job</h2>
+                <div class="sync-job-card">
+                    <div class="job-header">
+                        <h3 id="job-preset-name">Loading...</h3>
+                        <button onclick="cancelSyncJob()" class="btn btn-danger btn-sm">Cancel</button>
+                    </div>
+                    <div class="job-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="job-progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <p class="progress-text"><span id="job-progress-percent">0</span>%</p>
+                    </div>
+                    <div class="job-stage">
+                        <p><strong>Stage:</strong> <span id="job-stage">Initializing...</span></p>
+                        <p><strong>Status:</strong> <span id="job-status">Starting...</span></p>
+                    </div>
+                    <div class="job-log">
+                        <h4>Recent Activity</h4>
+                        <div id="job-log-content" class="log-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Presets -->
+            <div class="presets-section" id="presets-section">
+                <h2>Download Map Data</h2>
+                <p class="section-description">Choose a region to download. Data will be imported into PostgreSQL and vector tiles will be generated for offline use.</p>
+
+                <div class="presets-grid" id="presets-grid">
+                    <!-- Presets will be loaded here -->
+                </div>
+
+                <!-- Custom URL -->
+                <div class="custom-url-section">
+                    <h3>Or Use Custom URL</h3>
+                    <p>Enter any .osm.pbf URL from <a href="https://download.geofabrik.de/" target="_blank">Geofabrik</a> or other source:</p>
+                    <div class="custom-url-form">
+                        <input type="url" id="custom-url-input" placeholder="https://download.geofabrik.de/...latest.osm.pbf">
+                        <button onclick="startCustomSync()" class="btn btn-primary">Download</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="instructions-section">
+                <h2>Setup Instructions</h2>
+                <div class="instruction-card">
+                    <h3>First Time Setup</h3>
+                    <ol>
+                        <li>Ensure PostgreSQL with PostGIS is installed and running</li>
+                        <li>Install required tools: <code>sudo /var/www/sps/osm-data/install-osm-tools.sh</code></li>
+                        <li>Choose a region above (start with California for testing)</li>
+                        <li>Wait for download, import, and tile generation to complete</li>
+                        <li>Once complete, visit the <a href="/gps.html">GPS page</a> to use offline maps</li>
+                    </ol>
+                </div>
+                <div class="instruction-card">
+                    <h3>Disk Space Requirements</h3>
+                    <ul>
+                        <li><strong>California:</strong> ~21 GB (2-4 hours)</li>
+                        <li><strong>Texas:</strong> ~25 GB (3-5 hours)</li>
+                        <li><strong>Full US:</strong> ~106 GB (8-12 hours)</li>
+                        <li><strong>Full Planet:</strong> ~684 GB (24-72 hours)</li>
+                    </ul>
+                </div>
+                <div class="instruction-card">
+                    <h3>Documentation</h3>
+                    <ul>
+                        <li><a href="/SETUP-OFFLINE-OSM.md" target="_blank">Complete Setup Guide</a></li>
+                        <li><a href="/osm-data/README.md" target="_blank">Architecture Documentation</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/osm-sync.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/sidebar.js"></script>
+</body>
+</html>

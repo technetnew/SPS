@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/inventory.css">
+    <style>
+        .settings-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--border-color, #e5e7eb);
+            margin-bottom: 1.5rem;
+        }
+        .settings-tab {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary, #666);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+        .settings-tab:hover {
+            color: var(--primary-color);
+            background: var(--hover-bg, #f3f4f6);
+        }
+        .settings-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        .settings-panel {
+            display: none;
+        }
+        .settings-panel.active {
+            display: block;
+        }
+        .settings-section {
+            background: var(--card-bg, #fff);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        .settings-section h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary, #333);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color, #ddd);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: var(--input-bg, #f9fafb);
+            color: var(--text-primary, #333);
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(44, 95, 45, 0.1);
+        }
+        .form-hint {
+            font-size: 0.8rem;
+            color: var(--text-secondary, #666);
+            margin-top: 0.25rem;
+        }
+        .category-list {
+            display: grid;
+            gap: 0.5rem;
+        }
+        .category-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: var(--hover-bg, #f3f4f6);
+            border-radius: 6px;
+        }
+        .category-item .icon {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+        .category-item .name {
+            flex: 1;
+        }
+        .category-item.system {
+            opacity: 0.7;
+        }
+        .location-card {
+            background: var(--hover-bg, #f3f4f6);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .location-card h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-primary);
+        }
+        .location-card p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .location-card .actions {
+            margin-top: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .add-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .add-btn:hover {
+            opacity: 0.9;
+        }
+        .btn-sm {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        .btn-outline:hover {
+            background: var(--hover-bg);
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border: none;
+        }
+        .btn-test {
+            background: #3b82f6;
+            color: white;
+        }
+        .test-result {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            display: none;
+        }
+        .test-result.success {
+            background: #dcfce7;
+            color: #166534;
+            display: block;
+        }
+        .test-result.error {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+        .empty-text {
+            color: var(--text-secondary);
+            font-style: italic;
+            padding: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <main class="inventory-main">
+        <div class="container">
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1 class="page-title">Settings</h1>
+                    <p class="page-subtitle">Manage system settings, locations, and document categories</p>
+                </div>
+            </div>
+
+            <!-- Settings Tabs -->
+            <div class="settings-tabs">
+                <button class="settings-tab active" data-tab="smtp" onclick="switchTab('smtp')">Email (SMTP)</button>
+                <button class="settings-tab" data-tab="locations" onclick="switchTab('locations')">Locations</button>
+                <button class="settings-tab" data-tab="categories" onclick="switchTab('categories')">Document Categories</button>
+            </div>
+
+            <!-- SMTP Settings Panel -->
+            <div class="settings-panel active" id="panel-smtp">
+                <div class="settings-section">
+                    <h3>📧 Email Configuration (SMTP)</h3>
+                    <p style="margin-bottom: 1rem; color: var(--text-secondary);">Configure SMTP settings for the contact form. Use services like SMTP2GO, SendGrid, or your own mail server.</p>
+
+                    <form id="smtp-form" onsubmit="saveSmtpSettings(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="smtp-host">SMTP Host</label>
+                                <input type="text" id="smtp-host" name="smtp_host" placeholder="e.g., mail.smtp2go.com">
+                                <p class="form-hint">Your SMTP server hostname</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="smtp-port">Port</label>
+                                <select id="smtp-port" name="smtp_port">
+                                    <option value="587">587 (STARTTLS - Recommended)</option>
+                                    <option value="465">465 (SSL/TLS)</option>
+                                    <option value="25">25 (Plain - Not Recommended)</option>
+                                    <option value="2525">2525 (Alternative)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="smtp-user">Username</label>
+                                <input type="text" id="smtp-user" name="smtp_user" placeholder="SMTP username">
+                            </div>
+                            <div class="form-group">
+                                <label for="smtp-pass">Password</label>
+                                <input type="password" id="smtp-pass" name="smtp_pass" placeholder="SMTP password">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="smtp-from">From Email</label>
+                                <input type="email" id="smtp-from" name="smtp_from" placeholder="noreply@yourdomain.com">
+                                <p class="form-hint">The "from" address for outgoing emails</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email">Contact Form Recipient</label>
+                                <input type="email" id="contact-email" name="contact_email" placeholder="your@email.com">
+                                <p class="form-hint">Where contact form messages go</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="smtp-secure" name="smtp_secure">
+                                Use SSL/TLS (auto-enabled for port 465)
+                            </label>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button type="submit" class="btn btn-primary">Save SMTP Settings</button>
+                            <button type="button" class="btn btn-test" onclick="testSmtp()">Test Connection</button>
+                        </div>
+
+                        <div id="smtp-test-result" class="test-result"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Locations Panel -->
+            <div class="settings-panel" id="panel-locations">
+                <div class="settings-section">
+                    <h3>📦 Inventory Locations</h3>
+                    <p style="margin-bottom: 1rem; color: var(--text-secondary);">Storage locations for your inventory items.</p>
+                    <button class="add-btn" onclick="openAddLocationModal('inventory')">+ Add Inventory Location</button>
+                    <div id="inventory-locations-list" style="margin-top: 1rem;">
+                        <p class="empty-text">Loading...</p>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🍎 Pantry Locations</h3>
+                    <p style="margin-bottom: 1rem; color: var(--text-secondary);">Storage locations for your food and pantry items.</p>
+                    <button class="add-btn" onclick="openAddLocationModal('pantry')">+ Add Pantry Location</button>
+                    <div id="pantry-locations-list" style="margin-top: 1rem;">
+                        <p class="empty-text">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Categories Panel -->
+            <div class="settings-panel" id="panel-categories">
+                <div class="settings-section">
+                    <h3>📁 Document Categories</h3>
+                    <p style="margin-bottom: 1rem; color: var(--text-secondary);">Manage categories for family profile documents. System defaults cannot be deleted.</p>
+                    <button class="add-btn" onclick="openCategoryModal()">+ Add Category</button>
+                    <div id="categories-list" style="margin-top: 1rem;">
+                        <p class="empty-text">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Location Modal -->
+    <div class="modal" id="location-modal">
+        <div class="modal-overlay" onclick="closeLocationModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="location-modal-title">Add Location</h2>
+                <button class="modal-close" onclick="closeLocationModal()">&times;</button>
+            </div>
+            <form id="location-form" onsubmit="saveLocation(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="location-id" name="id">
+                    <input type="hidden" id="location-type" name="type">
+                    <div class="form-group">
+                        <label for="location-name">Location Name *</label>
+                        <input type="text" id="location-name" name="name" required placeholder="e.g., Garage Shelf A">
+                    </div>
+                    <div class="form-group">
+                        <label for="location-description">Description</label>
+                        <textarea id="location-description" name="description" rows="3" placeholder="Optional description"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeLocationModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div class="modal" id="category-modal">
+        <div class="modal-overlay" onclick="closeCategoryModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="category-modal-title">Add Category</h2>
+                <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
+            </div>
+            <form id="category-form" onsubmit="saveCategory(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="category-id" name="id">
+                    <div class="form-group">
+                        <label for="category-name">Category Name *</label>
+                        <input type="text" id="category-name" name="name" required placeholder="e.g., Travel Documents">
+                    </div>
+                    <div class="form-group">
+                        <label for="category-icon">Icon (emoji)</label>
+                        <input type="text" id="category-icon" name="icon" maxlength="4" placeholder="📄" style="width: 80px;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal auth-modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="authManager.hideModals()">&times;</span>
+            <h2>Login to SPS</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Username or Email</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/navigation.js"></script>
+    <script>
+        // State
+        let inventoryLocations = [];
+        let pantryLocations = [];
+        let documentCategories = [];
+        let editingLocationId = null;
+        let editingCategoryId = null;
+        let currentLocationType = 'inventory';
+
+        // Auth check
+        function getAuthHeaders() {
+            const token = localStorage.getItem('sps_token') || localStorage.getItem('token');
+            return token ? { 'Authorization': `Bearer ${token}` } : {};
+        }
+
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+            document.getElementById(`panel-${tab}`).classList.add('active');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            loadInventoryLocations();
+            loadPantryLocations();
+            loadDocumentCategories();
+        });
+
+        // Load SMTP settings
+        async function loadSettings() {
+            try {
+                const response = await fetch('/api/settings', { headers: getAuthHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.data) {
+                        const s = data.data;
+                        document.getElementById('smtp-host').value = s.smtp_host || '';
+                        document.getElementById('smtp-port').value = s.smtp_port || '587';
+                        document.getElementById('smtp-user').value = s.smtp_user || '';
+                        document.getElementById('smtp-pass').value = s.smtp_pass || '';
+                        document.getElementById('smtp-from').value = s.smtp_from || '';
+                        document.getElementById('smtp-secure').checked = s.smtp_secure || false;
+                        document.getElementById('contact-email').value = s.contact_email || '';
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load settings:', error);
+            }
+        }
+
+        // Save SMTP settings
+        async function saveSmtpSettings(event) {
+            event.preventDefault();
+            const form = event.target;
+            const data = {
+                smtp_host: document.getElementById('smtp-host').value,
+                smtp_port: parseInt(document.getElementById('smtp-port').value),
+                smtp_user: document.getElementById('smtp-user').value,
+                smtp_pass: document.getElementById('smtp-pass').value,
+                smtp_from: document.getElementById('smtp-from').value,
+                smtp_secure: document.getElementById('smtp-secure').checked,
+                contact_email: document.getElementById('contact-email').value
+            };
+
+            try {
+                const response = await fetch('/api/settings', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    showNotification('Settings saved successfully', 'success');
+                } else {
+                    showNotification('Failed to save settings', 'error');
+                }
+            } catch (error) {
+                console.error('Save error:', error);
+                showNotification('Failed to save settings', 'error');
+            }
+        }
+
+        // Test SMTP
+        async function testSmtp() {
+            const resultEl = document.getElementById('smtp-test-result');
+            resultEl.className = 'test-result';
+            resultEl.textContent = 'Testing connection...';
+            resultEl.style.display = 'block';
+
+            const data = {
+                smtp_host: document.getElementById('smtp-host').value,
+                smtp_port: parseInt(document.getElementById('smtp-port').value),
+                smtp_user: document.getElementById('smtp-user').value,
+                smtp_pass: document.getElementById('smtp-pass').value,
+                smtp_secure: document.getElementById('smtp-secure').checked
+            };
+
+            try {
+                const response = await fetch('/api/settings/test-smtp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    resultEl.className = 'test-result success';
+                    resultEl.textContent = '✓ ' + result.message;
+                } else {
+                    resultEl.className = 'test-result error';
+                    resultEl.textContent = '✗ ' + result.error;
+                }
+            } catch (error) {
+                resultEl.className = 'test-result error';
+                resultEl.textContent = '✗ Connection failed: ' + error.message;
+            }
+        }
+
+        // Load inventory locations
+        async function loadInventoryLocations() {
+            try {
+                const response = await fetch('/api/inventory/locations', { headers: getAuthHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    inventoryLocations = data.locations || data || [];
+                    renderInventoryLocations();
+                }
+            } catch (error) {
+                console.error('Failed to load inventory locations:', error);
+                document.getElementById('inventory-locations-list').innerHTML = '<p class="empty-text">Failed to load</p>';
+            }
+        }
+
+        // Load pantry locations
+        async function loadPantryLocations() {
+            try {
+                const response = await fetch('/api/pantry/locations', { headers: getAuthHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    pantryLocations = data.locations || data || [];
+                    renderPantryLocations();
+                }
+            } catch (error) {
+                console.error('Failed to load pantry locations:', error);
+                document.getElementById('pantry-locations-list').innerHTML = '<p class="empty-text">Failed to load</p>';
+            }
+        }
+
+        // Load document categories
+        async function loadDocumentCategories() {
+            try {
+                const response = await fetch('/api/settings/document-categories', { headers: getAuthHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    documentCategories = data.data || [];
+                    renderDocumentCategories();
+                }
+            } catch (error) {
+                console.error('Failed to load categories:', error);
+                document.getElementById('categories-list').innerHTML = '<p class="empty-text">Failed to load</p>';
+            }
+        }
+
+        // Render locations
+        function renderInventoryLocations() {
+            const list = document.getElementById('inventory-locations-list');
+            if (inventoryLocations.length === 0) {
+                list.innerHTML = '<p class="empty-text">No inventory locations. Add one to organize your supplies.</p>';
+                return;
+            }
+            list.innerHTML = inventoryLocations.map(loc => `
+                <div class="location-card">
+                    <h4>${escapeHtml(loc.name)}</h4>
+                    ${loc.description ? `<p>${escapeHtml(loc.description)}</p>` : ''}
+                    <div class="actions">
+                        <button class="btn btn-sm btn-outline" onclick="editLocation('inventory', ${loc.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteLocation('inventory', ${loc.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPantryLocations() {
+            const list = document.getElementById('pantry-locations-list');
+            if (pantryLocations.length === 0) {
+                list.innerHTML = '<p class="empty-text">No pantry locations. Add one to organize food storage.</p>';
+                return;
+            }
+            list.innerHTML = pantryLocations.map(loc => `
+                <div class="location-card">
+                    <h4>${escapeHtml(loc.name)}</h4>
+                    ${loc.description ? `<p>${escapeHtml(loc.description)}</p>` : ''}
+                    <div class="actions">
+                        <button class="btn btn-sm btn-outline" onclick="editLocation('pantry', ${loc.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteLocation('pantry', ${loc.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDocumentCategories() {
+            const list = document.getElementById('categories-list');
+            if (documentCategories.length === 0) {
+                list.innerHTML = '<p class="empty-text">No document categories defined.</p>';
+                return;
+            }
+            list.innerHTML = documentCategories.map(cat => `
+                <div class="category-item ${cat.user_id === null ? 'system' : ''}">
+                    <span class="icon">${cat.icon || '📄'}</span>
+                    <span class="name">${escapeHtml(cat.name)}</span>
+                    ${cat.user_id !== null ? `
+                        <button class="btn btn-sm btn-outline" onclick="editCategory(${cat.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteCategory(${cat.id})">Delete</button>
+                    ` : '<span style="font-size: 0.8rem; color: var(--text-secondary);">System Default</span>'}
+                </div>
+            `).join('');
+        }
+
+        // Location modal functions
+        function openAddLocationModal(type) {
+            editingLocationId = null;
+            currentLocationType = type;
+            document.getElementById('location-modal-title').textContent = `Add ${type === 'pantry' ? 'Pantry' : 'Inventory'} Location`;
+            document.getElementById('location-form').reset();
+            document.getElementById('location-id').value = '';
+            document.getElementById('location-type').value = type;
+            document.getElementById('location-modal').classList.add('active');
+        }
+
+        function editLocation(type, id) {
+            const locations = type === 'pantry' ? pantryLocations : inventoryLocations;
+            const loc = locations.find(l => l.id === id);
+            if (!loc) return;
+
+            editingLocationId = id;
+            currentLocationType = type;
+            document.getElementById('location-modal-title').textContent = `Edit ${type === 'pantry' ? 'Pantry' : 'Inventory'} Location`;
+            document.getElementById('location-id').value = id;
+            document.getElementById('location-type').value = type;
+            document.getElementById('location-name').value = loc.name || '';
+            document.getElementById('location-description').value = loc.description || '';
+            document.getElementById('location-modal').classList.add('active');
+        }
+
+        function closeLocationModal() {
+            document.getElementById('location-modal').classList.remove('active');
+        }
+
+        async function saveLocation(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            const type = data.type;
+            const id = data.id;
+            delete data.type;
+            delete data.id;
+
+            try {
+                const endpoint = type === 'pantry' ? '/api/pantry/locations' : '/api/inventory/locations';
+                const url = id ? `${endpoint}/${id}` : endpoint;
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('Failed to save');
+                showNotification(id ? 'Location updated' : 'Location added', 'success');
+                closeLocationModal();
+                type === 'pantry' ? loadPantryLocations() : loadInventoryLocations();
+            } catch (error) {
+                showNotification('Failed to save location', 'error');
+            }
+        }
+
+        async function deleteLocation(type, id) {
+            if (!confirm('Delete this location?')) return;
+            try {
+                const endpoint = type === 'pantry' ? '/api/pantry/locations' : '/api/inventory/locations';
+                await fetch(`${endpoint}/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+                showNotification('Location deleted', 'success');
+                type === 'pantry' ? loadPantryLocations() : loadInventoryLocations();
+            } catch (error) {
+                showNotification('Failed to delete', 'error');
+            }
+        }
+
+        // Category modal functions
+        function openCategoryModal() {
+            editingCategoryId = null;
+            document.getElementById('category-modal-title').textContent = 'Add Category';
+            document.getElementById('category-form').reset();
+            document.getElementById('category-id').value = '';
+            document.getElementById('category-modal').classList.add('active');
+        }
+
+        function editCategory(id) {
+            const cat = documentCategories.find(c => c.id === id);
+            if (!cat) return;
+            editingCategoryId = id;
+            document.getElementById('category-modal-title').textContent = 'Edit Category';
+            document.getElementById('category-id').value = id;
+            document.getElementById('category-name').value = cat.name || '';
+            document.getElementById('category-icon').value = cat.icon || '';
+            document.getElementById('category-modal').classList.add('active');
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('category-modal').classList.remove('active');
+        }
+
+        async function saveCategory(event) {
+            event.preventDefault();
+            const id = document.getElementById('category-id').value;
+            const data = {
+                name: document.getElementById('category-name').value,
+                icon: document.getElementById('category-icon').value || '📄'
+            };
+
+            try {
+                const url = id ? `/api/settings/document-categories/${id}` : '/api/settings/document-categories';
+                const method = id ? 'PUT' : 'POST';
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('Failed to save');
+                showNotification(id ? 'Category updated' : 'Category added', 'success');
+                closeCategoryModal();
+                loadDocumentCategories();
+            } catch (error) {
+                showNotification('Failed to save category', 'error');
+            }
+        }
+
+        async function deleteCategory(id) {
+            if (!confirm('Delete this category?')) return;
+            try {
+                await fetch(`/api/settings/document-categories/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+                showNotification('Category deleted', 'success');
+                loadDocumentCategories();
+            } catch (error) {
+                showNotification('Failed to delete', 'error');
+            }
+        }
+
+        // Utility
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function showNotification(message, type = 'info') {
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.classList.add('fade-out');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -3,14 +3,17 @@
 class SPSApiClient {
     constructor(baseURL = '/api') {
         this.baseURL = baseURL;
-        this.token = localStorage.getItem('sps_token');
+        // Check both 'token' and 'sps_token' for backwards compatibility
+        this.token = localStorage.getItem('token') || localStorage.getItem('sps_token');
     }
 
     setToken(token) {
         this.token = token;
         if (token) {
-            localStorage.setItem('sps_token', token);
+            localStorage.setItem('token', token);
+            localStorage.setItem('sps_token', token); // Keep for backwards compatibility
         } else {
+            localStorage.removeItem('token');
             localStorage.removeItem('sps_token');
         }
     }
@@ -168,11 +171,63 @@ class SPSApiClient {
         });
     }
 
+    async upload(endpoint, formData) {
+        const url = `${this.baseURL}${endpoint}`;
+        const headers = {};
+
+        if (this.token) {
+            headers['Authorization'] = `Bearer ${this.token}`;
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers,
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || data.message || 'Upload failed');
+            }
+
+            return data;
+        } catch (error) {
+            console.error('Upload Error:', error);
+            throw error;
+        }
+    }
+
+    // Generic HTTP Methods
+    async get(endpoint) {
+        return await this.request(endpoint, { method: 'GET' });
+    }
+
+    async post(endpoint, data) {
+        return await this.request(endpoint, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async put(endpoint, data) {
+        return await this.request(endpoint, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async delete(endpoint) {
+        return await this.request(endpoint, { method: 'DELETE' });
+    }
+
     // Helper Methods
     isAuthenticated() {
         return !!this.token;
     }
 }
 
-// Export global instance
+// Export global instances
 const spsApi = new SPSApiClient();
+const apiClient = spsApi; // Alias for compatibility

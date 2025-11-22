@@ -80,6 +80,53 @@ After installation, access at: `http://your-server-ip/`
 - Family/group collaboration
 - Activity logging and audit trails
 
+### 🥫 Food Pantry
+- Comprehensive food storage tracking
+- Nutritional information (calories, protein, carbs, fat)
+- Expiration monitoring with 7/30/90 day alerts
+- Category and location organization
+- Quick consume feature with history
+- Item grouping by name
+
+### 📦 Equipment Inventory
+- Non-food item management
+- Barcode/QR code scanning
+- Par level alerts for restocking
+- Location tracking
+- Serial number management
+
+### 🌱 Garden Planner
+- Planting scheduler with zone support
+- Seed-to-harvest tracking
+- Weather integration (optional)
+- Harvest logging
+- Companion planting suggestions
+
+### 🎯 Survival Simulation
+- Emergency scenario planning
+- What-if analysis
+- Resource consumption projections
+- Family needs calculator
+- DOS (Days of Supply) calculations
+
+### 📱 QR Code System
+- Full item data embedded in QR codes
+- Offline-readable labels
+- Print labels with metadata
+- Sync detection between QR and database
+- Group QR codes for multiple items
+
+### 📍 GPS & Maps
+- Offline OpenStreetMap integration
+- GPS tracking and waypoints
+- Meeting point management
+- Offline geocoding with Photon
+
+### 📷 Photo Gallery
+- Secure photo storage
+- Album organization
+- Photo metadata
+
 ### 📱 Additional Features
 - Family member profiles with medical information
 - Skills tracking and training progress
@@ -87,6 +134,8 @@ After installation, access at: `http://your-server-ip/`
 - Meeting point/evacuation location management
 - Customizable checklists (bug-out bags, 72-hour kits, etc.)
 - Alert system for low inventory and expiring items
+- Dark/Light theme support
+- Responsive mobile design
 
 ## 🛠️ Tech Stack
 
@@ -386,16 +435,47 @@ npm run dev  # Auto-reload on changes
 sps/
 ├── backend/
 │   ├── config/
+│   │   └── database.js       # PostgreSQL connection
 │   ├── middleware/
+│   │   └── auth.js           # JWT authentication
 │   ├── routes/
-│   └── server.js
+│   │   ├── auth.js           # Authentication endpoints
+│   │   ├── pantry.js         # Food pantry API
+│   │   ├── inventory.js      # Equipment inventory API
+│   │   ├── garden.js         # Garden planner API
+│   │   ├── simulation.js     # Survival simulation API
+│   │   ├── family-profiles.js# Family management
+│   │   ├── videos.js         # Video library
+│   │   ├── kiwix.js          # Offline knowledge
+│   │   ├── pictures.js       # Photo gallery
+│   │   ├── gps.js            # GPS/waypoints
+│   │   ├── osm.js            # OpenStreetMap
+│   │   └── sharing.js        # Resource sharing
+│   ├── uploads/              # User uploads
+│   └── server.js             # Express server
 ├── database/
-│   ├── schema.sql
-│   ├── videos-schema.sql
-│   └── sharing-schema.sql
-├── scripts/
-├── css/
+│   ├── schema.sql            # Core tables
+│   ├── pantry-schema.sql     # Food pantry tables
+│   ├── garden-schema.sql     # Garden tables
+│   ├── videos-schema.sql     # Video tables
+│   ├── pictures-schema.sql   # Photo tables
+│   └── sharing-schema.sql    # Sharing tables
+├── css/                      # Stylesheets
 ├── js/
+│   ├── api-client.js         # API wrapper
+│   ├── auth.js               # Authentication
+│   ├── pantry-module.js      # Pantry UI
+│   ├── inventory-module.js   # Inventory UI
+│   ├── garden.js             # Garden UI
+│   ├── simulation.js         # Simulation UI
+│   ├── qr-data.js            # QR encoder/decoder
+│   ├── qr-scanner.js         # QR scanner
+│   └── sidebar.js            # Navigation
+├── kiwix/                    # Offline knowledge
+├── scripts/                  # Setup scripts
+│   ├── install.sh            # One-command installer
+│   ├── setup-database.sh     # DB setup
+│   └── enable-autostart.sh   # PM2 autostart
 └── README.md
 ```
 

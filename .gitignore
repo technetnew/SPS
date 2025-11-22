@@ -8,9 +8,30 @@ backend/node_modules/
 
 # Uploads and user data
 uploads/
+backend/uploads/
 videos/
+pictures/uploads/
+
+# Kiwix data (large ZIM files)
 kiwix/data/*.zim
 kiwix/library/*.xml
+kiwix/library.xml
+
+# OSM/Map data (very large files)
+osm-data/downloads/
+osm-data/tiles/
+osm-data/nominatim/
+osm-data/*.pbf
+osm-data/*.osm
+maps/tiles/
+maps/tilemaker/
+*.pbf
+*.osm
+*.mbtiles
+
+# Large binary files
+*.zim
+*.jar
 
 # Logs
 *.log

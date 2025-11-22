@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden & Production - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/garden.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Garden</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li id="nav-logout-item" style="display: none;"><a href="#" class="nav-link" onclick="authManager.logout(); return false;">Logout</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/inventory.html" class="nav-link">Inventory</a></li>
+                    <li><a href="/pantry.html" class="nav-link">Pantry</a></li>
+                    <li><a href="/garden.html" class="nav-link active">Garden</a></li>
+                    <li class="nav-dropdown">
+                        <a href="/videos.html" class="nav-link" data-active-paths="/videos.html,/pictures.html">Media</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/videos.html">Videos</a></li>
+                            <li><a href="/pictures.html">Pictures</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
+                    <li class="nav-dropdown"><a href="/gps.html" class="nav-link" data-active-paths="/gps.html,/osm-sync.html">Map</a><ul class="dropdown-menu"><li><a href="/gps.html">Map View</a></li><li><a href="/osm-sync.html">Sync Maps</a></li></ul></li>
+                    <li class="nav-dropdown"><a href="#" class="nav-link" data-active-paths="/familyprofile.html,/energy.html,/medical.html,/locations.html,/simulation.html">Tools</a><ul class="dropdown-menu"><li><a href="/familyprofile.html">Family Profile</a></li><li><a href="/simulation.html">Simulation & Planning</a></li><li><a href="/energy.html">Energy Calculator</a></li><li><a href="/medical.html">Medical Guide</a></li><li><a href="/locations.html">Locations</a></li></ul></li>
+                </ul>
+                <div class="nav-right">
+                    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <span id="user-name"></span>
+                        <button onclick="authManager.logout()" class="btn btn-danger btn-sm">Logout</button>
+                    </div>
+                    <div id="auth-buttons" style="display: flex; gap: 10px;">
+                        <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="garden-main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1 class="page-title">Garden & Production</h1>
+                    <p class="page-subtitle">Track your gardens, plants, harvests, and environmental data</p>
+                </div>
+                <div class="page-header-right">
+                    <button class="btn btn-outline" onclick="exportToPDF()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Export PDF
+                    </button>
+                    <button class="btn btn-outline" onclick="openEnvironmentImportModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Import Env Data
+                    </button>
+                    <button class="btn btn-primary" onclick="openGardenModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        New Garden
+                    </button>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-green">&#127793;</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="stat-gardens">0</div>
+                        <div class="stat-label">Gardens</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-blue">&#127807;</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="stat-plants">0</div>
+                        <div class="stat-label">Active Plants</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-orange">&#127813;</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="stat-harvest-kg">0</div>
+                        <div class="stat-label">Harvest (kg)</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-purple">&#128293;</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="stat-calories">0</div>
+                        <div class="stat-label">Total Calories</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="gardens">Gardens</button>
+                <button class="tab-btn" data-tab="plants">Plants</button>
+                <button class="tab-btn" data-tab="plant-guides">Plant Guides</button>
+                <button class="tab-btn" data-tab="logbook">Logbook</button>
+                <button class="tab-btn" data-tab="harvests">Harvests</button>
+                <button class="tab-btn" data-tab="environment">Environment</button>
+            </div>
+
+            <!-- Gardens Tab -->
+            <div class="tab-content active" id="tab-gardens">
+                <div class="gardens-grid" id="gardens-list">
+                    <!-- Gardens will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Plants Tab -->
+            <div class="tab-content" id="tab-plants">
+                <div class="filter-bar">
+                    <select id="filter-garden" onchange="loadPlants()">
+                        <option value="">All Gardens</option>
+                    </select>
+                    <select id="filter-status" onchange="loadPlants()">
+                        <option value="">All Status</option>
+                        <option value="planned">Planned</option>
+                        <option value="seeded">Seeded</option>
+                        <option value="germinated">Germinated</option>
+                        <option value="growing">Growing</option>
+                        <option value="flowering">Flowering</option>
+                        <option value="fruiting">Fruiting</option>
+                        <option value="harvested">Harvested</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="openPlantModal()">+ Add Plant</button>
+                </div>
+                <div class="plants-table-container">
+                    <table class="data-table" id="plants-table">
+                        <thead>
+                            <tr>
+                                <th>Plant</th>
+                                <th>Garden</th>
+                                <th>Bed</th>
+                                <th>Planted</th>
+                                <th>Status</th>
+                                <th>Expected Harvest</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="plants-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Plant Guides Tab -->
+            <div class="tab-content" id="tab-plant-guides">
+                <div class="filter-bar">
+                    <input type="text" id="guide-search" placeholder="Search plant guides..." onkeyup="searchPlantGuides()">
+                    <select id="guide-category" onchange="loadPlantGuides()">
+                        <option value="">All Categories</option>
+                        <option value="vegetable">Vegetables</option>
+                        <option value="fruit">Fruits</option>
+                        <option value="herb">Herbs</option>
+                        <option value="grain">Grains</option>
+                        <option value="legume">Legumes</option>
+                        <option value="root">Root Crops</option>
+                        <option value="leafy">Leafy Greens</option>
+                        <option value="flower">Flowers</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="openPlantGuideModal()">+ Add Guide</button>
+                </div>
+                <div class="guides-grid" id="guides-list">
+                    <!-- Plant guides will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Logbook Tab -->
+            <div class="tab-content" id="tab-logbook">
+                <div class="filter-bar">
+                    <select id="log-filter-garden" onchange="loadLogs()">
+                        <option value="">All Gardens</option>
+                    </select>
+                    <select id="log-filter-action" onchange="loadLogs()">
+                        <option value="">All Actions</option>
+                        <option value="planted">Planted</option>
+                        <option value="watered">Watered</option>
+                        <option value="fertilized">Fertilized</option>
+                        <option value="pruned">Pruned</option>
+                        <option value="weeded">Weeded</option>
+                        <option value="pest_treatment">Pest Treatment</option>
+                        <option value="disease_treatment">Disease Treatment</option>
+                        <option value="germination">Germination</option>
+                        <option value="flowering">Flowering</option>
+                        <option value="fruiting">Fruiting</option>
+                        <option value="harvested">Harvested</option>
+                        <option value="observation">Observation</option>
+                        <option value="weather">Weather Note</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="date" id="log-start-date" onchange="loadLogs()">
+                    <input type="date" id="log-end-date" onchange="loadLogs()">
+                    <button class="btn btn-primary" onclick="openLogModal()">+ Add Log Entry</button>
+                </div>
+                <div class="logs-list" id="logs-list">
+                    <!-- Logs will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Harvests Tab -->
+            <div class="tab-content" id="tab-harvests">
+                <div class="filter-bar">
+                    <select id="harvest-filter-garden" onchange="loadHarvests()">
+                        <option value="">All Gardens</option>
+                    </select>
+                    <input type="date" id="harvest-start-date" onchange="loadHarvests()">
+                    <input type="date" id="harvest-end-date" onchange="loadHarvests()">
+                    <button class="btn btn-primary" onclick="openHarvestModal()">+ Record Harvest</button>
+                </div>
+                <div class="harvests-summary" id="harvest-summary">
+                    <!-- Summary will load here -->
+                </div>
+                <div class="harvests-table-container">
+                    <table class="data-table" id="harvests-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Plant</th>
+                                <th>Garden</th>
+                                <th>Weight (g)</th>
+                                <th>Calories</th>
+                                <th>Quality</th>
+                                <th>Destination</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="harvests-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Environment Tab -->
+            <div class="tab-content" id="tab-environment">
+                <div class="filter-bar">
+                    <select id="env-filter-garden" onchange="loadEnvironment()">
+                        <option value="">All Gardens</option>
+                    </select>
+                    <input type="date" id="env-start-date" onchange="loadEnvironment()">
+                    <input type="date" id="env-end-date" onchange="loadEnvironment()">
+                    <button class="btn btn-outline" onclick="openEnvironmentImportModal()">Import CSV</button>
+                    <button class="btn btn-primary" onclick="openEnvironmentModal()">+ Manual Entry</button>
+                </div>
+                <div class="environment-charts">
+                    <div class="chart-container">
+                        <canvas id="temp-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="humidity-chart"></canvas>
+                    </div>
+                </div>
+                <div class="environment-summary" id="env-summary">
+                    <!-- Environment summary will load here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Garden Modal -->
+    <div id="garden-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="garden-modal-title">New Garden</h2>
+                <button class="modal-close" onclick="closeGardenModal()">&times;</button>
+            </div>
+            <form id="garden-form" onsubmit="saveGarden(event)">
+                <input type="hidden" id="garden-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="garden-name">Garden Name *</label>
+                        <input type="text" id="garden-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="garden-type">Garden Type</label>
+                        <select id="garden-type">
+                            <option value="outdoor">Outdoor</option>
+                            <option value="raised_bed">Raised Bed</option>
+                            <option value="container">Container</option>
+                            <option value="greenhouse">Greenhouse</option>
+                            <option value="indoor">Indoor</option>
+                            <option value="hydroponic">Hydroponic</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="garden-area">Total Area (sq ft)</label>
+                        <input type="number" id="garden-area" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="garden-zone">USDA Zone</label>
+                        <input type="text" id="garden-zone" placeholder="e.g., 6b">
+                    </div>
+                    <div class="form-group">
+                        <label for="garden-last-frost">Last Frost Date</label>
+                        <input type="date" id="garden-last-frost">
+                    </div>
+                    <div class="form-group">
+                        <label for="garden-first-frost">First Frost Date</label>
+                        <input type="date" id="garden-first-frost">
+                    </div>
+                    <div class="form-group">
+                        <label for="garden-hemisphere">Hemisphere</label>
+                        <select id="garden-hemisphere">
+                            <option value="northern">Northern</option>
+                            <option value="southern">Southern</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="garden-irrigation">Irrigation Type</label>
+                        <select id="garden-irrigation">
+                            <option value="">None/Manual</option>
+                            <option value="drip">Drip</option>
+                            <option value="sprinkler">Sprinkler</option>
+                            <option value="soaker">Soaker Hose</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="garden-location">Location Description</label>
+                        <input type="text" id="garden-location" placeholder="e.g., Backyard, south facing">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="garden-description">Description</label>
+                        <textarea id="garden-description" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeGardenModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Garden</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Plant Modal -->
+    <div id="plant-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="plant-modal-title">Add Plant</h2>
+                <button class="modal-close" onclick="closePlantModal()">&times;</button>
+            </div>
+            <form id="plant-form" onsubmit="savePlant(event)">
+                <input type="hidden" id="plant-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="plant-garden">Garden *</label>
+                        <select id="plant-garden" required onchange="loadBedsForGarden(this.value)">
+                            <option value="">Select Garden</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-bed">Bed</label>
+                        <select id="plant-bed">
+                            <option value="">No specific bed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-guide">Plant Guide</label>
+                        <select id="plant-guide" onchange="populateFromGuide(this.value)">
+                            <option value="">Select or search...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-name">Plant Name *</label>
+                        <input type="text" id="plant-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-variety">Variety</label>
+                        <input type="text" id="plant-variety">
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-quantity">Quantity</label>
+                        <input type="number" id="plant-quantity" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-area">Area (sq ft)</label>
+                        <input type="number" id="plant-area" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-method">Planting Method</label>
+                        <select id="plant-method">
+                            <option value="direct_sow">Direct Sow</option>
+                            <option value="transplant">Transplant</option>
+                            <option value="cutting">Cutting</option>
+                            <option value="division">Division</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-seed-start">Seed Start Date</label>
+                        <input type="date" id="plant-seed-start">
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-transplant-date">Transplant Date</label>
+                        <input type="date" id="plant-transplant-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-direct-sow">Direct Sow Date</label>
+                        <input type="date" id="plant-direct-sow">
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-date">Main Planting Date *</label>
+                        <input type="date" id="plant-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-source">Seed Source</label>
+                        <input type="text" id="plant-source" placeholder="e.g., Baker Creek, saved seeds">
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-organic">
+                            <input type="checkbox" id="plant-organic"> Organic
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-heirloom">
+                            <input type="checkbox" id="plant-heirloom"> Heirloom
+                        </label>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="plant-notes">Notes</label>
+                        <textarea id="plant-notes" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closePlantModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Plant</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Log Entry Modal -->
+    <div id="log-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Add Log Entry</h2>
+                <button class="modal-close" onclick="closeLogModal()">&times;</button>
+            </div>
+            <form id="log-form" onsubmit="saveLog(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="log-garden">Garden</label>
+                        <select id="log-garden" onchange="loadPlantsForLog(this.value)">
+                            <option value="">Garden-wide entry</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="log-plant">Plant</label>
+                        <select id="log-plant">
+                            <option value="">All plants / general</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="log-date">Date *</label>
+                        <input type="date" id="log-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="log-time">Time</label>
+                        <input type="time" id="log-time">
+                    </div>
+                    <div class="form-group">
+                        <label for="log-action">Action Type *</label>
+                        <select id="log-action" required onchange="toggleLogFields()">
+                            <option value="observation">Observation</option>
+                            <option value="planted">Planted</option>
+                            <option value="watered">Watered</option>
+                            <option value="fertilized">Fertilized</option>
+                            <option value="pruned">Pruned</option>
+                            <option value="weeded">Weeded</option>
+                            <option value="pest_treatment">Pest Treatment</option>
+                            <option value="disease_treatment">Disease Treatment</option>
+                            <option value="germination">Germination</option>
+                            <option value="flowering">Flowering</option>
+                            <option value="fruiting">Fruiting</option>
+                            <option value="harvested">Harvested</option>
+                            <option value="weather">Weather Note</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="log-weather">Weather Summary</label>
+                        <input type="text" id="log-weather" placeholder="e.g., Sunny, light breeze">
+                    </div>
+                    <div class="form-group">
+                        <label for="log-temp">Temperature (C)</label>
+                        <input type="number" id="log-temp" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="log-temp-max">Max Temp (C)</label>
+                        <input type="number" id="log-temp-max" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="log-temp-min">Min Temp (C)</label>
+                        <input type="number" id="log-temp-min" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="log-humidity">Humidity %</label>
+                        <input type="number" id="log-humidity" step="1" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="log-rain">Rain (mm)</label>
+                        <input type="number" id="log-rain" step="0.1">
+                    </div>
+                    <div class="form-group water-fields" style="display:none;">
+                        <label for="log-water-amount">Water Amount (L)</label>
+                        <input type="number" id="log-water-amount" step="0.1">
+                    </div>
+                    <div class="form-group fertilizer-fields" style="display:none;">
+                        <label for="log-fertilizer-type">Fertilizer Type</label>
+                        <input type="text" id="log-fertilizer-type">
+                    </div>
+                    <div class="form-group fertilizer-fields" style="display:none;">
+                        <label for="log-fertilizer-amount">Fertilizer Amount</label>
+                        <input type="text" id="log-fertilizer-amount">
+                    </div>
+                    <div class="form-group pest-fields" style="display:none;">
+                        <label for="log-pest">Pest Identified</label>
+                        <input type="text" id="log-pest">
+                    </div>
+                    <div class="form-group disease-fields" style="display:none;">
+                        <label for="log-disease">Disease Identified</label>
+                        <input type="text" id="log-disease">
+                    </div>
+                    <div class="form-group treatment-fields" style="display:none;">
+                        <label for="log-treatment">Treatment Applied</label>
+                        <input type="text" id="log-treatment">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="log-details">Details/Notes *</label>
+                        <textarea id="log-details" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeLogModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Harvest Modal -->
+    <div id="harvest-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="harvest-modal-title">Record Harvest</h2>
+                <button class="modal-close" onclick="closeHarvestModal()">&times;</button>
+            </div>
+            <form id="harvest-form" onsubmit="saveHarvest(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="harvest-garden">Garden *</label>
+                        <select id="harvest-garden" required onchange="loadPlantsForHarvest(this.value)">
+                            <option value="">Select Garden</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="harvest-plant">Plant *</label>
+                        <select id="harvest-plant" required>
+                            <option value="">Select Plant</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="harvest-date">Date *</label>
+                        <input type="date" id="harvest-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="harvest-time">Time</label>
+                        <input type="time" id="harvest-time">
+                    </div>
+                    <div class="form-group">
+                        <label for="harvest-weight">Weight (grams) *</label>
+                        <input type="number" id="harvest-weight" required step="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="harvest-count">Count (items)</label>
+                        <input type="number" id="harvest-count">
+                    </div>
+                    <div class="form-group">
+                        <label for="harvest-quality">Quality (1-5)</label>
+                        <select id="harvest-quality">
+                            <option value="5">5 - Excellent</option>
+                            <option value="4">4 - Good</option>
+                            <option value="3" selected>3 - Average</option>
+                            <option value="2">2 - Below Average</option>
+                            <option value="1">1 - Poor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="harvest-destination">Destination</label>
+                        <select id="harvest-destination">
+                            <option value="fresh_use">Fresh Use</option>
+                            <option value="storage">Storage</option>
+                            <option value="canning">Canning</option>
+                            <option value="freezing">Freezing</option>
+                            <option value="drying">Drying</option>
+                            <option value="sharing">Sharing/Gifting</option>
+                            <option value="compost">Compost</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="harvest-notes">Notes</label>
+                        <textarea id="harvest-notes" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeHarvestModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Harvest</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Plant Guide Modal -->
+    <div id="guide-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="guide-modal-title">Plant Guide</h2>
+                <button class="modal-close" onclick="closeGuideModal()">&times;</button>
+            </div>
+            <form id="guide-form" onsubmit="saveGuide(event)">
+                <input type="hidden" id="guide-id">
+                <div class="guide-tabs">
+                    <button type="button" class="guide-tab-btn active" data-guide-tab="basic">Basic Info</button>
+                    <button type="button" class="guide-tab-btn" data-guide-tab="growing">Growing</button>
+                    <button type="button" class="guide-tab-btn" data-guide-tab="timing">Timing</button>
+                    <button type="button" class="guide-tab-btn" data-guide-tab="care">Care</button>
+                    <button type="button" class="guide-tab-btn" data-guide-tab="harvest">Harvest</button>
+                </div>
+
+                <div class="guide-tab-content active" id="guide-tab-basic">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="guide-common-name">Common Name *</label>
+                            <input type="text" id="guide-common-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-latin-name">Latin Name</label>
+                            <input type="text" id="guide-latin-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-variety-name">Variety Name</label>
+                            <input type="text" id="guide-variety-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-category">Category</label>
+                            <select id="guide-category">
+                                <option value="vegetable">Vegetable</option>
+                                <option value="fruit">Fruit</option>
+                                <option value="herb">Herb</option>
+                                <option value="grain">Grain</option>
+                                <option value="legume">Legume</option>
+                                <option value="root">Root Crop</option>
+                                <option value="leafy">Leafy Green</option>
+                                <option value="flower">Flower</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="guide-description">Description</label>
+                            <textarea id="guide-description" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-tab-content" id="guide-tab-growing">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="guide-zones">Hardiness Zones</label>
+                            <input type="text" id="guide-zones" placeholder="e.g., 3-10">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-sun">Sun Requirements</label>
+                            <select id="guide-sun">
+                                <option value="">Select...</option>
+                                <option value="full_sun">Full Sun (6+ hrs)</option>
+                                <option value="partial_sun">Partial Sun (3-6 hrs)</option>
+                                <option value="partial_shade">Partial Shade</option>
+                                <option value="full_shade">Full Shade</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-water">Water Requirements</label>
+                            <select id="guide-water">
+                                <option value="">Select...</option>
+                                <option value="low">Low</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="high">High</option>
+                                <option value="consistent">Consistent/Even</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-soil">Soil Type</label>
+                            <input type="text" id="guide-soil" placeholder="e.g., Well-drained, loamy">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-ph-min">Soil pH Min</label>
+                            <input type="number" id="guide-ph-min" step="0.1" min="0" max="14">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-ph-max">Soil pH Max</label>
+                            <input type="number" id="guide-ph-max" step="0.1" min="0" max="14">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-spacing-in">Plant Spacing (inches)</label>
+                            <input type="number" id="guide-spacing-in">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-row-spacing">Row Spacing (inches)</label>
+                            <input type="number" id="guide-row-spacing">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-depth">Planting Depth (inches)</label>
+                            <input type="number" id="guide-depth" step="0.25">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-tab-content" id="guide-tab-timing">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="guide-indoor-weeks">Start Indoors (weeks before last frost)</label>
+                            <input type="number" id="guide-indoor-weeks">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-transplant-weeks">Transplant (weeks after last frost)</label>
+                            <input type="number" id="guide-transplant-weeks">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-direct-sow">Direct Sow (weeks after last frost)</label>
+                            <input type="number" id="guide-direct-sow-weeks">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-germ-days-min">Germination Days (min)</label>
+                            <input type="number" id="guide-germ-days-min">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-germ-days-max">Germination Days (max)</label>
+                            <input type="number" id="guide-germ-days-max">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-maturity-min">Days to Maturity (min)</label>
+                            <input type="number" id="guide-maturity-min">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-maturity-max">Days to Maturity (max)</label>
+                            <input type="number" id="guide-maturity-max">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-base-temp">Base Temp for GDD (C)</label>
+                            <input type="number" id="guide-base-temp" step="0.1" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-frost-tolerance">Frost Tolerance</label>
+                            <select id="guide-frost-tolerance">
+                                <option value="">Select...</option>
+                                <option value="tender">Tender (no frost)</option>
+                                <option value="semi_hardy">Semi-Hardy (light frost)</option>
+                                <option value="hardy">Hardy (hard frost)</option>
+                                <option value="very_hardy">Very Hardy (overwinter)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-tab-content" id="guide-tab-care">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="guide-companions">Companion Plants</label>
+                            <input type="text" id="guide-companions" placeholder="e.g., basil, carrots, marigolds">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="guide-antagonists">Plants to Avoid</label>
+                            <input type="text" id="guide-antagonists" placeholder="e.g., fennel, brassicas">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="guide-pests">Common Pests</label>
+                            <textarea id="guide-pests" rows="2"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="guide-diseases">Common Diseases</label>
+                            <textarea id="guide-diseases" rows="2"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="guide-growing-tips">Growing Tips</label>
+                            <textarea id="guide-growing-tips" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-tab-content" id="guide-tab-harvest">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="guide-harvest-indicators">Harvest Indicators</label>
+                            <textarea id="guide-harvest-indicators" rows="2" placeholder="e.g., Color change, size, days from flowering"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-yield">Expected Yield (g/sq ft)</label>
+                            <input type="number" id="guide-yield" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="guide-calories">Calories per 100g</label>
+                            <input type="number" id="guide-calories">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="guide-storage">Storage Notes</label>
+                            <textarea id="guide-storage" rows="2"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="guide-seed-saving">Seed Saving Notes</label>
+                            <textarea id="guide-seed-saving" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeGuideModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Guide</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Environment Manual Entry Modal -->
+    <div id="environment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Environment Reading</h2>
+                <button class="modal-close" onclick="closeEnvironmentModal()">&times;</button>
+            </div>
+            <form id="environment-form" onsubmit="saveEnvironment(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="env-garden">Garden</label>
+                        <select id="env-garden">
+                            <option value="">General</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="env-timestamp">Date/Time *</label>
+                        <input type="datetime-local" id="env-timestamp" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="env-temp">Temperature (C)</label>
+                        <input type="number" id="env-temp" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="env-temp-max">Max Temp (C)</label>
+                        <input type="number" id="env-temp-max" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="env-temp-min">Min Temp (C)</label>
+                        <input type="number" id="env-temp-min" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="env-soil-temp">Soil Temp (C)</label>
+                        <input type="number" id="env-soil-temp" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="env-humidity">Humidity %</label>
+                        <input type="number" id="env-humidity" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="env-rainfall">Rainfall (mm)</label>
+                        <input type="number" id="env-rainfall" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="env-light-hours">Light Hours</label>
+                        <input type="number" id="env-light-hours" step="0.1" min="0" max="24">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="env-notes">Notes</label>
+                        <textarea id="env-notes" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeEnvironmentModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Reading</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Environment Import Modal -->
+    <div id="env-import-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Import Environment Data</h2>
+                <button class="modal-close" onclick="closeEnvironmentImportModal()">&times;</button>
+            </div>
+            <form id="env-import-form" onsubmit="importEnvironmentData(event)">
+                <div class="form-group">
+                    <label for="import-garden">Garden</label>
+                    <select id="import-garden">
+                        <option value="">General/All</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="import-file">CSV File *</label>
+                    <input type="file" id="import-file" accept=".csv" required>
+                </div>
+                <div class="form-group">
+                    <p class="help-text">
+                        CSV should have headers: timestamp, temperature, humidity, rainfall, soil_temp<br>
+                        Dates can be in ISO format or common formats.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeEnvironmentImportModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Garden Detail Modal -->
+    <div id="garden-detail-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="garden-detail-title">Garden Details</h2>
+                <button class="modal-close" onclick="closeGardenDetailModal()">&times;</button>
+            </div>
+            <div class="garden-detail-content">
+                <div class="garden-detail-tabs">
+                    <button class="detail-tab-btn active" data-detail-tab="overview">Overview</button>
+                    <button class="detail-tab-btn" data-detail-tab="beds">Beds</button>
+                    <button class="detail-tab-btn" data-detail-tab="plants">Plants</button>
+                    <button class="detail-tab-btn" data-detail-tab="logbook">Logbook</button>
+                    <button class="detail-tab-btn" data-detail-tab="stats">Statistics</button>
+                </div>
+                <div class="detail-tab-content active" id="detail-overview">
+                    <!-- Garden overview will load here -->
+                </div>
+                <div class="detail-tab-content" id="detail-beds">
+                    <div class="beds-toolbar">
+                        <button class="btn btn-primary btn-sm" onclick="openBedModal()">+ Add Bed</button>
+                    </div>
+                    <div class="beds-grid" id="garden-beds-list">
+                        <!-- Beds will load here -->
+                    </div>
+                </div>
+                <div class="detail-tab-content" id="detail-plants">
+                    <div id="garden-plants-list">
+                        <!-- Plants will load here -->
+                    </div>
+                </div>
+                <div class="detail-tab-content" id="detail-logbook">
+                    <div id="garden-logs-list">
+                        <!-- Logs will load here -->
+                    </div>
+                </div>
+                <div class="detail-tab-content" id="detail-stats">
+                    <div id="garden-stats">
+                        <!-- Stats will load here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bed Modal -->
+    <div id="bed-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="bed-modal-title">Add Bed</h2>
+                <button class="modal-close" onclick="closeBedModal()">&times;</button>
+            </div>
+            <form id="bed-form" onsubmit="saveBed(event)">
+                <input type="hidden" id="bed-id">
+                <input type="hidden" id="bed-garden-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="bed-name">Bed Name *</label>
+                        <input type="text" id="bed-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bed-type">Bed Type</label>
+                        <select id="bed-type">
+                            <option value="raised">Raised Bed</option>
+                            <option value="in_ground">In-Ground</option>
+                            <option value="container">Container</option>
+                            <option value="row">Row</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bed-length">Length (ft)</label>
+                        <input type="number" id="bed-length" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="bed-width">Width (ft)</label>
+                        <input type="number" id="bed-width" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="bed-soil">Soil Type</label>
+                        <input type="text" id="bed-soil" placeholder="e.g., Mixed compost, sandy loam">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="bed-notes">Notes</label>
+                        <textarea id="bed-notes" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeBedModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Bed</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Plant Guide View Modal -->
+    <div id="guide-view-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="guide-view-title">Plant Guide</h2>
+                <button class="modal-close" onclick="closeGuideViewModal()">&times;</button>
+            </div>
+            <div id="guide-view-content" class="guide-view-content">
+                <!-- Guide content will load here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="cloneGuide()">Clone & Edit</button>
+                <button class="btn btn-primary" onclick="closeGuideViewModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Login</h2>
+                <button class="modal-close" onclick="authManager.hideLoginModal()">&times;</button>
+            </div>
+            <form id="login-form" onsubmit="authManager.handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/theme-toggle.js?v=20251122b"></script>
+    <script src="js/api-client.js?v=20251122b"></script>
+    <script src="js/auth.js?v=20251122b"></script>
+    <script src="js/sidebar.js?v=20251122b"></script>
+    <script src="js/garden.js?v=20251122b"></script>
+</body>
+</html>

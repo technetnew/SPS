@@ -3,10 +3,17 @@
 class AuthManager {
     constructor() {
         this.user = null;
-        this.init();
+        // Defer init to allow api-client to fully load
+        setTimeout(() => this.init(), 0);
     }
 
     async init() {
+        // Check if spsApi exists
+        if (typeof spsApi === 'undefined') {
+            console.error('[Auth] spsApi not defined - check script loading order');
+            return;
+        }
+
         if (spsApi.isAuthenticated()) {
             try {
                 await this.loadUser();
@@ -21,7 +28,7 @@ class AuthManager {
 
     checkPageAccess() {
         const currentPage = window.location.pathname;
-        const protectedPages = ['/dashboard.html', '/videos.html', '/kiwix.html'];
+        const protectedPages = ['/dashboard.html', '/videos.html'];
         const publicPages = ['/', '/index.html'];
 
         // If on a protected page and not authenticated, redirect to home
@@ -40,13 +47,31 @@ class AuthManager {
     async loadUser() {
         const response = await spsApi.getProfile();
         this.user = response.user;
+        // Store username for sidebar
+        if (this.user) {
+            localStorage.setItem('username', this.user.username || this.user.first_name);
+            localStorage.setItem('userId', this.user.id);
+        }
+        // Update sidebar user section
+        if (typeof updateSidebarUser === 'function') {
+            updateSidebarUser();
+        }
         return this.user;
     }
 
     async login(username, password) {
         const response = await spsApi.login({ username, password });
         this.user = response.user;
+        // Store username for sidebar
+        if (this.user) {
+            localStorage.setItem('username', this.user.username || this.user.first_name || username);
+            localStorage.setItem('userId', this.user.id);
+        }
         this.updateUI();
+        // Update sidebar user section
+        if (typeof updateSidebarUser === 'function') {
+            updateSidebarUser();
+        }
         return response;
     }
 
@@ -60,8 +85,25 @@ class AuthManager {
     async logout() {
         await spsApi.logout();
         this.user = null;
+        // Clear all auth-related items
+        localStorage.removeItem('token');
+        localStorage.removeItem('sps_token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('userId');
+
+        // Clear sessionStorage too
+        sessionStorage.clear();
+
+        // Clear caches if available
+        if ('caches' in window) {
+            caches.keys().then(names => {
+                names.forEach(name => caches.delete(name));
+            });
+        }
+
         this.updateUI();
-        window.location.href = '/';
+        // Force reload without cache
+        window.location.href = '/index.html?logout=' + Date.now();
     }
 
     isAuthenticated() {
@@ -75,6 +117,7 @@ class AuthManager {
     updateUI() {
         const authButtons = document.getElementById('auth-buttons');
         const userSection = document.getElementById('user-section');
+        const navLogoutItem = document.getElementById('nav-logout-item');
 
         if (this.isAuthenticated()) {
             if (authButtons) authButtons.style.display = 'none';
@@ -85,9 +128,11 @@ class AuthManager {
                     userNameSpan.textContent = this.user.first_name || this.user.username;
                 }
             }
+            if (navLogoutItem) navLogoutItem.style.display = 'block';
         } else {
             if (authButtons) authButtons.style.display = 'flex';
             if (userSection) userSection.style.display = 'none';
+            if (navLogoutItem) navLogoutItem.style.display = 'none';
         }
     }
 

@@ -8,6 +8,260 @@ const router = express.Router();
 // All routes require authentication
 router.use(authenticateToken);
 
+// Get storage locations for user
+router.get('/locations', async (req, res) => {
+    try {
+        const result = await db.query(
+            `SELECT sl.*,
+                    COUNT(ii.id) as item_count
+             FROM storage_locations sl
+             LEFT JOIN inventory_items ii ON sl.name = ii.location AND ii.user_id = $1
+             WHERE sl.user_id = $1
+             GROUP BY sl.id
+             ORDER BY sl.name`,
+            [req.user.userId]
+        );
+        res.json({ locations: result.rows });
+    } catch (error) {
+        console.error('Locations fetch error:', error);
+        res.status(500).json({ error: 'Failed to fetch locations' });
+    }
+});
+
+// Create storage location
+router.post('/locations', [
+    body('name').trim().notEmpty().isLength({ max: 255 }),
+    body('location_type').optional().isIn(['home', 'vehicle', 'cache', 'bug_out', 'storage_unit'])
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name, description, location_type, address, is_primary } = req.body;
+
+    try {
+        if (is_primary) {
+            await db.query(
+                'UPDATE storage_locations SET is_primary = FALSE WHERE user_id = $1',
+                [req.user.userId]
+            );
+        }
+
+        const result = await db.query(
+            `INSERT INTO storage_locations (user_id, name, description, location_type, address, is_primary)
+             VALUES ($1, $2, $3, $4, $5, $6)
+             RETURNING *`,
+            [req.user.userId, name, description, location_type, address, is_primary || false]
+        );
+
+        res.status(201).json({
+            message: 'Location created successfully',
+            location: result.rows[0]
+        });
+    } catch (error) {
+        console.error('Location creation error:', error);
+        res.status(500).json({ error: 'Failed to create location' });
+    }
+});
+
+// Update storage location
+router.put('/locations/:id', async (req, res) => {
+    const { name, description, location_type, address, is_primary } = req.body;
+
+    try {
+        if (is_primary) {
+            await db.query(
+                'UPDATE storage_locations SET is_primary = FALSE WHERE user_id = $1',
+                [req.user.userId]
+            );
+        }
+
+        const result = await db.query(
+            `UPDATE storage_locations SET
+                name = COALESCE($1, name),
+                description = COALESCE($2, description),
+                location_type = COALESCE($3, location_type),
+                address = COALESCE($4, address),
+                is_primary = COALESCE($5, is_primary)
+             WHERE id = $6 AND user_id = $7
+             RETURNING *`,
+            [name, description, location_type, address, is_primary, req.params.id, req.user.userId]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Location not found' });
+        }
+
+        res.json({ message: 'Location updated', location: result.rows[0] });
+    } catch (error) {
+        console.error('Location update error:', error);
+        res.status(500).json({ error: 'Failed to update location' });
+    }
+});
+
+// Delete storage location
+router.delete('/locations/:id', async (req, res) => {
+    try {
+        const result = await db.query(
+            'DELETE FROM storage_locations WHERE id = $1 AND user_id = $2 RETURNING id',
+            [req.params.id, req.user.userId]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Location not found' });
+        }
+
+        res.json({ message: 'Location deleted successfully' });
+    } catch (error) {
+        console.error('Location deletion error:', error);
+        res.status(500).json({ error: 'Failed to delete location' });
+    }
+});
+
+// Barcode lookup
+router.get('/barcode/:code', async (req, res) => {
+    try {
+        // First check if we have this barcode in our inventory
+        const existing = await db.query(
+            `SELECT * FROM inventory_items WHERE barcode = $1 AND user_id = $2 LIMIT 1`,
+            [req.params.code, req.user.userId]
+        );
+
+        if (existing.rows.length > 0) {
+            return res.json({ found: true, source: 'inventory', item: existing.rows[0] });
+        }
+
+        // Check food database
+        const foodDb = await db.query(
+            `SELECT * FROM food_database WHERE barcode = $1 OR upc = $1 LIMIT 1`,
+            [req.params.code]
+        );
+
+        if (foodDb.rows.length > 0) {
+            return res.json({ found: true, source: 'food_database', item: foodDb.rows[0] });
+        }
+
+        res.json({ found: false, barcode: req.params.code });
+    } catch (error) {
+        console.error('Barcode lookup error:', error);
+        res.status(500).json({ error: 'Failed to lookup barcode' });
+    }
+});
+
+// Get CSV import template headers
+router.get('/import/template', (req, res) => {
+    const headers = [
+        'name', 'category', 'quantity', 'unit', 'location', 'purchase_date',
+        'expiration_date', 'cost', 'barcode', 'min_quantity', 'notes'
+    ];
+
+    const sampleRow = [
+        'First Aid Kit', 'Medical Supplies', '2', 'units', 'Garage', '2024-01-15',
+        '2027-01-15', '45.99', '123456789012', '1', 'Standard emergency kit'
+    ];
+
+    res.json({
+        headers,
+        sample_csv: headers.join(',') + '\n' + sampleRow.join(','),
+        instructions: {
+            name: 'Item name (required)',
+            category: 'One of: Food & Water, Medical Supplies, Tools & Equipment, Shelter & Warmth, Communication, Lighting & Power, Clothing, Documents',
+            quantity: 'Number (required)',
+            unit: 'One of: units, lbs, kg, oz, gallons, liters, boxes, cans, rounds',
+            location: 'Storage location name',
+            purchase_date: 'YYYY-MM-DD format',
+            expiration_date: 'YYYY-MM-DD format',
+            cost: 'Price in dollars',
+            barcode: 'UPC/EAN barcode',
+            min_quantity: 'Low stock alert threshold',
+            notes: 'Additional notes'
+        }
+    });
+});
+
+// Bulk import inventory items (CSV)
+router.post('/import', [
+    body('items').isArray({ min: 1 }),
+    body('items.*.name').trim().notEmpty()
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { items } = req.body;
+    const results = { success: [], errors: [] };
+
+    // Get category mapping
+    const categories = await db.query('SELECT id, name FROM inventory_categories');
+    const categoryMap = {};
+    categories.rows.forEach(c => {
+        categoryMap[c.name.toLowerCase()] = c.id;
+    });
+
+    // Get location mapping
+    const locations = await db.query(
+        'SELECT id, name FROM storage_locations WHERE user_id = $1',
+        [req.user.userId]
+    );
+    const locationMap = {};
+    locations.rows.forEach(l => {
+        locationMap[l.name.toLowerCase()] = l.id;
+    });
+
+    try {
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            try {
+                // Map category name to ID
+                let categoryId = null;
+                if (item.category) {
+                    categoryId = categoryMap[item.category.toLowerCase()] || null;
+                }
+
+                // Map location name to ID
+                let locationId = null;
+                if (item.location) {
+                    locationId = locationMap[item.location.toLowerCase()] || null;
+                }
+
+                const result = await db.query(
+                    `INSERT INTO inventory_items
+                     (user_id, category_id, name, quantity, unit, location, purchase_date,
+                      expiration_date, cost, barcode, min_quantity, notes)
+                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                     RETURNING id, name`,
+                    [req.user.userId, categoryId, item.name, item.quantity || 1,
+                     item.unit || 'units', item.location || null, item.purchase_date || null,
+                     item.expiration_date || null, item.cost || null, item.barcode || null,
+                     item.min_quantity || null, item.notes || null]
+                );
+
+                // Log transaction
+                await db.query(
+                    `INSERT INTO inventory_transactions
+                     (item_id, user_id, transaction_type, quantity, previous_quantity, new_quantity, reason)
+                     VALUES ($1, $2, 'add', $3, 0, $3, 'CSV Import')`,
+                    [result.rows[0].id, req.user.userId, item.quantity || 1]
+                );
+
+                results.success.push({ row: i + 1, id: result.rows[0].id, name: result.rows[0].name });
+            } catch (err) {
+                results.errors.push({ row: i + 1, name: item.name, error: err.message });
+            }
+        }
+
+        res.json({
+            message: `Imported ${results.success.length} items with ${results.errors.length} errors`,
+            results
+        });
+    } catch (error) {
+        console.error('Bulk import error:', error);
+        res.status(500).json({ error: 'Failed to import items' });
+    }
+});
+
 // Get all inventory items for user
 router.get('/', [
   query('category_id').optional().isInt(),
@@ -63,6 +317,33 @@ router.get('/', [
   } catch (error) {
     console.error('Inventory fetch error:', error);
     res.status(500).json({ error: 'Failed to fetch inventory' });
+  }
+});
+
+// Get all categories (must be before /:id route)
+router.get('/categories', async (req, res) => {
+  try {
+    const result = await db.query(
+      'SELECT * FROM inventory_categories ORDER BY name'
+    );
+    res.json({ categories: result.rows });
+  } catch (error) {
+    console.error('Categories fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch categories' });
+  }
+});
+
+// Get all locations (must be before /:id route)
+router.get('/locations', async (req, res) => {
+  try {
+    const result = await db.query(
+      'SELECT * FROM storage_locations WHERE user_id = $1 ORDER BY name',
+      [req.user.userId]
+    );
+    res.json({ locations: result.rows });
+  } catch (error) {
+    console.error('Locations fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch locations' });
   }
 });
 

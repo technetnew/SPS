@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Calculator - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/energy.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Energy</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/inventory.html" class="nav-link">Inventory</a></li>
+                    <li class="nav-dropdown">
+                        <a href="/videos.html" class="nav-link" data-active-paths="/videos.html,/pictures.html">Media ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/videos.html">Videos</a></li>
+                            <li><a href="/pictures.html">Pictures</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
+                    <li class="nav-dropdown"><a href="/gps.html" class="nav-link" data-active-paths="/gps.html,/osm-sync.html">Map ▾</a><ul class="dropdown-menu"><li><a href="/gps.html">Map View</a></li><li><a href="/osm-sync.html">Sync Maps</a></li></ul></li>
+                    <li class="nav-dropdown"><a href="#" class="nav-link" data-active-paths="/familyprofile.html,/energy.html,/medical.html,/simulation.html">Tools ▾</a><ul class="dropdown-menu"><li><a href="/familyprofile.html">Family Profile</a></li><li><a href="/simulation.html">Simulation & Planning</a></li><li><a href="/energy.html">Energy Calculator</a></li><li><a href="/medical.html">Medical Guide</a></li></ul></li>
+                </ul>
+                <div class="nav-right">
+                    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <span id="user-name"></span>
+                        <button onclick="authManager.logout()" class="btn btn-danger btn-sm">Logout</button>
+                    </div>
+                    <div id="auth-buttons" style="display: flex; gap: 10px;">
+                        <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="energy-main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1 class="page-title">Energy Calculator</h1>
+                    <p class="page-subtitle">Plan your power needs for off-grid and emergency situations</p>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="calculator">
+                    <span class="tab-icon">🔢</span>
+                    <span>Calculator</span>
+                </button>
+                <button class="tab-btn" data-tab="equipment">
+                    <span class="tab-icon">⚙️</span>
+                    <span>Equipment</span>
+                </button>
+                <button class="tab-btn" data-tab="solar">
+                    <span class="tab-icon">☀️</span>
+                    <span>Solar</span>
+                </button>
+                <button class="tab-btn" data-tab="fuel">
+                    <span class="tab-icon">⛽</span>
+                    <span>Fuel Log</span>
+                </button>
+            </div>
+
+            <!-- Calculator Tab -->
+            <div class="tab-panel active" id="calculator-panel">
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-yellow">⚡</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="total-watts">0</div>
+                            <div class="stat-label">Total Load (Watts)</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-blue">🔋</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="daily-kwh">0</div>
+                            <div class="stat-label">Daily kWh</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-green">⛽</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="generator-runtime">0h</div>
+                            <div class="stat-label">Generator Runtime</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-orange">🔥</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="fuel-per-day">0</div>
+                            <div class="stat-label">Gallons/Day</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Power Load Calculator -->
+                <div class="energy-card">
+                    <div class="card-header">
+                        <h3>Power Load Calculator</h3>
+                        <button class="btn btn-primary btn-sm" onclick="addLoadItem()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add Device
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <table class="energy-table" id="load-table">
+                            <thead>
+                                <tr>
+                                    <th>Device</th>
+                                    <th>Watts</th>
+                                    <th>Hours/Day</th>
+                                    <th>Wh/Day</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="load-tbody">
+                                <!-- Common presets will be loaded here -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="total-row">
+                                    <td><strong>Total</strong></td>
+                                    <td><strong id="total-watts-table">0 W</strong></td>
+                                    <td>-</td>
+                                    <td><strong id="total-wh-day">0 Wh</strong></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Generator Sizing -->
+                <div class="energy-card">
+                    <div class="card-header">
+                        <h3>Generator Sizing</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="sizing-grid">
+                            <div class="sizing-item">
+                                <label>Peak Load (with surge)</label>
+                                <div class="sizing-value" id="peak-load">0 W</div>
+                                <small>Add 25% for motor startup surge</small>
+                            </div>
+                            <div class="sizing-item">
+                                <label>Recommended Generator Size</label>
+                                <div class="sizing-value highlight" id="recommended-gen">0 W</div>
+                                <small>50% headroom for efficiency</small>
+                            </div>
+                            <div class="sizing-item">
+                                <label>Your Fuel Capacity</label>
+                                <input type="number" id="fuel-capacity" value="5" min="1" class="input-field">
+                                <small>Gallons</small>
+                            </div>
+                            <div class="sizing-item">
+                                <label>Generator Efficiency</label>
+                                <select id="gen-efficiency" class="input-field">
+                                    <option value="0.3">Low (0.3 gal/kWh)</option>
+                                    <option value="0.25" selected>Average (0.25 gal/kWh)</option>
+                                    <option value="0.2">High (0.2 gal/kWh)</option>
+                                    <option value="0.15">Inverter (0.15 gal/kWh)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="runtime-result">
+                            <div class="runtime-box">
+                                <div class="runtime-label">Estimated Runtime</div>
+                                <div class="runtime-value" id="est-runtime">0 hours</div>
+                                <small>Based on your load and fuel</small>
+                            </div>
+                            <div class="runtime-box">
+                                <div class="runtime-label">Fuel Needed for 24h</div>
+                                <div class="runtime-value" id="fuel-24h">0 gallons</div>
+                                <small>At current load</small>
+                            </div>
+                            <div class="runtime-box">
+                                <div class="runtime-label">Days of Autonomy</div>
+                                <div class="runtime-value highlight" id="days-autonomy">0 days</div>
+                                <small>With current fuel supply</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Common Device Presets -->
+                <div class="energy-card">
+                    <div class="card-header">
+                        <h3>Quick Add Common Devices</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="presets-grid">
+                            <button class="preset-btn" onclick="addPreset('Refrigerator', 150, 24)">
+                                <span class="preset-icon">🧊</span>
+                                <span class="preset-name">Refrigerator</span>
+                                <span class="preset-watts">150W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('Freezer', 100, 24)">
+                                <span class="preset-icon">❄️</span>
+                                <span class="preset-name">Freezer</span>
+                                <span class="preset-watts">100W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('LED Lights', 50, 6)">
+                                <span class="preset-icon">💡</span>
+                                <span class="preset-name">LED Lights</span>
+                                <span class="preset-watts">50W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('Phone Charger', 10, 4)">
+                                <span class="preset-icon">📱</span>
+                                <span class="preset-name">Phone Charger</span>
+                                <span class="preset-watts">10W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('Laptop', 65, 8)">
+                                <span class="preset-icon">💻</span>
+                                <span class="preset-name">Laptop</span>
+                                <span class="preset-watts">65W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('Router/Modem', 15, 24)">
+                                <span class="preset-icon">📡</span>
+                                <span class="preset-name">Router</span>
+                                <span class="preset-watts">15W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('Well Pump', 1000, 2)">
+                                <span class="preset-icon">💧</span>
+                                <span class="preset-name">Well Pump</span>
+                                <span class="preset-watts">1000W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('Space Heater', 1500, 8)">
+                                <span class="preset-icon">🔥</span>
+                                <span class="preset-name">Space Heater</span>
+                                <span class="preset-watts">1500W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('Window AC', 1200, 8)">
+                                <span class="preset-icon">❄️</span>
+                                <span class="preset-name">Window AC</span>
+                                <span class="preset-watts">1200W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('Microwave', 1000, 0.5)">
+                                <span class="preset-icon">🍳</span>
+                                <span class="preset-name">Microwave</span>
+                                <span class="preset-watts">1000W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('Coffee Maker', 900, 0.5)">
+                                <span class="preset-icon">☕</span>
+                                <span class="preset-name">Coffee Maker</span>
+                                <span class="preset-watts">900W</span>
+                            </button>
+                            <button class="preset-btn" onclick="addPreset('TV', 100, 4)">
+                                <span class="preset-icon">📺</span>
+                                <span class="preset-name">TV</span>
+                                <span class="preset-watts">100W</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Equipment Tab -->
+            <div class="tab-panel" id="equipment-panel">
+                <div class="energy-card">
+                    <div class="card-header">
+                        <h3>Power Equipment Inventory</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openEquipmentModal()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add Equipment
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="equipment-grid" id="equipment-grid">
+                            <div class="equipment-empty">
+                                <span class="empty-icon">⚡</span>
+                                <p>No equipment added yet</p>
+                                <button class="btn btn-outline" onclick="openEquipmentModal()">Add Your First Generator</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solar Tab -->
+            <div class="tab-panel" id="solar-panel">
+                <div class="energy-card">
+                    <div class="card-header">
+                        <h3>Solar System Calculator</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="solar-calculator">
+                            <div class="solar-input-group">
+                                <label>Daily Energy Need (Wh)</label>
+                                <input type="number" id="solar-daily-need" class="input-field" value="5000">
+                                <small>From your load calculator</small>
+                            </div>
+                            <div class="solar-input-group">
+                                <label>Sun Hours per Day</label>
+                                <input type="number" id="sun-hours" class="input-field" value="5" min="1" max="12">
+                                <small>Peak sun hours in your location</small>
+                            </div>
+                            <div class="solar-input-group">
+                                <label>System Efficiency</label>
+                                <select id="solar-efficiency" class="input-field">
+                                    <option value="0.7">70% (Basic Setup)</option>
+                                    <option value="0.8" selected>80% (Good Setup)</option>
+                                    <option value="0.85">85% (Optimal Setup)</option>
+                                </select>
+                            </div>
+                            <div class="solar-input-group">
+                                <label>Days of Autonomy</label>
+                                <input type="number" id="solar-autonomy" class="input-field" value="2" min="1" max="7">
+                                <small>Cloudy day backup</small>
+                            </div>
+                        </div>
+
+                        <div class="solar-results">
+                            <div class="solar-result-item">
+                                <span class="result-label">Solar Panel Size Needed</span>
+                                <span class="result-value" id="solar-panels-needed">0 W</span>
+                            </div>
+                            <div class="solar-result-item">
+                                <span class="result-label">Number of 100W Panels</span>
+                                <span class="result-value" id="panels-100w">0</span>
+                            </div>
+                            <div class="solar-result-item">
+                                <span class="result-label">Battery Bank Size (12V)</span>
+                                <span class="result-value" id="battery-ah">0 Ah</span>
+                            </div>
+                            <div class="solar-result-item">
+                                <span class="result-label">Number of 100Ah Batteries</span>
+                                <span class="result-value" id="batteries-100ah">0</span>
+                            </div>
+                            <div class="solar-result-item highlight">
+                                <span class="result-label">Recommended Inverter Size</span>
+                                <span class="result-value" id="inverter-size">0 W</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solar Tips -->
+                <div class="energy-card">
+                    <div class="card-header">
+                        <h3>Solar Planning Tips</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="tips-list">
+                            <div class="tip-item">
+                                <span class="tip-icon">💡</span>
+                                <div class="tip-content">
+                                    <strong>Oversizing is Good</strong>
+                                    <p>Add 20-30% more panel capacity for cloudy days and system losses.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">🔋</span>
+                                <div class="tip-content">
+                                    <strong>Battery Depth of Discharge</strong>
+                                    <p>Lead-acid: 50% max DoD. Lithium: 80% DoD. This affects how much usable capacity you have.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">☀️</span>
+                                <div class="tip-content">
+                                    <strong>Sun Hours Vary</strong>
+                                    <p>Check NREL's PVWatts for accurate sun hours in your location. Winter has fewer hours.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">⚡</span>
+                                <div class="tip-content">
+                                    <strong>Inverter Sizing</strong>
+                                    <p>Size for peak load + 25% for surge. Pure sine wave for sensitive electronics.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fuel Log Tab -->
+            <div class="tab-panel" id="fuel-panel">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-orange">⛽</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="total-fuel">0</div>
+                            <div class="stat-label">Total Fuel (Gallons)</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-green">📊</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="fuel-days">0</div>
+                            <div class="stat-label">Days of Supply</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-red">📅</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="oldest-fuel">--</div>
+                            <div class="stat-label">Oldest Fuel Date</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fuel Totals by Type -->
+                <div class="energy-card">
+                    <div class="card-header">
+                        <h3>Fuel Totals by Type</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="fuel-breakdown" id="fuel-breakdown">
+                            <p class="empty-text">No fuel logged yet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="energy-card">
+                    <div class="card-header">
+                        <h3>Fuel Inventory</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openFuelModal()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add Fuel
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <table class="energy-table" id="fuel-table">
+                            <thead>
+                                <tr>
+                                    <th>Fuel Type</th>
+                                    <th>Quantity</th>
+                                    <th>Container</th>
+                                    <th>Date Added</th>
+                                    <th>Stabilized</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fuel-tbody">
+                                <tr>
+                                    <td colspan="6" class="empty-row">No fuel logged yet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Fuel Tips -->
+                <div class="energy-card">
+                    <div class="card-header">
+                        <h3>Fuel Storage Tips</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="tips-list">
+                            <div class="tip-item warning">
+                                <span class="tip-icon">⚠️</span>
+                                <div class="tip-content">
+                                    <strong>Gasoline Shelf Life</strong>
+                                    <p>Untreated: 3-6 months. With stabilizer: 1-2 years. Rotate stock regularly.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">🛢️</span>
+                                <div class="tip-content">
+                                    <strong>Diesel Lasts Longer</strong>
+                                    <p>Diesel can last 6-12 months untreated, 2+ years with proper additives.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">🏠</span>
+                                <div class="tip-content">
+                                    <strong>Propane Never Expires</strong>
+                                    <p>Propane has indefinite shelf life. Great for long-term storage.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Equipment Modal -->
+    <div class="modal" id="equipment-modal">
+        <div class="modal-overlay" onclick="closeEquipmentModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Power Equipment</h2>
+                <button class="modal-close" onclick="closeEquipmentModal()">&times;</button>
+            </div>
+            <form id="equipment-form" onsubmit="saveEquipment(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Equipment Type *</label>
+                        <select id="equip-type" name="type" required>
+                            <option value="">Select Type</option>
+                            <option value="generator">Generator</option>
+                            <option value="solar_panel">Solar Panel</option>
+                            <option value="battery">Battery</option>
+                            <option value="inverter">Inverter</option>
+                            <option value="charge_controller">Charge Controller</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Name/Model *</label>
+                        <input type="text" id="equip-name" name="name" required placeholder="e.g., Honda EU2200i">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Wattage/Capacity</label>
+                            <input type="number" id="equip-watts" name="wattage" placeholder="2200">
+                        </div>
+                        <div class="form-group">
+                            <label>Fuel Type</label>
+                            <select id="equip-fuel" name="fuel_type">
+                                <option value="">N/A</option>
+                                <option value="gasoline">Gasoline</option>
+                                <option value="diesel">Diesel</option>
+                                <option value="propane">Propane</option>
+                                <option value="dual">Dual Fuel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tank Size (gal)</label>
+                            <input type="number" id="equip-tank" name="tank_size" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>Runtime at 50% (hrs)</label>
+                            <input type="number" id="equip-runtime" name="runtime_50" step="0.1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="equip-notes" name="notes" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeEquipmentModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Equipment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Fuel Modal -->
+    <div class="modal" id="fuel-modal">
+        <div class="modal-overlay" onclick="closeFuelModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Fuel</h2>
+                <button class="modal-close" onclick="closeFuelModal()">&times;</button>
+            </div>
+            <form id="fuel-form" onsubmit="saveFuel(event)">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Fuel Type *</label>
+                            <select id="fuel-type" name="fuel_type" required>
+                                <option value="gasoline">Gasoline</option>
+                                <option value="diesel">Diesel</option>
+                                <option value="propane">Propane</option>
+                                <option value="kerosene">Kerosene</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity *</label>
+                            <input type="number" id="fuel-qty" name="quantity" step="0.1" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Unit</label>
+                            <select id="fuel-unit" name="unit">
+                                <option value="gallons">Gallons</option>
+                                <option value="liters">Liters</option>
+                                <option value="lbs">Pounds (propane)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Container</label>
+                            <input type="text" id="fuel-container" name="container" placeholder="e.g., 5 gal can #1">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date Added</label>
+                            <input type="date" id="fuel-date" name="date_added">
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="fuel-stabilized" name="stabilized">
+                                Fuel Stabilizer Added
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeFuelModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Fuel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/energy-calculator.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/sidebar.js"></script>
+</body>
+</html>

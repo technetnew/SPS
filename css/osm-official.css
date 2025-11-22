@@ -1,0 +1,438 @@
+/*
+ * OSM Official-style CSS
+ * Based on openstreetmap-website parameters.scss and common.scss
+ * Variables: headerHeight: 55px, sidebarWidth: 350px, lineheight: 20px
+ */
+
+/* ===== CSS Variables (matching OSM parameters.scss) ===== */
+:root {
+    --header-height: 55px;
+    --sidebar-width: 350px;
+    --map-ui-width: 250px;
+    --lineheight: 20px;
+
+    /* Colors from OSM parameters.scss */
+    --osm-blue: #7092FF;
+    --osm-green: #7ebc6f;
+    --osm-vibrant-green: #76c551;
+    --osm-grey: #CCC;
+    --osm-darkgrey: #888;
+    --osm-secondary: #888;
+
+    /* Link colors */
+    --link-color: #2244dd;
+}
+
+/* ===== Global Reset for Map Layout ===== */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+body.map-layout {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: var(--lineheight);
+}
+
+/* ===== Header (55px height) ===== */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+    z-index: 1100;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    height: 100%;
+    padding: 0 10px;
+}
+
+/* Logo */
+.logo {
+    color: #333;
+}
+
+.logo:hover {
+    text-decoration: none;
+    color: #000;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: inherit;
+}
+
+/* Primary button matches OSM green */
+.btn-primary {
+    background-color: var(--osm-green);
+    border-color: var(--osm-green);
+}
+
+.btn-primary:hover {
+    background-color: #6aa85f;
+    border-color: #6aa85f;
+}
+
+/* Secondary navigation */
+.secondary-nav .nav-link {
+    color: #666;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+.secondary-nav .nav-link:hover {
+    color: #333;
+}
+
+/* User menu */
+.user-avatar {
+    border: 2px solid #ddd;
+}
+
+/* ===== Content Area (below header) ===== */
+#content {
+    position: absolute;
+    top: var(--header-height);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    display: flex;
+}
+
+/* ===== Sidebar (350px width) ===== */
+#sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    height: 100%;
+    background: #fff;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 100;
+}
+
+.sidebar-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
+/* Search form in sidebar */
+.search-form {
+    background: #f8f8f8;
+}
+
+.search-form .form-control {
+    border-radius: 4px 0 0 4px;
+}
+
+.search-form .btn {
+    border-radius: 0;
+}
+
+.search-form .btn:last-child {
+    border-radius: 0 4px 4px 0;
+}
+
+/* Sidebar content */
+#sidebar_content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Welcome panel */
+.welcome-intro h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Search results */
+#search-results:empty {
+    display: none;
+}
+
+.search-result-item {
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.search-result-item:hover {
+    background: #f8f8f8;
+    border-color: var(--osm-green);
+}
+
+/* ===== Map Container ===== */
+#map {
+    flex: 1;
+    height: 100%;
+    background: #f0f0f0;
+    position: relative;
+}
+
+/* ===== Map UI Panel (right side, 250px) ===== */
+#map-ui {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: var(--map-ui-width);
+    z-index: 1000;
+}
+
+.map-ui-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+}
+
+.panel-title {
+    padding: 10px;
+    margin: 0;
+    background: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    border-radius: 4px 4px 0 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.panel-body {
+    padding: 10px;
+}
+
+.panel-body .form-check {
+    margin-bottom: 5px;
+}
+
+.panel-body .form-check-label {
+    font-size: 13px;
+}
+
+/* ===== Leaflet Controls Override ===== */
+.leaflet-control-container .leaflet-top.leaflet-left {
+    top: 10px;
+    left: 10px;
+}
+
+.leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
+}
+
+.leaflet-control-zoom a {
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    background: rgba(255,255,255,0.95) !important;
+    color: #333 !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background: #f4f4f4 !important;
+}
+
+.leaflet-control-scale {
+    margin-left: 10px !important;
+    margin-bottom: 25px !important;
+}
+
+/* Attribution */
+.leaflet-control-attribution {
+    background: rgba(255,255,255,0.8) !important;
+    padding: 3px 8px !important;
+    font-size: 11px !important;
+}
+
+/* ===== Context Menu ===== */
+#map-context-menu {
+    position: fixed;
+    z-index: 2000;
+}
+
+/* ===== GPS Marker ===== */
+.gps-marker {
+    width: 24px;
+    height: 24px;
+    position: relative;
+}
+
+.gps-marker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background: var(--osm-blue);
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.gps-marker .pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(112, 146, 255, 0.3);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* ===== Responsive: Mobile ===== */
+@media (max-width: 767.98px) {
+    #sidebar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        min-width: 100%;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1050;
+    }
+
+    #sidebar.show {
+        transform: translateX(0);
+    }
+
+    #content {
+        flex-direction: column;
+    }
+
+    #map {
+        height: 100%;
+    }
+
+    #map-ui {
+        bottom: 20px;
+        top: auto;
+        left: 10px;
+        right: 10px;
+        width: auto;
+    }
+
+    .map-ui-panel {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .panel-title {
+        width: 100%;
+    }
+
+    .panel-body {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .panel-body .form-check {
+        margin: 0;
+    }
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    #sidebar {
+        width: 300px;
+        min-width: 300px;
+    }
+
+    #map-ui {
+        width: 200px;
+    }
+}
+
+/* ===== Overlay Sidebar Mode ===== */
+body.overlay-sidebar #sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+}
+
+body.overlay-sidebar #map {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+/* ===== Browse Status Indicator ===== */
+#browse_status {
+    padding: 10px;
+    background: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+    color: #666;
+}
+
+/* ===== Flash Messages ===== */
+#flash-messages .alert {
+    margin: 10px;
+    border-radius: 4px;
+}
+
+/* ===== Loading State ===== */
+#sidebar-loader {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== Utility Classes ===== */
+.z-0 { z-index: 0; }
+.z-1 { z-index: 1; }
+.z-2 { z-index: 2; }
+
+/* ===== Print Styles ===== */
+@media print {
+    header, #sidebar, #map-ui {
+        display: none !important;
+    }
+
+    #content {
+        position: static;
+    }
+
+    #map {
+        width: 100%;
+        height: 100vh;
+    }
+}

@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
@@ -13,6 +14,17 @@ const alertsRoutes = require('./routes/alerts');
 const videosRoutes = require('./routes/videos');
 const kiwixRoutes = require('./routes/kiwix');
 const sharingRoutes = require('./routes/sharing');
+const picturesRoutes = require('./routes/pictures');
+const gpsRoutes = require('./routes/gps');
+const tilesRoutes = require('./routes/tiles');
+const osmRoutes = require('./routes/osm');
+const pantryRoutes = require('./routes/pantry');
+const familyProfilesRoutes = require('./routes/family-profiles');
+const contactRoutes = require('./routes/contact');
+const settingsRoutes = require('./routes/settings');
+const systemRoutes = require('./routes/system');
+const simulationRoutes = require('./routes/simulation');
+const gardenRoutes = require('./routes/garden');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -50,7 +62,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static files (for uploads)
-app.use('/uploads', express.static('uploads'));
+const uploadDirs = [
+  path.join(__dirname, 'uploads'),
+  path.resolve('/var/www/sps/uploads'),
+  path.resolve('/var/www/sps/pictures')
+];
+
+uploadDirs.forEach(dir => {
+  app.use('/uploads', express.static(dir));
+});
 
 // Health Check
 app.get('/health', (req, res) => {
@@ -67,6 +87,17 @@ app.use('/api/alerts', alertsRoutes);
 app.use('/api/videos', videosRoutes);
 app.use('/api/kiwix', kiwixRoutes);
 app.use('/api/sharing', sharingRoutes);
+app.use('/api/pictures', picturesRoutes);
+app.use('/api/gps', gpsRoutes);
+app.use('/api/tiles', tilesRoutes);
+app.use('/api/osm', osmRoutes);
+app.use('/api/pantry', pantryRoutes);
+app.use('/api/family-profiles', familyProfilesRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/system', systemRoutes);
+app.use('/api/simulation', simulationRoutes);
+app.use('/api/garden', gardenRoutes);
 
 // Error Handler
 app.use((err, req, res, next) => {

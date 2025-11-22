@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map - SPS OpenStreetMap</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/osm-map.css">
+    <link rel="stylesheet" href="/lib/maplibre/maplibre-gl.css">
+</head>
+<body class="osm-body">
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Map</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/inventory.html" class="nav-link">Inventory</a></li>
+                    <li class="nav-dropdown">
+                        <a href="/videos.html" class="nav-link" data-active-paths="/videos.html,/pictures.html">Media ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/videos.html">Videos</a></li>
+                            <li><a href="/pictures.html">Pictures</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
+                    <li class="nav-dropdown"><a href="/gps.html" class="nav-link" data-active-paths="/gps.html,/osm-sync.html">Map ▾</a><ul class="dropdown-menu"><li><a href="/gps.html">Map View</a></li><li><a href="/osm-sync.html">Sync Maps</a></li></ul></li>
+                    <li class="nav-dropdown"><a href="#" class="nav-link" data-active-paths="/familyprofile.html,/energy.html,/medical.html,/simulation.html">Tools ▾</a><ul class="dropdown-menu"><li><a href="/familyprofile.html">Family Profile</a></li><li><a href="/simulation.html">Simulation & Planning</a></li><li><a href="/energy.html">Energy Calculator</a></li><li><a href="/medical.html">Medical Guide</a></li></ul></li>
+                </ul>
+                <div class="nav-right">
+                    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <span id="user-name"></span>
+                        <button onclick="authManager.logout()" class="btn btn-secondary btn-sm">Logout</button>
+                    </div>
+                    <div id="auth-buttons" style="display: flex; gap: 10px;">
+                        <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                        <button onclick="authManager.showRegisterModal()" class="btn btn-secondary btn-sm">Register</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Map Container -->
+    <div class="osm-map-wrapper">
+        <!-- Left Sidebar -->
+        <div class="osm-sidebar" id="sidebar">
+            <div class="osm-sidebar-header">
+                <button class="osm-sidebar-tab active" data-tab="search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    Search
+                </button>
+                <button class="osm-sidebar-tab" data-tab="layers">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                    Layers
+                </button>
+                <button class="osm-sidebar-tab" data-tab="share">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="18" cy="5" r="3"></circle>
+                        <circle cx="6" cy="12" r="3"></circle>
+                        <circle cx="18" cy="19" r="3"></circle>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                    Share
+                </button>
+                <button class="osm-sidebar-tab" data-tab="gps">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    GPS
+                </button>
+                <button class="osm-sidebar-close" id="sidebar-close">×</button>
+            </div>
+
+            <div class="osm-sidebar-content">
+                <!-- Search Tab -->
+                <div class="osm-tab-panel active" id="search-panel">
+                    <div class="osm-search-form">
+                        <input type="text" id="search-input" class="osm-search-input" placeholder="Search for places, addresses...">
+                        <button id="search-btn" class="osm-search-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="search-results" class="osm-search-results"></div>
+
+                    <div class="osm-quick-links">
+                        <h3>Quick Actions</h3>
+                        <button onclick="getCurrentLocation()" class="osm-quick-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Show My Location
+                        </button>
+                        <button onclick="showNearby()" class="osm-quick-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            Find Nearby
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Layers Tab -->
+                <div class="osm-tab-panel" id="layers-panel">
+                    <h3>Map Layers</h3>
+                    <div class="osm-layer-list">
+                        <label class="osm-layer-item">
+                            <input type="radio" name="base-layer" value="standard" checked>
+                            <span>Standard (OSM Carto)</span>
+                        </label>
+                        <label class="osm-layer-item">
+                            <input type="radio" name="base-layer" value="cycle">
+                            <span>Cycle Map</span>
+                        </label>
+                        <label class="osm-layer-item">
+                            <input type="radio" name="base-layer" value="transport">
+                            <span>Transport</span>
+                        </label>
+                        <label class="osm-layer-item">
+                            <input type="radio" name="base-layer" value="humanitarian">
+                            <span>Humanitarian</span>
+                        </label>
+                    </div>
+
+                    <h3>Overlays</h3>
+                    <div class="osm-layer-list">
+                        <label class="osm-layer-item">
+                            <input type="checkbox" id="overlay-gps-track">
+                            <span>GPS Track</span>
+                        </label>
+                        <label class="osm-layer-item">
+                            <input type="checkbox" id="overlay-markers">
+                            <span>My Markers</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Share Tab -->
+                <div class="osm-tab-panel" id="share-panel">
+                    <h3>Share & Export</h3>
+
+                    <div class="osm-share-section">
+                        <h4>Link to this map</h4>
+                        <div class="osm-share-link">
+                            <input type="text" id="share-url" readonly value="">
+                            <button onclick="copyShareLink()" class="osm-btn-copy">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="osm-share-section">
+                        <h4>Embed HTML</h4>
+                        <textarea id="embed-code" class="osm-embed-code" readonly rows="4"></textarea>
+                        <button onclick="copyEmbedCode()" class="osm-btn-copy">Copy</button>
+                    </div>
+
+                    <div class="osm-share-section">
+                        <h4>Export</h4>
+                        <button onclick="exportAsPNG()" class="osm-export-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="8 17 12 21 16 17"></polyline>
+                                <line x1="12" y1="12" x2="12" y2="21"></line>
+                                <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path>
+                            </svg>
+                            Download as PNG
+                        </button>
+                        <button onclick="exportGPX()" class="osm-export-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="8 17 12 21 16 17"></polyline>
+                                <line x1="12" y1="12" x2="12" y2="21"></line>
+                                <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path>
+                            </svg>
+                            Export GPS Track (GPX)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- GPS Tab -->
+                <div class="osm-tab-panel" id="gps-panel">
+                    <h3>GPS Status</h3>
+                    <div class="osm-gps-info">
+                        <div class="osm-gps-item">
+                            <span class="osm-gps-label">Status:</span>
+                            <span id="gps-status" class="osm-gps-value">Checking...</span>
+                        </div>
+                        <div class="osm-gps-item">
+                            <span class="osm-gps-label">Position:</span>
+                            <span id="gps-position" class="osm-gps-value">--</span>
+                        </div>
+                        <div class="osm-gps-item">
+                            <span class="osm-gps-label">Altitude:</span>
+                            <span id="gps-altitude" class="osm-gps-value">--</span>
+                        </div>
+                        <div class="osm-gps-item">
+                            <span class="osm-gps-label">Speed:</span>
+                            <span id="gps-speed" class="osm-gps-value">--</span>
+                        </div>
+                        <div class="osm-gps-item">
+                            <span class="osm-gps-label">Accuracy:</span>
+                            <span id="gps-accuracy" class="osm-gps-value">--</span>
+                        </div>
+                    </div>
+
+                    <div class="osm-gps-controls">
+                        <button id="start-tracking-btn" onclick="startGPSTracking()" class="osm-gps-btn">
+                            Start GPS Tracking
+                        </button>
+                        <button id="stop-tracking-btn" onclick="stopGPSTracking()" class="osm-gps-btn" style="display: none;">
+                            Stop GPS Tracking
+                        </button>
+                        <label class="osm-gps-option">
+                            <input type="checkbox" id="gps-auto-follow" checked>
+                            <span>Auto-follow position</span>
+                        </label>
+                        <label class="osm-gps-option">
+                            <input type="checkbox" id="gps-record-track">
+                            <span>Record GPS track</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="osm-map-container">
+            <div id="map" class="osm-map"></div>
+
+            <!-- Map Controls -->
+            <div class="osm-map-controls">
+                <button class="osm-control-btn" id="sidebar-toggle" title="Toggle Sidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <button class="osm-control-btn" id="locate-btn" title="Center on GPS Position">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
+                <button class="osm-control-btn" id="fullscreen-btn" title="Toggle Fullscreen">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Map Info -->
+            <div class="osm-map-info">
+                <span id="map-zoom">Zoom: 10</span>
+                <span id="map-center">Center: --</span>
+            </div>
+
+            <!-- Attribution -->
+            <div class="osm-attribution">
+                © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/maplibre/maplibre-gl.js"></script>
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/osm-map.js"></script>
+    <script src="js/navigation.js"></script>
+</body>
+</html>

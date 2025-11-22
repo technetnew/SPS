@@ -1,0 +1,2042 @@
+{
+  "daily-caloric-needs": {
+    "title": "How to Calculate Daily Calories",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how many calories (energy from food) your body needs each day to stay healthy and active."
+      },
+      {
+        "heading": "The Formula (Mifflin-St Jeor Equation)",
+        "formula": "For Boys/Men: BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age) + 5\nFor Girls/Women: BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age) - 161"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Write down your weight in kilograms (kg). If you know pounds, divide by 2.2",
+          "Write down your height in centimeters (cm). If you know inches, multiply by 2.54",
+          "Multiply your weight by 10",
+          "Multiply your height by 6.25",
+          "Multiply your age by 5",
+          "Add step 3 + step 4",
+          "Subtract step 5 from that total",
+          "Add 5 if male, subtract 161 if female. This is your BMR!",
+          "Multiply BMR by activity level (1.2 for sitting, 1.55 for moderate activity, 1.9 for hard work)"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "A 12-year-old boy, 40kg, 150cm tall, moderate activity:",
+          "steps": "(10 × 40) + (6.25 × 150) - (5 × 12) + 5 = 400 + 937.5 - 60 + 5 = 1282.5 BMR\n1282.5 × 1.55 = 1,988 calories per day"
+        }
+      }
+    ]
+  },
+  "ration-planning": {
+    "title": "How to Calculate Food Rations",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This helps you figure out how much food you need to store for your family for a certain number of days."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Total Calories Needed = People × Days × Calories per Person per Day"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Count how many people need food",
+          "Decide how many days you want to plan for",
+          "Pick calories per person (usually 2000 for normal, 1500 for survival)",
+          "Multiply: People × Days × Calories",
+          "To find pounds of food: divide total calories by 1500 (average calories per pound of dried food)"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "4 people for 30 days at 2000 calories each:",
+          "steps": "4 × 30 × 2000 = 240,000 total calories\n240,000 ÷ 1500 = 160 pounds of food needed"
+        }
+      }
+    ]
+  },
+  "food-supply-duration": {
+    "title": "How Long Will Food Last?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "If you know how many calories of food you have stored, this tells you how many days it will last your family."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Days of Food = Total Calories ÷ (People × Daily Calories per Person)"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Add up all the calories in your food storage",
+          "Count how many people will eat the food",
+          "Decide daily calories per person (usually 2000)",
+          "Multiply people × daily calories to get 'daily need'",
+          "Divide total calories by daily need = days of food"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "500,000 calories stored, 4 people eating 2000 cal/day:",
+          "steps": "Daily need = 4 × 2000 = 8000 calories per day\n500,000 ÷ 8000 = 62.5 days of food"
+        }
+      }
+    ]
+  },
+  "daily-water-needs": {
+    "title": "How Much Water Do You Need?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how many gallons of water your group needs to survive, based on climate and activity."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Daily Water = People × Gallons per Person × Climate Multiplier"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Count number of people",
+          "Start with 1 gallon per person per day (minimum)",
+          "If hot weather, multiply by 1.5",
+          "If doing hard work, multiply by 2",
+          "Add 0.5 gallons per person for cooking",
+          "Multiply by number of days to store"
+        ]
+      },
+      {
+        "heading": "Tip",
+        "tip": "A gallon is about 4 liters. You can measure with any container - 4 large water bottles = 1 gallon!"
+      }
+    ]
+  },
+  "chlorine-purification": {
+    "title": "How to Purify Water with Chlorine/Bleach",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you exactly how much household bleach (sodium hypochlorite) to add to water to kill germs and make it safe to drink."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Drops of Bleach = Gallons of Water × 8 (for regular 5-6% bleach)\nOr: 2 drops per liter / 8 drops per gallon"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Check your bleach - it should be plain, unscented, 5-6% sodium hypochlorite",
+          "Measure your water in gallons or liters",
+          "For each gallon: add 8 drops of bleach",
+          "For each liter: add 2 drops of bleach",
+          "If water is cloudy or very cold, double the amount",
+          "Stir well and let stand 30 minutes before drinking",
+          "Water should have slight chlorine smell - if not, add more and wait"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "5 gallons of clear water with 6% bleach:",
+          "steps": "5 gallons × 8 drops = 40 drops\nUsing a dropper: 40 drops (about 2ml)\nWait 30 minutes, then safe to drink!"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "20 drops = about 1ml. A teaspoon is about 100 drops. If bleach is old or weak, double the amount and wait longer."
+      }
+    ]
+  },
+  "rainwater-collection": {
+    "title": "How Much Rainwater Can You Collect?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how many gallons of water you can collect from your roof when it rains."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Gallons = Roof Area (sq ft) × Rainfall (inches) × 0.623\nOr: Liters = Roof Area (sq m) × Rainfall (mm)"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure your roof length and width in feet",
+          "Multiply length × width = square feet",
+          "Check weather for expected rainfall in inches",
+          "Multiply: sq ft × inches × 0.623",
+          "Reduce by 20% for losses (splashing, first flush)",
+          "This is gallons you can collect!"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Roof 30ft × 40ft, with 1 inch of rain:",
+          "steps": "Area: 30 × 40 = 1,200 sq ft\nGallons: 1,200 × 1 × 0.623 = 748 gallons\nAfter 20% loss: 748 × 0.80 = 598 gallons!"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "1 inch of rain on a 1,000 sq ft roof = about 600 gallons! Always filter and purify rainwater before drinking."
+      }
+    ]
+  },
+  "solar-panel-output": {
+    "title": "How to Size Solar Panels",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This helps you figure out how many watts of solar panels you need to power your devices."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Panel Watts = (Daily Watt-hours needed) ÷ (Sun Hours × 0.8 efficiency)"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "List each device and its watts (look on the label)",
+          "Write how many hours per day you use each device",
+          "Multiply watts × hours for each device = watt-hours",
+          "Add all watt-hours together = daily watt-hours",
+          "Find your sun hours (usually 4-6 hours)",
+          "Divide daily watt-hours by (sun hours × 0.8)",
+          "This is the watts of solar panels you need"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "LED light (10W for 6 hours) + Radio (5W for 4 hours), 5 sun hours:",
+          "steps": "LED: 10 × 6 = 60 Wh\nRadio: 5 × 4 = 20 Wh\nTotal: 80 Wh per day\nPanels needed: 80 ÷ (5 × 0.8) = 80 ÷ 4 = 20 watts of solar panels"
+        }
+      }
+    ]
+  },
+  "battery-bank-sizing": {
+    "title": "How to Size a Battery Bank",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how big your batteries need to be to store enough power for your needs."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Battery Amp-hours = (Daily Wh) ÷ Battery Voltage ÷ Depth of Discharge × Days of Backup"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Calculate your daily watt-hours needed",
+          "Choose how many days of backup you want (usually 1-3)",
+          "Multiply daily Wh × backup days",
+          "Divide by battery voltage (usually 12V)",
+          "Divide by 0.5 (to not damage batteries, only use half)",
+          "This is your Amp-hour rating needed"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "500 Wh per day, 2 days backup, 12V battery:",
+          "steps": "Total Wh: 500 × 2 = 1000 Wh\nBasic Ah: 1000 ÷ 12 = 83 Ah\nWith 50% depth: 83 ÷ 0.5 = 166 Ah battery needed"
+        }
+      }
+    ]
+  },
+  "power-load-calculator": {
+    "title": "How to Calculate Power Load",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This adds up all your electrical devices to find how much power you use per day in watt-hours."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Daily Watt-hours = (Watts × Hours × Quantity) for each device, then add them all"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Make a list of every electrical device you use",
+          "Find the watts for each (look on the label or charger)",
+          "Estimate hours used per day for each",
+          "For each device: Watts × Hours × Quantity = Watt-hours",
+          "Add all the watt-hours together",
+          "This is your daily energy use!"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "5 LED lights (10W, 6hr) + 1 Fridge (150W, 8hr) + 1 Radio (20W, 4hr):",
+          "steps": "LEDs: 10 × 6 × 5 = 300 Wh\nFridge: 150 × 8 × 1 = 1200 Wh\nRadio: 20 × 4 × 1 = 80 Wh\nTotal: 300 + 1200 + 80 = 1,580 Wh per day"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "Watts = how powerful something is. Watt-hours = how much energy it uses over time. Like a faucet (watts) vs total water used (watt-hours)!"
+      }
+    ]
+  },
+  "population-growth-model": {
+    "title": "How to Calculate Population Growth",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This predicts how a group of people (or animals) will grow over time based on birth and death rates."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Future Pop = Current Pop × (1 + Growth Rate)^Years\nGrowth Rate = (Births - Deaths) ÷ Population"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Start with current population count",
+          "Calculate growth rate: (births per year - deaths per year) ÷ population",
+          "Convert to decimal (2% = 0.02)",
+          "Add 1 to growth rate (0.02 becomes 1.02)",
+          "Raise to power of years (multiply by itself that many times)",
+          "Multiply by current population"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Community of 100 people, 3% annual growth, in 10 years:",
+          "steps": "Growth rate: 1 + 0.03 = 1.03\n1.03^10 = 1.344 (multiply 1.03 by itself 10 times)\n100 × 1.344 = 134 people"
+        }
+      }
+    ]
+  },
+  "workforce-allocation": {
+    "title": "How to Allocate Workers",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This helps you figure out how many people you need for different jobs based on time and tasks."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Workers Needed = (Total Work Hours) ÷ (Hours per Worker per Day × Days)"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Estimate total hours needed for the job",
+          "Decide how many hours each person can work per day",
+          "Decide how many days you have to complete it",
+          "Multiply: hours per person × days = hours per worker",
+          "Divide total hours by hours per worker",
+          "Round up - you can't have half a person!"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Garden needs 200 hours of work, 8-hour days, 5 days to complete:",
+          "steps": "Hours per worker: 8 × 5 = 40 hours\nWorkers needed: 200 ÷ 40 = 5 workers"
+        }
+      }
+    ]
+  },
+  "housing-requirements": {
+    "title": "How to Calculate Housing Space",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how much living space you need for a group of people to live comfortably or survive."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Minimum Space = People × Square Feet per Person\nEmergency: 20 sq ft/person | Basic: 100 sq ft/person | Comfortable: 200+ sq ft/person"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Count total people needing shelter",
+          "Decide comfort level needed",
+          "For emergency/temp: 20 sq ft × people",
+          "For basic living: 100 sq ft × people",
+          "For comfortable: 200 sq ft × people",
+          "Add common areas (cooking, bathroom): +50 sq ft per person"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Family of 6 needs basic shelter:",
+          "steps": "Living space: 6 × 100 = 600 sq ft\nCommon areas: 6 × 50 = 300 sq ft\nTotal: 600 + 300 = 900 sq ft minimum"
+        }
+      }
+    ]
+  },
+  "land-requirements-calculator": {
+    "title": "How Much Land to Grow Food",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how much garden or farm land you need to grow enough food for your family."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Garden Size = People × 200 sq ft (intensive) to 4000 sq ft (traditional)\nRule of thumb: 1/4 acre per person for self-sufficiency"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Count people to feed year-round",
+          "For intensive raised beds: 200 sq ft per person",
+          "For traditional row gardening: 1000 sq ft per person",
+          "For complete food independence: 4000 sq ft (1/10 acre) per person",
+          "Add 25% extra for paths and storage",
+          "Double if you want to preserve food for winter"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Family of 4, traditional garden with preservation:",
+          "steps": "Base garden: 4 × 1000 = 4,000 sq ft\nFor preservation: 4,000 × 2 = 8,000 sq ft\nWith paths: 8,000 × 1.25 = 10,000 sq ft\nThat's about 1/4 acre!"
+        }
+      }
+    ]
+  },
+  "crop-yield-estimator": {
+    "title": "How to Estimate Crop Yields",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This estimates how much food you can harvest from your garden based on what you plant."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Total Yield = Plants × Average Yield per Plant\nOr: Row Feet × Yield per Foot"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Count your plants OR measure row feet",
+          "Look up average yield for your crop (see common yields below)",
+          "Multiply: plants × yield OR feet × yield per foot",
+          "Reduce by 20% for realistic first-year expectations",
+          "This is your expected harvest!"
+        ]
+      },
+      {
+        "heading": "Common Yields",
+        "content": "Tomatoes: 10-15 lbs per plant | Potatoes: 5-10 lbs per plant | Beans: 1/2 lb per foot | Corn: 1-2 ears per stalk | Lettuce: 1 head per plant | Squash: 5-10 lbs per plant"
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "12 tomato plants, 20 feet of beans:",
+          "steps": "Tomatoes: 12 plants × 12 lbs = 144 lbs\nBeans: 20 feet × 0.5 lb = 10 lbs\nWith 20% reduction: 144 × 0.8 = 115 lbs tomatoes"
+        }
+      }
+    ]
+  },
+  "livestock-feed-requirements": {
+    "title": "How Much to Feed Livestock",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how much food your animals need per day and per year."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Daily Feed = Animal Weight × Feed Percentage\nChickens: 1/4 lb/day | Goats: 3-4% body weight | Pigs: 4% body weight"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Weigh or estimate your animal's weight",
+          "Find the feed percentage for that animal type",
+          "Multiply: weight × percentage = daily feed",
+          "For yearly needs: daily × 365 days",
+          "Add 10% for waste and spills"
+        ]
+      },
+      {
+        "heading": "Common Daily Feed",
+        "content": "Laying hen: 1/4 lb | Meat rabbit: 1/4 lb | 100lb goat: 3-4 lbs | 200lb pig: 6-8 lbs | Dairy cow: 30-40 lbs"
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "10 laying hens for one year:",
+          "steps": "Daily: 10 × 0.25 lb = 2.5 lbs per day\nYearly: 2.5 × 365 = 912.5 lbs\nWith waste: 912.5 × 1.1 = 1,004 lbs of feed per year"
+        }
+      }
+    ]
+  },
+  "concrete-mix-calculator": {
+    "title": "How to Mix Concrete",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how much cement, sand, and gravel you need to make a certain amount of concrete."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Standard Mix Ratio: 1 part Cement : 2 parts Sand : 3 parts Gravel\nCubic Feet of Concrete = Length × Width × Thickness (all in feet)"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Calculate volume needed: length × width × depth (in feet)",
+          "Add 10% for waste and spillage",
+          "For each cubic foot of concrete, you need about:",
+          "  - Cement: 0.22 cubic feet (or 29 lbs)",
+          "  - Sand: 0.44 cubic feet",
+          "  - Gravel: 0.66 cubic feet",
+          "Multiply each by your total cubic feet"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Slab 10ft × 10ft × 4 inches (0.33ft):",
+          "steps": "Volume: 10 × 10 × 0.33 = 33 cubic feet\nWith waste: 33 × 1.1 = 36 cu ft\nCement: 36 × 0.22 = 8 cu ft (about 580 lbs)\nSand: 36 × 0.44 = 16 cu ft\nGravel: 36 × 0.66 = 24 cu ft"
+        }
+      }
+    ]
+  },
+  "lumber-requirements": {
+    "title": "How to Calculate Lumber Needs",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This helps you figure out how many boards you need for a building project."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Board Feet = (Thickness × Width × Length) ÷ 144\nNote: All measurements in inches, length can be in feet"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure thickness of board in inches",
+          "Measure width of board in inches",
+          "Measure length of board in feet",
+          "Multiply: thickness × width × length",
+          "Divide by 12 (if length in feet)",
+          "This equals board feet",
+          "Add 15% for waste from cuts"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "How many board feet in a 2×6×8 board?",
+          "steps": "Thickness: 2 inches (actual 1.5)\nWidth: 6 inches (actual 5.5)\nLength: 8 feet\nBoard feet: (2 × 6 × 8) ÷ 12 = 8 board feet"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "Lumber is named by rough size but sold smaller (a 2×4 is actually 1.5×3.5 inches). Always measure actual boards!"
+      }
+    ]
+  },
+  "foundation-volume": {
+    "title": "How to Calculate Foundation Volume",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how much concrete you need for a foundation footer or wall."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Volume = Length × Width × Depth\nFor walls: Perimeter × Thickness × Height"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure the perimeter of your foundation",
+          "Decide footer width (usually 2× wall thickness)",
+          "Decide footer depth (usually 8-12 inches)",
+          "Calculate: perimeter × width × depth",
+          "Convert to cubic yards: divide cubic feet by 27",
+          "Add 10% for waste"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Footer for 24ft × 30ft building, 18in wide, 8in deep:",
+          "steps": "Perimeter: (24 + 30) × 2 = 108 linear feet\nWidth: 18in = 1.5 feet\nDepth: 8in = 0.67 feet\nVolume: 108 × 1.5 × 0.67 = 109 cubic feet\nCubic yards: 109 ÷ 27 = 4.0 yards\nWith waste: 4.4 cubic yards needed"
+        }
+      }
+    ]
+  },
+  "fuel-consumption-calculator": {
+    "title": "How to Calculate Fuel Consumption",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how much fuel you'll need for a trip or how far you can go with the fuel you have."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Fuel Needed = Distance ÷ Miles per Gallon\nRange = Gallons × Miles per Gallon"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Find your vehicle's MPG (check owner's manual or gas receipts)",
+          "Measure or map the distance to travel",
+          "Divide distance by MPG = gallons needed",
+          "Add 20% for safety margin and detours",
+          "To find range: multiply gallons in tank by MPG"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "300-mile trip in truck getting 15 MPG:",
+          "steps": "Base fuel: 300 ÷ 15 = 20 gallons\nWith 20% safety: 20 × 1.2 = 24 gallons needed"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "Heavy loads, hills, and AC reduce MPG by 10-30%. Plan for worst case when fuel is scarce!"
+      }
+    ]
+  },
+  "carrying-capacity": {
+    "title": "How to Calculate Carrying Capacity",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how much weight you can safely carry in a vehicle or on a person/animal."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Available Capacity = Max Weight - Vehicle Weight - Passengers\nPerson Carry Rule: Max 25-30% of body weight for long distances"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Find max vehicle weight rating (door sticker or manual)",
+          "Subtract empty vehicle weight",
+          "Subtract passenger weights",
+          "Remaining = cargo capacity",
+          "For backpacks: body weight × 0.25 = comfortable carry weight"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Truck rated 6000 lbs, weighs 4500 lbs, 3 people (450 lbs):",
+          "steps": "Max: 6000 lbs\nMinus truck: 6000 - 4500 = 1500 lbs\nMinus people: 1500 - 450 = 1050 lbs cargo capacity"
+        }
+      }
+    ]
+  },
+  "travel-time-estimator": {
+    "title": "How to Estimate Travel Time",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This helps you figure out how long a trip will take by foot, vehicle, or with a loaded cart."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Time = Distance ÷ Speed\nWalking: 3 mph | Heavy pack: 2 mph | Bicycle: 10 mph | Car: varies"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure total distance in miles",
+          "Estimate realistic speed for your mode of travel",
+          "Divide distance by speed = hours",
+          "Add time for rest breaks (10 min per hour walking)",
+          "Add extra for terrain: +25% for hills, +50% for rough terrain"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "15-mile hike with heavy pack over hilly terrain:",
+          "steps": "Base speed: 2 mph\nBase time: 15 ÷ 2 = 7.5 hours\nRest breaks: 7.5 × (10/60) = 1.25 hours\nHilly terrain: 8.75 × 1.25 = 11 hours total"
+        }
+      }
+    ]
+  },
+  "weight-based-dosage-calculator": {
+    "title": "How to Calculate Medicine Dosage by Weight",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This helps you figure out the right amount of medicine based on body weight."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Dose = Weight (kg) × Dose per kg\nTo convert lbs to kg: divide by 2.2"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Weigh the person in pounds",
+          "Convert to kg: weight ÷ 2.2",
+          "Find the recommended dose per kg (from medicine label)",
+          "Multiply: kg × dose per kg = total dose",
+          "Check that dose is within safe range",
+          "Calculate doses per day and total needed"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Ibuprofen for 66 lb child (10mg/kg):",
+          "steps": "Weight in kg: 66 ÷ 2.2 = 30 kg\nDose: 30 × 10mg = 300mg\nChildren's ibuprofen is 100mg/5ml\nSo give: 15ml (300 ÷ 100 × 5)"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "Always check medicine labels for maximum daily doses. When in doubt, use less and wait. Never guess on serious medications!"
+      }
+    ]
+  },
+  "oral-rehydration-calculator": {
+    "title": "How to Make Oral Rehydration Solution",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how to mix a life-saving drink for someone with severe diarrhea or dehydration."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "ORS Recipe per Liter of Clean Water:\n• 6 level teaspoons of Sugar\n• 1/2 level teaspoon of Salt"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Boil water and let it cool (or use clean bottled water)",
+          "Measure exactly 1 liter (about 4 cups)",
+          "Add 6 level teaspoons of sugar (not heaping!)",
+          "Add 1/2 level teaspoon of salt",
+          "Stir until completely dissolved",
+          "Taste - should be less salty than tears",
+          "Give small sips frequently (not large gulps)"
+        ]
+      },
+      {
+        "heading": "How Much to Give",
+        "content": "Children under 2: 1/4 to 1/2 cup after each loose stool\nOlder children: 1/2 to 1 cup after each loose stool\nAdults: As much as wanted, at least 3 liters per day"
+      },
+      {
+        "heading": "Tip",
+        "tip": "If no measuring spoons: use the 'finger scoop' method - a pinch of salt, a small fistful of sugar. Too much salt is dangerous - when in doubt, use less salt!"
+      }
+    ]
+  },
+  "first-aid-supply-estimator": {
+    "title": "How to Stock First Aid Supplies",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This helps you estimate how many first aid supplies you need based on group size and time."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Supplies = People × Months × Usage Factor\nUsage Factor: 0.5 for low risk, 1.0 for moderate, 2.0 for high risk"
+      },
+      {
+        "heading": "Basic Kit Per Person Per Month",
+        "content": "• 10 adhesive bandages\n• 2 gauze pads (4×4)\n• 1 roll gauze bandage\n• 2 alcohol wipes\n• 4 pain relievers\n• 2 antibiotic ointment packets\n• 1 pair gloves"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Count people in your group",
+          "Decide how many months to prepare for",
+          "Multiply basic kit amounts by people × months",
+          "Double quantities for high-risk activities",
+          "Add specialty items for known medical needs",
+          "Check expiration dates and rotate stock"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "4 people for 6 months, moderate risk:",
+          "steps": "Bandages: 10 × 4 × 6 × 1.0 = 240 bandages\nGauze pads: 2 × 4 × 6 = 48 pads\nPain relievers: 4 × 4 × 6 = 96 tablets"
+        }
+      }
+    ]
+  },
+  "radio-range-estimator": {
+    "title": "How Far Can a Radio Reach?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This estimates how far your two-way radio can communicate based on power and terrain."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Rough Range = √(Power in Watts) × Terrain Factor × 2 miles\nTerrain: Open=1.0, Hills=0.5, Forest=0.3, Urban=0.2"
+      },
+      {
+        "heading": "Realistic Ranges",
+        "content": "• FRS radios (0.5W): 0.5-2 miles\n• GMRS radios (5W): 2-5 miles\n• CB radios (4W): 4-10 miles\n• Ham radio (50W): 10-50+ miles"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Find your radio's power in watts",
+          "Take the square root of watts",
+          "Multiply by terrain factor",
+          "Multiply by 2 for base range in miles",
+          "Height helps! Each 10 feet of elevation = +10% range"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "5-watt GMRS radio in hilly terrain:",
+          "steps": "√5 = 2.24\n2.24 × 0.5 (hills) × 2 = 2.24 miles\nFrom hilltop (+30ft): 2.24 × 1.3 = 2.9 miles"
+        }
+      }
+    ]
+  },
+  "antenna-length-calculator": {
+    "title": "How Long Should an Antenna Be?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Radio waves travel at specific wavelengths. Your antenna works best when it matches that wavelength."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Wavelength (feet) = 984 ÷ Frequency (MHz)\nHalf-wave antenna = 468 ÷ Frequency\nQuarter-wave antenna = 234 ÷ Frequency"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Find your radio's frequency in MHz",
+          "For a half-wave dipole: divide 468 by frequency",
+          "For a quarter-wave: divide 234 by frequency",
+          "Result is length in feet",
+          "Multiply by 12 for inches"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Quarter-wave antenna for 146 MHz ham radio:",
+          "steps": "234 ÷ 146 = 1.6 feet\n1.6 × 12 = 19.2 inches"
+        }
+      },
+      {
+        "heading": "Common Antenna Lengths",
+        "content": "CB (27 MHz): 102 inches (quarter-wave)\nFRS/GMRS (462 MHz): 6 inches\n2m Ham (146 MHz): 19 inches\nWiFi (2.4 GHz): 1.2 inches"
+      }
+    ]
+  },
+  "line-of-sight-distance": {
+    "title": "How Far Can You See (Line of Sight)?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how far away the horizon is based on your height. Important for radio, signaling, and navigation."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Distance (miles) = 1.22 × √Height (feet)\nOr: Distance (km) = 3.57 × √Height (meters)"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure your eye height in feet (standing = ~5.5 ft)",
+          "Add any elevation (hilltop, tower, etc.)",
+          "Take the square root of total height",
+          "Multiply by 1.22",
+          "This is distance to horizon in miles"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Person on 100-foot hill:",
+          "steps": "Height: 100 + 5.5 = 105.5 feet\n√105.5 = 10.27\n10.27 × 1.22 = 12.5 miles to horizon"
+        }
+      },
+      {
+        "heading": "Quick Reference",
+        "content": "Eye level (5.5 ft): 2.9 miles | 20 ft: 5.5 miles | 50 ft: 8.6 miles | 100 ft: 12.5 miles | 500 ft: 27 miles"
+      }
+    ]
+  },
+  "force-calculator-f-ma": {
+    "title": "How to Calculate Force (F = ma)",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Force is what makes things move or stop. This calculates how much push or pull you need."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Force (Newtons) = Mass (kg) × Acceleration (m/s²)\nFor weight: Force = Mass × 9.8 (gravity)"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Find the mass of the object in kg (divide lbs by 2.2)",
+          "Determine the acceleration (how fast it speeds up)",
+          "Multiply mass × acceleration = force in Newtons",
+          "To convert to pounds of force: divide Newtons by 4.45"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "How much force to accelerate a 50kg cart at 2 m/s²?",
+          "steps": "Force = 50 × 2 = 100 Newtons\nIn pounds: 100 ÷ 4.45 = 22.5 lbs of push"
+        }
+      }
+    ]
+  },
+  "ohm-s-law-calculator": {
+    "title": "How Electricity Works (Ohm's Law)",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Ohm's Law shows how voltage, current, and resistance relate in electrical circuits."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "V = I × R (Voltage = Current × Resistance)\nI = V ÷ R (Current = Voltage ÷ Resistance)\nR = V ÷ I (Resistance = Voltage ÷ Current)"
+      },
+      {
+        "heading": "What the Terms Mean",
+        "content": "Voltage (V) = electrical pressure (measured in Volts)\nCurrent (I) = flow of electricity (measured in Amps)\nResistance (R) = how hard it is for electricity to flow (measured in Ohms)"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Identify what you know (any two values)",
+          "Choose the right formula",
+          "Plug in your known values",
+          "Solve for the unknown"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "12V battery, 2 Ohm resistance - how much current?",
+          "steps": "I = V ÷ R\nI = 12 ÷ 2 = 6 Amps"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "Power (Watts) = Volts × Amps. A 12V battery providing 6 Amps delivers 72 Watts of power!"
+      }
+    ]
+  },
+  "energy-calculators": {
+    "title": "How to Calculate Energy",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Energy is the ability to do work. These formulas help you calculate different types of energy."
+      },
+      {
+        "heading": "The Formulas",
+        "formula": "Kinetic Energy = ½ × mass × velocity²\nPotential Energy = mass × gravity × height\nWork = Force × Distance"
+      },
+      {
+        "heading": "Step-by-Step for Kinetic Energy",
+        "steps": [
+          "Find the mass in kg",
+          "Find the velocity (speed) in m/s",
+          "Square the velocity (multiply by itself)",
+          "Multiply mass × velocity²",
+          "Divide by 2"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Kinetic energy of 1000kg car going 20 m/s:",
+          "steps": "KE = ½ × 1000 × 20²\nKE = ½ × 1000 × 400\nKE = 200,000 Joules"
+        }
+      }
+    ]
+  },
+  "pressure-calculator": {
+    "title": "How to Calculate Pressure",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Pressure is force spread over an area. Used for tires, hydraulics, water tanks, and more."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Pressure = Force ÷ Area\nWater pressure (PSI) = Height (feet) × 0.433"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Find the force in pounds",
+          "Find the area in square inches",
+          "Divide force by area = PSI (pounds per square inch)",
+          "For water: multiply height in feet by 0.433"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Water tank 50 feet tall - what pressure at bottom?",
+          "steps": "Pressure = 50 × 0.433 = 21.65 PSI"
+        }
+      },
+      {
+        "heading": "Common Pressures",
+        "content": "Car tire: 30-35 PSI | Bicycle tire: 80-130 PSI | House water: 40-80 PSI | Scuba tank: 3000 PSI"
+      }
+    ]
+  },
+  "universal-unit-converter": {
+    "title": "Common Unit Conversions",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Convert between different units of measurement for length, weight, volume, and temperature."
+      },
+      {
+        "heading": "Length Conversions",
+        "formula": "1 inch = 2.54 cm\n1 foot = 0.3048 m\n1 mile = 1.609 km\n1 meter = 3.28 feet"
+      },
+      {
+        "heading": "Weight Conversions",
+        "formula": "1 pound = 0.454 kg\n1 kg = 2.205 lbs\n1 ounce = 28.35 grams\n1 ton = 2000 lbs = 907 kg"
+      },
+      {
+        "heading": "Volume Conversions",
+        "formula": "1 gallon = 3.785 liters\n1 liter = 0.264 gallons\n1 cup = 236 ml\n1 tablespoon = 15 ml"
+      },
+      {
+        "heading": "Temperature",
+        "formula": "°F to °C: (°F - 32) × 5/9\n°C to °F: (°C × 9/5) + 32"
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Convert 98.6°F to Celsius:",
+          "steps": "(98.6 - 32) × 5/9\n66.6 × 0.556 = 37°C"
+        }
+      }
+    ]
+  },
+  "percentage-calculator": {
+    "title": "How to Calculate Percentages",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Percentages help you find parts of a whole, like 'what is 20% of 150?' or '15 is what percent of 60?'"
+      },
+      {
+        "heading": "The Formulas",
+        "formula": "X% of Y = (X ÷ 100) × Y\nX is what % of Y = (X ÷ Y) × 100\n% Change = ((New - Old) ÷ Old) × 100"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "For 'X% of Y': Divide X by 100, then multiply by Y",
+          "For 'X is what % of Y': Divide X by Y, then multiply by 100",
+          "For '% change': Subtract old from new, divide by old, multiply by 100"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "What is 25% of 80?",
+          "steps": "25 ÷ 100 = 0.25\n0.25 × 80 = 20\nSo 25% of 80 is 20!"
+        }
+      }
+    ]
+  },
+  "ratio-proportion": {
+    "title": "How to Solve Ratios and Proportions",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Ratios compare two amounts. Proportions help you scale things up or down while keeping the same relationship."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "If A:B = C:D, then A × D = B × C\nTo find unknown: X = (A × D) ÷ B"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Write out what you know as a proportion: A/B = C/D",
+          "Cross multiply: A × D = B × C",
+          "Solve for the unknown by dividing"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Recipe calls for 2 cups flour for 24 cookies. How much for 36 cookies?",
+          "steps": "2/24 = X/36\n2 × 36 = 24 × X\n72 = 24X\nX = 72 ÷ 24 = 3 cups flour"
+        }
+      }
+    ]
+  },
+  "compound-interest": {
+    "title": "How Compound Interest Works",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This shows how money grows over time when you earn interest on your interest. It's like a snowball getting bigger!"
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Final Amount = Principal × (1 + Rate/n)^(n×Years)\nWhere n = times compounded per year"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Write your starting amount (Principal)",
+          "Convert interest rate to decimal (5% = 0.05)",
+          "Divide rate by times compounded (yearly=1, monthly=12)",
+          "Add 1 to that number",
+          "Multiply years × times compounded",
+          "Raise step 4 to the power of step 5",
+          "Multiply Principal by that result"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "$1000 at 5% for 3 years, compounded yearly:",
+          "steps": "Rate: 0.05/1 = 0.05\n1 + 0.05 = 1.05\nPower: 1 × 3 = 3\n1.05³ = 1.157625\n$1000 × 1.157625 = $1,157.63"
+        }
+      }
+    ]
+  },
+  "inflation-adjustment": {
+    "title": "How to Adjust for Inflation",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Inflation makes money worth less over time. This calculates what past money is worth today, or what today's money will be worth later."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Future Value = Present Value × (1 + Inflation Rate)^Years\nPast Value = Today's Value ÷ (1 + Inflation Rate)^Years"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Find the inflation rate (historically ~3% per year)",
+          "Convert to decimal (3% = 0.03)",
+          "Add 1 (becomes 1.03)",
+          "Raise to power of years",
+          "Multiply or divide your value"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "What will $100 be worth in 10 years at 3% inflation?",
+          "steps": "1.03^10 = 1.344\n$100 ÷ 1.344 = $74.41 in today's buying power"
+        }
+      }
+    ]
+  },
+  "barter-value-estimator": {
+    "title": "How to Estimate Barter Value",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "In barter (trading without money), value depends on need, scarcity, and usefulness. This helps you estimate fair trades."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Barter Value = (Utility × Scarcity × Demand) ÷ Availability\nScore each factor 1-10"
+      },
+      {
+        "heading": "Value Factors",
+        "steps": [
+          "Utility: How useful is it? (water=10, decorations=1)",
+          "Scarcity: How rare is it? (medicine=10, dirt=1)",
+          "Demand: How many people want it? (food=10, luxury=2)",
+          "Availability: How easy to get? (common=10, rare=1)",
+          "Higher score = more valuable"
+        ]
+      },
+      {
+        "heading": "High-Value Barter Items",
+        "content": "Water purification | Seeds | Medicine | Ammunition | Tools | Fuel | Salt | Alcohol | Batteries | Skills/Labor"
+      },
+      {
+        "heading": "Tip",
+        "tip": "Fair trade means both people feel they gained something. Value changes based on situation - water is worth more in a desert!"
+      }
+    ]
+  },
+  "labor-hours-calculator": {
+    "title": "How to Calculate Labor Value",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This helps you figure out fair pay for work or how long a job will take multiple people."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Total Labor Hours = People × Hours per Person\nValue = Hours × Rate per Hour"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Estimate total hours needed for the job",
+          "Decide how many people will work",
+          "Divide: total hours ÷ workers = hours per person",
+          "Multiply hours × agreed rate = value"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Building a fence takes 40 hours, 2 workers:",
+          "steps": "40 ÷ 2 = 20 hours each\nIf rate is 3 lbs of grain per hour:\n20 × 3 = 60 lbs of grain per worker"
+        }
+      }
+    ]
+  },
+  "2-stroke-fuel-mix": {
+    "title": "How to Mix 2-Stroke Fuel",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Two-stroke engines (chainsaws, weed eaters, small outboards) need oil mixed with gas. Wrong mix can destroy the engine!"
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Oil (oz) = Gas (gallons) × 128 ÷ Ratio\nCommon ratios: 50:1, 40:1, 32:1"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Check your engine's required ratio (usually on cap or manual)",
+          "Decide how much gas you need in gallons",
+          "Multiply gallons × 128 (ounces per gallon)",
+          "Divide by the ratio number",
+          "Result is ounces of oil to add"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "1 gallon of gas at 50:1 ratio:",
+          "steps": "1 × 128 = 128 ounces of gas\n128 ÷ 50 = 2.56 ounces of oil\nAbout 2.5 oz (5 tablespoons) of 2-stroke oil"
+        }
+      },
+      {
+        "heading": "Quick Reference",
+        "content": "50:1 = 2.6 oz per gallon | 40:1 = 3.2 oz per gallon | 32:1 = 4 oz per gallon"
+      }
+    ]
+  },
+  "gear-ratio-calculator": {
+    "title": "How Gear Ratios Work",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Gears trade speed for power. This tells you how much faster or stronger a machine gets with different gear sizes."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Gear Ratio = Driven Gear Teeth ÷ Drive Gear Teeth\nOutput RPM = Input RPM ÷ Gear Ratio"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Count teeth on the driving gear (the one connected to the motor)",
+          "Count teeth on the driven gear (the one doing the work)",
+          "Divide driven teeth by drive teeth = gear ratio",
+          "If ratio > 1: more power, less speed",
+          "If ratio < 1: more speed, less power",
+          "To find output speed: divide input RPM by gear ratio"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Drive gear has 20 teeth, driven gear has 60 teeth:",
+          "steps": "Ratio: 60 ÷ 20 = 3:1\nThis means 3× more torque (power), 3× slower speed\nIf motor spins 900 RPM: 900 ÷ 3 = 300 RPM output"
+        }
+      }
+    ]
+  },
+  "tire-size-speed": {
+    "title": "How Tire Size Affects Speed",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Your speedometer uses tire rotations to measure speed. Different tire sizes change your actual speed vs displayed speed."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Actual Speed = Displayed Speed × (New Tire Diameter ÷ Old Tire Diameter)\nTire Diameter = (Width × Aspect ÷ 2540) + Rim Diameter"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Find tire size (like 265/70R17)",
+          "Width = 265mm, Aspect = 70%, Rim = 17 inches",
+          "Sidewall height = 265 × 0.70 = 185.5mm = 7.3 inches",
+          "Diameter = (7.3 × 2) + 17 = 31.6 inches",
+          "Compare to original tire diameter"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Stock 245/75R16 vs new 285/75R16:",
+          "steps": "Stock diameter: 30.5 inches\nNew diameter: 32.8 inches\nAt 60 mph displayed: 60 × (32.8÷30.5) = 64.5 mph actual"
+        }
+      }
+    ]
+  },
+  "salt-curing-calculator": {
+    "title": "How to Salt Cure Meat",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Salt curing preserves meat without refrigeration. This tells you how much salt you need for safe preservation."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Salt Needed = Meat Weight × 0.03 to 0.04 (3-4%)\nCuring Time = 1-2 days per pound of meat"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Weigh your meat in pounds",
+          "Multiply by 0.03 for light cure or 0.04 for heavy cure",
+          "Result is pounds of salt needed",
+          "For each pound of meat, cure 1-2 days",
+          "Keep meat cold (below 40°F) during cure"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "10 lb pork belly for bacon:",
+          "steps": "Salt: 10 × 0.035 = 0.35 lbs (about 5.6 oz)\nAdd 1 oz sugar, 0.1 oz curing salt (#1)\nCure time: 10-14 days in refrigerator"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "For safety, use curing salt (#1 or #2) which contains nitrite. Regular salt alone doesn't prevent botulism in wet cures!"
+      }
+    ]
+  },
+  "canning-pressure-time": {
+    "title": "How to Calculate Canning Pressure & Time",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Pressure canning is required for low-acid foods (meat, vegetables) to kill dangerous bacteria. This ensures safe preservation."
+      },
+      {
+        "heading": "The Rules",
+        "formula": "Low-acid foods: 10-15 PSI for 20-90 minutes\nAdjust for altitude: +0.5 PSI per 1000 feet above sea level"
+      },
+      {
+        "heading": "Safe Canning Times (at 10 PSI)",
+        "content": "Chicken/meat: 75-90 minutes | Fish: 100 minutes | Vegetables: 20-40 minutes | Beans: 75 minutes | Stock/broth: 20-25 minutes"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Determine your altitude above sea level",
+          "Look up base processing time for your food",
+          "For dial gauge: add 0.5 PSI per 1000 ft",
+          "For weighted gauge: use 15 lbs above 1000 ft",
+          "Never reduce time - only increase for larger jars"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Canning chicken at 3000 ft elevation:",
+          "steps": "Base: 10 PSI, 75 minutes for quarts\nAltitude adjustment: +1.5 PSI\nUse 11.5 PSI for 75 minutes"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "Never can dairy, flour, or dense purées. Always use tested recipes from USDA or Ball. When in doubt, throw it out!"
+      }
+    ]
+  },
+  "bread-dough-calculator": {
+    "title": "How to Calculate Bread Dough (Baker's Percentage)",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Bakers measure ingredients as a percentage of flour weight. This helps you scale recipes up or down perfectly!"
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Ingredient Amount = Flour Weight × (Ingredient % ÷ 100)\nCommon: Flour=100%, Water=60-75%, Salt=2%, Yeast=1%"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Start with your flour weight (this is always 100%)",
+          "For water at 65%: multiply flour × 0.65",
+          "For salt at 2%: multiply flour × 0.02",
+          "For yeast at 1%: multiply flour × 0.01",
+          "Add all weights together for total dough weight"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "500g flour, 65% hydration, 2% salt:",
+          "steps": "Flour: 500g (100%)\nWater: 500 × 0.65 = 325g\nSalt: 500 × 0.02 = 10g\nYeast: 500 × 0.01 = 5g\nTotal dough: 500 + 325 + 10 + 5 = 840g"
+        }
+      }
+    ]
+  },
+  "well-output-calculator": {
+    "title": "How to Calculate Well Output",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how much water your well can produce per hour or day, and if it can meet your needs."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Output (GPH) = Gallons Pumped ÷ Time (hours)\nRecovery Rate = Time for water level to return after pumping"
+      },
+      {
+        "heading": "Step-by-Step to Test",
+        "steps": [
+          "Pump well until water level drops significantly",
+          "Note how many gallons pumped and time taken",
+          "Stop pumping and time how long to recover",
+          "Gallons ÷ hours = gallons per hour",
+          "For daily output: GPH × hours you can pump",
+          "Allow time for recharge (usually pump max 4-6 hrs/day)"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Well pumps 200 gallons in 30 minutes before slowing:",
+          "steps": "GPH: 200 ÷ 0.5 = 400 gallons per hour\nIf recovery takes 2 hours, pump 30min every 2.5 hours\nDaily: ~8 cycles × 200 gal = 1600 gallons/day"
+        }
+      }
+    ]
+  },
+  "pipe-flow-calculator": {
+    "title": "How Much Water Flows Through a Pipe",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how much water can flow through a pipe based on size and pressure."
+      },
+      {
+        "heading": "The Formula (Simplified)",
+        "formula": "Flow (GPM) ≈ 28.5 × Diameter² × √Pressure\nDiameter in inches, Pressure in PSI"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure pipe inner diameter in inches",
+          "Square the diameter (multiply by itself)",
+          "Find your water pressure (typically 40-60 PSI)",
+          "Take square root of pressure",
+          "Multiply: 28.5 × diameter² × √pressure"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "3/4 inch pipe at 50 PSI:",
+          "steps": "Diameter²: 0.75² = 0.5625\n√50 = 7.07\nFlow: 28.5 × 0.5625 × 7.07 = 113 GPM theoretical\nPractical with friction: ~15-20 GPM"
+        }
+      },
+      {
+        "heading": "Pipe Capacity Quick Reference",
+        "content": "1/2 inch: 5-8 GPM | 3/4 inch: 12-20 GPM | 1 inch: 20-30 GPM | 1.5 inch: 40-60 GPM | 2 inch: 70-100 GPM"
+      }
+    ]
+  },
+  "septic-tank-sizing": {
+    "title": "How to Size a Septic Tank",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how big your septic tank needs to be based on household size and water use."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Tank Size (gallons) = People × Daily Use × Retention Days\nMinimum = 1000 gallons for most homes"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Count people in household",
+          "Estimate daily water use (50-75 gallons per person)",
+          "Multiply people × daily use",
+          "Multiply by 2-3 days retention time",
+          "Add 50% for solid storage",
+          "Round up to standard tank size"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "4-person household, average water use:",
+          "steps": "Daily: 4 × 60 = 240 gallons/day\nRetention: 240 × 2.5 = 600 gallons\nWith solids: 600 × 1.5 = 900 gallons\nUse: 1000 gallon tank (minimum)"
+        }
+      },
+      {
+        "heading": "Standard Sizes",
+        "content": "1-2 bedroom: 750-1000 gal | 3 bedroom: 1000 gal | 4 bedroom: 1250 gal | 5 bedroom: 1500 gal"
+      }
+    ]
+  },
+  "roof-load-calculator": {
+    "title": "How Much Weight Can a Roof Hold?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how much snow or other weight your roof can safely support."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Snow Load (PSF) = Snow Depth (inches) × Snow Density\nWet snow: 20 lbs per inch | Dry snow: 5-10 lbs per inch\nTypical roof: designed for 20-40 PSF total load"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure snow depth on roof in inches",
+          "Estimate density (fresh=5, packed=10, wet=15-20 lbs/inch)",
+          "Multiply: depth × density = PSF load",
+          "Compare to roof rating (usually 20-40 PSF)",
+          "If over 50% of rating, consider removing snow"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "24 inches of packed snow on 30 PSF rated roof:",
+          "steps": "Load: 24 × 10 = 240 lbs per sq ft total\nBut snow compacts, so realistically: ~18-20 PSF\nStill 60% of rating - monitor closely!"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "Roof collapses often happen during thaw - wet snow is 3-4× heavier than dry! Remove snow if it starts to rain on snow."
+      }
+    ]
+  },
+  "simple-beam-calculator": {
+    "title": "How to Calculate Beam Strength",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you if a wooden beam is strong enough for the weight you want to put on it."
+      },
+      {
+        "heading": "The Formula (Simplified)",
+        "formula": "Max Load = (4 × Fb × Section Modulus) ÷ Span\nSection Modulus = Width × Height² ÷ 6"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure beam: width (b) and height (d) in inches",
+          "Calculate Section Modulus: b × d² ÷ 6",
+          "Find Fb (allowable stress) for your wood (~1000-1500 PSI for common lumber)",
+          "Multiply: 4 × Fb × Section Modulus",
+          "Divide by span length in inches",
+          "Result is max center load in pounds"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "2×10 beam spanning 8 feet, Fb=1000 PSI:",
+          "steps": "Section Modulus: 1.5 × 9.25² ÷ 6 = 21.4 in³\n4 × 1000 × 21.4 = 85,600\n85,600 ÷ 96 inches = 891 lbs max center load"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "Use safety factor of 2-3 for any structure. If math says 900 lbs, don't put more than 300-450 lbs on it!"
+      }
+    ]
+  },
+  "rope-cable-safe-load": {
+    "title": "How to Calculate Rope Safe Working Load",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Rope can hold a lot, but you should only use a fraction of its strength to be safe. This calculates how much you can safely lift."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Safe Working Load = Breaking Strength ÷ Safety Factor\nSafety Factor: 5 for lifting people, 4 for general use"
+      },
+      {
+        "heading": "Common Rope Strengths",
+        "content": "1/4 inch Manila: 540 lbs | 1/2 inch Manila: 2380 lbs | 1/4 inch Nylon: 1490 lbs | 1/2 inch Nylon: 5750 lbs | Paracord 550: 550 lbs"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Find rope's breaking strength (on package or chart)",
+          "Choose safety factor (5 for people, 4 for cargo)",
+          "Divide: breaking strength ÷ safety factor",
+          "Reduce by 50% if using knots!",
+          "Result is safe working load"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "1/2 inch nylon rope for lifting gear:",
+          "steps": "Breaking: 5750 lbs\nSWL: 5750 ÷ 4 = 1438 lbs\nWith knots: 1438 × 0.5 = 719 lbs max safe load"
+        }
+      }
+    ]
+  },
+  "insulation-calculator": {
+    "title": "How Much Insulation Do You Need?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Insulation is measured in R-value (resistance to heat flow). This helps you figure out how much you need."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Total R-Value = Sum of all layer R-values\nHeat Loss = (Area × Temperature Difference) ÷ R-value"
+      },
+      {
+        "heading": "Recommended R-Values",
+        "content": "Attic: R-38 to R-60 | Walls: R-13 to R-21 | Floors: R-25 to R-30 | Basement: R-10 to R-15"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Find recommended R-value for your climate zone",
+          "Check R-value per inch of your insulation type",
+          "Divide needed R-value by R per inch = thickness needed",
+          "Measure area to cover in square feet",
+          "Add 10% for waste and gaps"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Need R-38 in attic using fiberglass batts (R-3.2/inch):",
+          "steps": "Thickness: 38 ÷ 3.2 = 12 inches needed\nAttic area: 1000 sq ft\nBatts at 15 in wide: 1000 ÷ 1.25 = 800 linear feet\nWith waste: 880 linear feet of batts"
+        }
+      }
+    ]
+  },
+  "wind-chill-calculator": {
+    "title": "How to Calculate Wind Chill",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Wind makes cold air feel even colder. This tells you what temperature it 'feels like' when the wind is blowing."
+      },
+      {
+        "heading": "The Formula (NWS)",
+        "formula": "Wind Chill = 35.74 + 0.6215T - 35.75V^0.16 + 0.4275T × V^0.16\nT = temperature (°F), V = wind speed (mph)"
+      },
+      {
+        "heading": "Simple Estimation",
+        "steps": [
+          "For every 5 mph of wind, it feels about 3°F colder",
+          "At 10°F with 20mph wind: feels like about -10°F",
+          "Below 0°F wind chill: risk of frostbite in 30 minutes",
+          "Below -20°F wind chill: frostbite in 10 minutes!"
+        ]
+      },
+      {
+        "heading": "Tip",
+        "tip": "Always check wind chill before going outside in winter. Cover all exposed skin when wind chill is below 0°F!"
+      }
+    ]
+  },
+  "heat-index-calculator": {
+    "title": "How to Calculate Heat Index",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Humidity makes hot air feel even hotter. This tells you the 'feels like' temperature on humid days."
+      },
+      {
+        "heading": "Simple Estimation",
+        "steps": [
+          "At 90°F with 50% humidity: feels like 95°F",
+          "At 90°F with 80% humidity: feels like 113°F!",
+          "Above 105°F heat index: danger zone",
+          "Above 130°F heat index: extreme danger"
+        ]
+      },
+      {
+        "heading": "Stay Safe",
+        "content": "80-90°F index: Caution | 90-105°F: Extreme caution | 105-130°F: Danger | 130°F+: Extreme danger"
+      },
+      {
+        "heading": "Tip",
+        "tip": "When heat index is high: drink lots of water, stay in shade, avoid heavy work during midday, watch for heat exhaustion signs."
+      }
+    ]
+  },
+  "dew-point-calculator": {
+    "title": "How to Calculate Dew Point",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Dew point is the temperature where moisture in the air condenses into water droplets. Important for fog, frost, and comfort."
+      },
+      {
+        "heading": "The Formula (Approximate)",
+        "formula": "Dew Point ≈ Temperature - ((100 - Humidity) ÷ 5)\nThis works for humidity above 50%"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Get current temperature in °F",
+          "Get current humidity percentage",
+          "Subtract humidity from 100",
+          "Divide by 5",
+          "Subtract from temperature = approximate dew point"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "80°F with 60% humidity:",
+          "steps": "100 - 60 = 40\n40 ÷ 5 = 8\n80 - 8 = 72°F dew point"
+        }
+      },
+      {
+        "heading": "What Dew Point Tells You",
+        "content": "Below 55°F: comfortable | 55-65°F: sticky | 65-70°F: muggy | Above 70°F: oppressive | Above 75°F: dangerous"
+      }
+    ]
+  },
+  "sun-position-calculator": {
+    "title": "How to Find Sun Position",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Knowing where the sun is helps with solar panel placement, telling time, and navigation."
+      },
+      {
+        "heading": "Simple Methods",
+        "steps": [
+          "Sun rises in the East, sets in the West",
+          "At noon, sun is due South (in Northern Hemisphere)",
+          "Sun is highest in sky at solar noon",
+          "Solar noon ≈ 12:00 - (timezone offset × 15°) + (longitude difference)",
+          "Sun angle at noon = 90° - latitude + declination"
+        ]
+      },
+      {
+        "heading": "Shadow Method",
+        "content": "Stick shadow shortest at solar noon | Shadow points North at noon (N. Hemisphere) | Shadow length ratio tells sun angle"
+      },
+      {
+        "heading": "Seasonal Changes",
+        "content": "Summer: Sun rises NE, sets NW, high in sky | Winter: Sun rises SE, sets SW, low in sky | Equinox: Sun rises due E, sets due W"
+      }
+    ]
+  },
+  "solution-dilution-c1v1-c2v2": {
+    "title": "How to Dilute Solutions (C1V1 = C2V2)",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how to make a weaker solution from a stronger one by adding water."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "C1 × V1 = C2 × V2\nC1 = starting concentration | V1 = starting volume\nC2 = final concentration | V2 = final volume"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Identify what you know (usually C1, C2, and desired V2)",
+          "Plug into formula: V1 = (C2 × V2) ÷ C1",
+          "This tells you how much of the concentrate to use",
+          "Add water to reach final volume"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Make 1 liter of 10% bleach from 50% bleach:",
+          "steps": "C1 = 50%, V1 = ?, C2 = 10%, V2 = 1000ml\nV1 = (10 × 1000) ÷ 50 = 200ml\nUse 200ml of 50% bleach + 800ml water"
+        }
+      }
+    ]
+  },
+  "ph-concentration": {
+    "title": "How to Understand pH",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "pH measures how acidic or alkaline (basic) a solution is. Scale goes 0-14, with 7 being neutral."
+      },
+      {
+        "heading": "The Scale",
+        "formula": "pH = -log[H+]\n0-6 = Acid | 7 = Neutral | 8-14 = Base (Alkaline)\nEach number is 10× stronger than the next"
+      },
+      {
+        "heading": "Common pH Values",
+        "content": "Battery acid: 0 | Lemon juice: 2 | Vinegar: 3 | Tomatoes: 4 | Coffee: 5 | Milk: 6.5 | Water: 7 | Baking soda: 8 | Soap: 10 | Bleach: 12 | Drain cleaner: 14"
+      },
+      {
+        "heading": "Important for Survival",
+        "steps": [
+          "Drinking water: should be pH 6.5-8.5",
+          "Soil for gardening: most plants like pH 6-7",
+          "Food preservation: acid foods (below pH 4.6) are safer",
+          "Swimming pool: pH 7.2-7.8"
+        ]
+      }
+    ]
+  },
+  "basic-ballistics": {
+    "title": "How Bullet Drop Works",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Gravity pulls bullets down as they fly. This helps estimate how much to aim above a distant target."
+      },
+      {
+        "heading": "The Formula (Simplified)",
+        "formula": "Drop (inches) = (Distance² × 193) ÷ (Velocity²)\nDistance in yards, Velocity in feet per second"
+      },
+      {
+        "heading": "General Rules",
+        "steps": [
+          "Bullets drop increasingly more at longer ranges",
+          "Faster bullets drop less",
+          "At 100 yards: typical rifle drops 1-3 inches",
+          "At 300 yards: typical rifle drops 10-20 inches",
+          "Wind also pushes bullets sideways"
+        ]
+      },
+      {
+        "heading": "Tip",
+        "tip": "Every gun and load is different. Use manufacturer's ballistic data or test at a range. This is only for rough estimation!"
+      }
+    ]
+  },
+  "sandbag-wall-calculator": {
+    "title": "How to Calculate Sandbag Needs",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This tells you how many sandbags you need to build a protective wall of a certain size."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Bags = (Length × Height × Thickness) ÷ 0.5 cubic feet\nA filled sandbag is about 14×6×4 inches (0.5 cu ft)"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure wall length in feet",
+          "Decide wall height in feet",
+          "Choose thickness (1, 2, or 3 bags deep)",
+          "Bags per row: length × 1.5 (bags overlap)",
+          "Number of layers: height × 2 (bags are 6 inches high)",
+          "Multiply: rows × layers × thickness",
+          "Add 10% extra for waste"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "10ft wall, 3ft high, 2 bags thick:",
+          "steps": "Bags per row: 10 × 1.5 = 15 bags\nLayers: 3 × 2 = 6 layers\nTotal: 15 × 6 × 2 = 180 bags\nWith 10% extra: 198 bags needed"
+        }
+      }
+    ]
+  },
+  "patrol-coverage": {
+    "title": "How to Calculate Patrol Coverage",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "This helps you figure out how many people you need to patrol an area 24 hours a day."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "People Needed = (Hours to Cover × Posts) ÷ (Hours per Shift) × Coverage Factor\nCoverage Factor: 1.5 for sustainable, 2.0 for long-term"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Count observation posts needed",
+          "Decide hours per shift (4-8 hours typical)",
+          "Calculate shifts per day: 24 ÷ shift length",
+          "Multiply: posts × shifts = total shift-slots",
+          "Multiply by coverage factor (for days off, sickness)",
+          "This is minimum people needed"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "4 watch posts, 8-hour shifts, sustainable schedule:",
+          "steps": "Shifts per day: 24 ÷ 8 = 3 shifts\nSlots: 4 posts × 3 = 12 shift-slots per day\nWith coverage: 12 × 1.5 = 18 people minimum"
+        }
+      }
+    ]
+  },
+  "wind-turbine-power": {
+    "title": "How Much Power from a Wind Turbine?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Wind turbines convert wind energy to electricity. Power increases dramatically with wind speed!"
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Power (watts) = 0.5 × Air Density × Area × Velocity³ × Efficiency\nSimplified: Power ≈ 0.01 × Diameter² × WindSpeed³"
+      },
+      {
+        "heading": "Key Concept",
+        "content": "Doubling wind speed = 8× more power! (because speed is cubed)\n10 mph wind → X power | 20 mph wind → 8X power"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure or estimate blade diameter in feet",
+          "Square the diameter",
+          "Find average wind speed in mph",
+          "Cube the wind speed (multiply by itself 3 times)",
+          "Multiply: 0.01 × diameter² × speed³",
+          "Result is approximate watts"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "6-foot diameter turbine in 15 mph wind:",
+          "steps": "Diameter²: 6² = 36\nWind³: 15³ = 3375\nPower: 0.01 × 36 × 3375 = 1215 watts peak"
+        }
+      }
+    ]
+  },
+  "water-wheel-turbine-power": {
+    "title": "How Much Power from a Water Wheel?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Flowing water can generate electricity. Power depends on how much water and how far it falls."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Power (watts) = Flow (GPM) × Head (feet) × 0.18 × Efficiency\nEfficiency typically 50-70% for small systems"
+      },
+      {
+        "heading": "Step-by-Step on Paper",
+        "steps": [
+          "Measure water flow in gallons per minute",
+          "Measure vertical drop (head) in feet",
+          "Multiply: flow × head × 0.18",
+          "Multiply by efficiency (0.5 to 0.7)",
+          "Result is watts of power"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "Stream with 100 GPM flow, 10 feet of drop:",
+          "steps": "Basic: 100 × 10 × 0.18 = 180 watts potential\nAt 60% efficiency: 180 × 0.6 = 108 watts actual"
+        }
+      },
+      {
+        "heading": "Tip",
+        "tip": "Head (drop) is more important than flow. A small amount of water falling far produces more than lots of water with small drop."
+      }
+    ]
+  },
+  "wire-gauge-calculator": {
+    "title": "What Wire Size Do You Need?",
+    "sections": [
+      {
+        "heading": "What This Calculates",
+        "content": "Too-thin wire gets hot and wastes power. This tells you what gauge wire to use for your electrical project."
+      },
+      {
+        "heading": "The Formula",
+        "formula": "Circular Mils = (Amps × Distance × 2 × 12.9) ÷ Voltage Drop\nThen look up wire gauge from circular mil rating"
+      },
+      {
+        "heading": "Quick Reference (Copper, 12V)",
+        "content": "5 Amps, 10ft: 18 AWG | 10 Amps, 10ft: 14 AWG | 15 Amps, 10ft: 12 AWG | 20 Amps, 10ft: 10 AWG | 30 Amps, 10ft: 8 AWG"
+      },
+      {
+        "heading": "Rules of Thumb",
+        "steps": [
+          "Lower gauge number = thicker wire",
+          "Double the distance = need 3 gauge sizes larger",
+          "Double the amps = need 3 gauge sizes larger",
+          "12V systems need much thicker wire than 120V",
+          "When in doubt, go one size larger"
+        ]
+      },
+      {
+        "heading": "Example",
+        "example": {
+          "title": "10 amp load, 20 feet from battery at 12V:",
+          "steps": "At 10ft, 10A needs 14 AWG\nDouble distance: need 3 sizes larger\nUse 10 AWG wire (or 8 AWG to be safe)"
+        }
+      }
+    ]
+  },
+  "quick-reference": {
+    "title": "Quick Reference Guide",
+    "sections": [
+      {
+        "heading": "What This Contains",
+        "content": "Common conversions and reference values for quick lookup during calculations."
+      },
+      {
+        "heading": "Temperature",
+        "formula": "Water freezes: 32°F / 0°C\nBody temperature: 98.6°F / 37°C\nWater boils: 212°F / 100°C"
+      },
+      {
+        "heading": "Weight",
+        "content": "1 pound = 16 ounces = 454 grams\n1 kilogram = 2.2 pounds\n1 ton = 2000 pounds"
+      },
+      {
+        "heading": "Volume",
+        "content": "1 gallon = 4 quarts = 8 pints = 128 oz = 3.785 liters\n1 cup = 8 oz = 236 ml\n1 tablespoon = 3 teaspoons = 15 ml"
+      },
+      {
+        "heading": "Length",
+        "content": "1 foot = 12 inches = 30.48 cm\n1 yard = 3 feet = 0.914 m\n1 mile = 5,280 feet = 1.609 km"
+      }
+    ]
+  }
+}

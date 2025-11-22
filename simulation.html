@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation & Planning - SPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/simulation.css">
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>SPS</h1>
+                    <span class="logo-subtitle">Simulation</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/index.html" class="nav-link">Home</a></li>
+                    <li id="nav-logout-item" style="display: none;"><a href="#" class="nav-link" onclick="authManager.logout(); return false;">Logout</a></li>
+                    <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/inventory.html" class="nav-link">Inventory</a></li>
+                    <li><a href="/pantry.html" class="nav-link">Pantry</a></li>
+                    <li><a href="/garden.html" class="nav-link">Garden</a></li>
+                    <li class="nav-dropdown">
+                        <a href="/videos.html" class="nav-link" data-active-paths="/videos.html,/pictures.html">Media ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/videos.html">Videos</a></li>
+                            <li><a href="/pictures.html">Pictures</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/kiwix.html" class="nav-link">Kiwix</a></li>
+                    <li class="nav-dropdown"><a href="/gps.html" class="nav-link" data-active-paths="/gps.html,/osm-sync.html">Map ▾</a><ul class="dropdown-menu"><li><a href="/gps.html">Map View</a></li><li><a href="/osm-sync.html">Sync Maps</a></li></ul></li>
+                    <li class="nav-dropdown"><a href="#" class="nav-link active" data-active-paths="/familyprofile.html,/energy.html,/medical.html,/settings.html,/calculations.html,/simulation.html">Tools ▾</a><ul class="dropdown-menu"><li><a href="/familyprofile.html">Family Profile</a></li><li><a href="/calculations.html">Calculations</a></li><li><a href="/simulation.html">Simulation & Planning</a></li><li><a href="/energy.html">Energy Calculator</a></li><li><a href="/medical.html">Medical Guide</a></li><li><a href="/settings.html">Settings</a></li></ul></li>
+                </ul>
+                <div class="nav-right">
+                    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <span id="user-name"></span>
+                        <button onclick="authManager.logout()" class="btn btn-secondary btn-sm">Logout</button>
+                    </div>
+                    <div id="auth-buttons" style="display: flex; gap: 10px;">
+                        <button onclick="authManager.showLoginModal()" class="btn btn-primary btn-sm">Login</button>
+                        <button onclick="authManager.showRegisterModal()" class="btn btn-secondary btn-sm">Register</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="simulation-main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1 class="page-title">Scenario Simulation Engine</h1>
+                    <p class="page-subtitle">Test your preparedness against real emergency scenarios</p>
+                </div>
+                <div class="page-header-right">
+                    <button class="btn btn-secondary" onclick="exportResults()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Export Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mode Toggle -->
+            <div class="mode-toggle-container">
+                <div class="mode-toggle">
+                    <button class="mode-btn active" id="mode-baseline" onclick="setMode('baseline')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 20V10"></path>
+                            <path d="M18 20V4"></path>
+                            <path d="M6 20v-4"></path>
+                        </svg>
+                        Baseline Simulation
+                    </button>
+                    <button class="mode-btn" id="mode-whatif" onclick="setMode('whatif')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        What-If Mode
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scenario Selection -->
+            <div class="scenario-section sps-card">
+                <h2>Select Emergency Scenario</h2>
+                <div class="scenario-grid">
+                    <button class="scenario-card active" data-scenario="power_outage_24h" onclick="selectScenario('power_outage_24h')">
+                        <div class="scenario-icon">&#9889;</div>
+                        <div class="scenario-info">
+                            <h3>Power Outage</h3>
+                            <p>24 Hours</p>
+                        </div>
+                    </button>
+                    <button class="scenario-card" data-scenario="power_outage_72h" onclick="selectScenario('power_outage_72h')">
+                        <div class="scenario-icon">&#9889;</div>
+                        <div class="scenario-info">
+                            <h3>Power Outage</h3>
+                            <p>72 Hours</p>
+                        </div>
+                    </button>
+                    <button class="scenario-card" data-scenario="power_outage_14d" onclick="selectScenario('power_outage_14d')">
+                        <div class="scenario-icon">&#9889;</div>
+                        <div class="scenario-info">
+                            <h3>Power Outage</h3>
+                            <p>14 Days</p>
+                        </div>
+                    </button>
+                    <button class="scenario-card" data-scenario="grid_down" onclick="selectScenario('grid_down')">
+                        <div class="scenario-icon">&#128683;</div>
+                        <div class="scenario-info">
+                            <h3>Grid Down</h3>
+                            <p>Total Systems Failure</p>
+                        </div>
+                    </button>
+                    <button class="scenario-card" data-scenario="water_contamination" onclick="selectScenario('water_contamination')">
+                        <div class="scenario-icon">&#128167;</div>
+                        <div class="scenario-info">
+                            <h3>Water Crisis</h3>
+                            <p>Contamination Event</p>
+                        </div>
+                    </button>
+                    <button class="scenario-card" data-scenario="shelter_in_place" onclick="selectScenario('shelter_in_place')">
+                        <div class="scenario-icon">&#127968;</div>
+                        <div class="scenario-info">
+                            <h3>Shelter In Place</h3>
+                            <p>30 Days</p>
+                        </div>
+                    </button>
+                    <button class="scenario-card" data-scenario="evacuation" onclick="selectScenario('evacuation')">
+                        <div class="scenario-icon">&#128663;</div>
+                        <div class="scenario-info">
+                            <h3>Evacuation</h3>
+                            <p>Bug Out</p>
+                        </div>
+                    </button>
+                    <button class="scenario-card" data-scenario="medical_emergency" onclick="selectScenario('medical_emergency')">
+                        <div class="scenario-icon">&#127973;</div>
+                        <div class="scenario-info">
+                            <h3>Medical Emergency</h3>
+                            <p>No Outside Help</p>
+                        </div>
+                    </button>
+                    <button class="scenario-card" data-scenario="winter_storm" onclick="selectScenario('winter_storm')">
+                        <div class="scenario-icon">&#10052;</div>
+                        <div class="scenario-info">
+                            <h3>Winter Storm</h3>
+                            <p>7 Days</p>
+                        </div>
+                    </button>
+                    <button class="scenario-card" data-scenario="heat_wave" onclick="selectScenario('heat_wave')">
+                        <div class="scenario-icon">&#9728;</div>
+                        <div class="scenario-info">
+                            <h3>Heat Wave</h3>
+                            <p>Extended Heat Event</p>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="scenario-actions">
+                    <button class="btn btn-primary btn-lg" id="run-simulation-btn" onclick="runSimulation()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        Run Simulation
+                    </button>
+                </div>
+            </div>
+
+            <!-- What-If Adjustments Panel (hidden by default) -->
+            <div class="whatif-panel sps-card" id="whatif-panel" style="display: none;">
+                <h2>What-If Adjustments</h2>
+                <p class="whatif-description">Modify these values to see how changes affect your readiness. Original data is not modified.</p>
+
+                <div class="whatif-grid">
+                    <div class="whatif-category">
+                        <h3>Food Supply</h3>
+                        <div class="whatif-field">
+                            <label>Additional Calories (total)</label>
+                            <input type="number" id="whatif-calories" value="0" min="0" step="1000">
+                        </div>
+                        <div class="whatif-field">
+                            <label>Additional Days of MREs/Rations</label>
+                            <input type="number" id="whatif-mre-days" value="0" min="0">
+                        </div>
+                    </div>
+
+                    <div class="whatif-category">
+                        <h3>Water Supply</h3>
+                        <div class="whatif-field">
+                            <label>Additional Water (gallons)</label>
+                            <input type="number" id="whatif-water" value="0" min="0" step="1">
+                        </div>
+                        <div class="whatif-field">
+                            <label>Water Filters (qty)</label>
+                            <input type="number" id="whatif-filters" value="0" min="0">
+                        </div>
+                    </div>
+
+                    <div class="whatif-category">
+                        <h3>Energy & Fuel</h3>
+                        <div class="whatif-field">
+                            <label>Propane (lbs)</label>
+                            <input type="number" id="whatif-propane" value="0" min="0" step="1">
+                        </div>
+                        <div class="whatif-field">
+                            <label>Gasoline (gallons)</label>
+                            <input type="number" id="whatif-gasoline" value="0" min="0" step="1">
+                        </div>
+                        <div class="whatif-field">
+                            <label>Solar Panel Watts</label>
+                            <input type="number" id="whatif-solar" value="0" min="0" step="100">
+                        </div>
+                        <div class="whatif-field">
+                            <label>Battery Capacity (Wh)</label>
+                            <input type="number" id="whatif-battery" value="0" min="0" step="100">
+                        </div>
+                    </div>
+
+                    <div class="whatif-category">
+                        <h3>Medical</h3>
+                        <div class="whatif-field">
+                            <label>First Aid Kits</label>
+                            <input type="number" id="whatif-firstaid" value="0" min="0">
+                        </div>
+                        <div class="whatif-field">
+                            <label>Prescription Days Supply</label>
+                            <input type="number" id="whatif-prescriptions" value="0" min="0">
+                        </div>
+                    </div>
+
+                    <div class="whatif-category">
+                        <h3>Family Adjustment</h3>
+                        <div class="whatif-field">
+                            <label>Additional Adults</label>
+                            <input type="number" id="whatif-adults" value="0" min="0">
+                        </div>
+                        <div class="whatif-field">
+                            <label>Additional Children</label>
+                            <input type="number" id="whatif-children" value="0" min="0">
+                        </div>
+                    </div>
+
+                    <div class="whatif-category">
+                        <h3>Cash & Documents</h3>
+                        <div class="whatif-field">
+                            <label>Cash On Hand ($)</label>
+                            <input type="number" id="whatif-cash" value="0" min="0" step="100">
+                        </div>
+                        <div class="whatif-field">
+                            <label>Emergency Documents Ready</label>
+                            <select id="whatif-docs">
+                                <option value="0">No Change</option>
+                                <option value="1">Basic (IDs, Insurance)</option>
+                                <option value="2">Complete Set</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="whatif-actions">
+                    <button class="btn btn-secondary" onclick="resetWhatIf()">Reset to Baseline</button>
+                    <button class="btn btn-primary" onclick="runWhatIfSimulation()">
+                        Run What-If Simulation
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="results-section" style="display: none;">
+                <!-- Readiness Score -->
+                <div class="readiness-score-card sps-card">
+                    <div class="score-circle-container">
+                        <div class="score-circle" id="readiness-circle">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="score-bg" cx="50" cy="50" r="45"></circle>
+                                <circle class="score-progress" cx="50" cy="50" r="45" id="score-progress"></circle>
+                            </svg>
+                            <div class="score-value">
+                                <span id="readiness-score">0</span>
+                                <span class="score-label">Readiness</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="score-details">
+                        <h2 id="scenario-title">Power Outage - 24 Hours</h2>
+                        <p class="score-status" id="score-status">Calculating...</p>
+                        <div class="survival-days">
+                            <span class="survival-label">Estimated Survival Days:</span>
+                            <span class="survival-value" id="survival-days">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Scores -->
+                <div class="category-scores sps-card">
+                    <h2>Category Breakdown</h2>
+                    <div class="category-grid" id="category-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- What-If Comparison (only shown in what-if mode) -->
+                <div class="comparison-panel sps-card" id="comparison-panel" style="display: none;">
+                    <h2>Baseline vs What-If Comparison</h2>
+                    <div class="comparison-grid" id="comparison-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="timeline-section sps-card">
+                    <h2>Event Timeline</h2>
+                    <div class="timeline" id="timeline">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Failure Points & Shortages -->
+                <div class="alerts-grid">
+                    <div class="alerts-card sps-card critical">
+                        <h2>Critical Failure Points</h2>
+                        <div class="alerts-list" id="failure-points">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    <div class="alerts-card sps-card warning">
+                        <h2>Shortages & Gaps</h2>
+                        <div class="alerts-list" id="shortages">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="recommendations-section sps-card">
+                    <h2>Recommendations</h2>
+                    <div class="recommendations-list" id="recommendations">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Narrative Summary -->
+                <div class="narrative-section sps-card">
+                    <h2>Simulation Narrative</h2>
+                    <div class="narrative-content" id="narrative">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-overlay" id="loading-overlay" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Running simulation...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/simulation.js"></script>
+</body>
+</html>

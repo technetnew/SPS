@@ -1,0 +1,29 @@
+{
+  "layers": {
+    "transportation": {
+      "minzoom": 0,
+      "maxzoom": 14
+    },
+    "water": {
+      "minzoom": 0,
+      "maxzoom": 14
+    },
+    "place": {
+      "minzoom": 0,
+      "maxzoom": 14
+    }
+  },
+  "settings": {
+    "minzoom": 0,
+    "maxzoom": 14,
+    "basezoom": 14,
+    "include_ids": false,
+    "compress": "gzip",
+    "name": "SPS Offline Maps",
+    "version": "1.0",
+    "description": "Offline OSM tiles for SPS",
+    "attribution": "© OpenStreetMap contributors",
+    "type": "baselayer",
+    "format": "pbf"
+  }
+}

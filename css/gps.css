@@ -1,0 +1,326 @@
+/* GPS Page Styles */
+
+.gps-main {
+    position: fixed;
+    top: 70px; /* Height of navbar + padding */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 10;
+}
+
+/* GPS Status Bar */
+.gps-status-bar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+    z-index: 1000;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-label {
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.status-value {
+    padding: 0.25rem 0.75rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.status-value.status-success {
+    background: #4caf50;
+}
+
+.status-value.status-warning {
+    background: #ff9800;
+}
+
+.status-value.status-error {
+    background: #f44336;
+}
+
+/* Map Container */
+.map-container {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Map Error Message */
+.map-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: #f5f5f5;
+    color: #666;
+    text-align: center;
+    padding: 2rem;
+}
+
+.map-error h2 {
+    color: #c62828;
+    margin-bottom: 1rem;
+}
+
+.map-error p {
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+/* Search Box */
+.search-box {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: 500px;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.search-container input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    background: #2c5f2d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.search-container button:hover {
+    background: #1e4620;
+}
+
+.search-results {
+    margin-top: 5px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+}
+
+.search-result-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.search-result-item:hover {
+    background: #f5f5f5;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+/* Map Controls */
+.map-controls {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.control-btn {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+}
+
+.control-btn:hover {
+    background: #2c5f2d;
+    color: white;
+    border-color: #2c5f2d;
+    transform: scale(1.1);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+.control-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* GPS Marker */
+.gps-marker {
+    background: transparent;
+    border: none;
+}
+
+.gps-marker .pulse {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #2196F3;
+    border: 3px solid white;
+    box-shadow: 0 0 0 rgba(33, 150, 243, 0.4);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 20px rgba(33, 150, 243, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
+    }
+}
+
+/* Fullscreen Mode */
+.gps-main:fullscreen {
+    top: 0;
+}
+
+.gps-main:fullscreen .navbar {
+    display: none;
+}
+
+.gps-main:fullscreen .gps-status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gps-status-bar {
+        font-size: 0.8rem;
+        gap: 1rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .status-label {
+        display: none;
+    }
+
+    .status-item {
+        gap: 0.25rem;
+    }
+
+    .map-controls {
+        bottom: 20px;
+        right: 10px;
+        gap: 8px;
+    }
+
+    .control-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .control-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* GPS Alert */
+.gps-alert {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(244, 67, 54, 0.95);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 2000;
+    max-width: 500px;
+    text-align: center;
+}
+
+.gps-alert .alert-content strong {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.gps-alert .alert-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.95;
+}
+
+/* Custom MapLibre Popup */
+.maplibregl-popup-content {
+    background: #2c5f2d;
+    color: white;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.maplibregl-popup-tip {
+    border-top-color: #2c5f2d;
+}
+
+/* Attribution */
+.maplibregl-ctrl-attrib {
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 10px;
+}
